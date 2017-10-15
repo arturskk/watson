@@ -1,2 +1,2 @@
-# watson
+# Watson
 Home Assistant
