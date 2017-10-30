@@ -1,16 +1,21 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
 
-import { AppComponent } from './app.component';
+import {AppRoutingModule} from './app-routing.module';
+import {WatsonApp} from './watson-app';
 
 @NgModule({
   declarations: [
-    AppComponent
+    WatsonApp
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    AppRoutingModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [
+    WatsonApp
+  ]
 })
-export class AppModule { }
+export class AppModule {
+}
