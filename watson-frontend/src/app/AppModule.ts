@@ -1,8 +1,9 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
+import {WatsonApp} from './WatsonApp';
+import {AppRoutingModule} from './AppRoutingModule';
+import {ReceiptService} from './receipt/ReceiptService';
 
-import {AppRoutingModule} from './app-routing.module';
-import {WatsonApp} from './watson-app';
 
 @NgModule({
   declarations: [
@@ -12,7 +13,9 @@ import {WatsonApp} from './watson-app';
     BrowserModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [
+    ReceiptService
+  ],
   bootstrap: [
     WatsonApp
   ]
