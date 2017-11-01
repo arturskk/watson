@@ -1,5 +1,5 @@
 package net.lipecki.watson;
 
 public enum WatsonExceptionCode {
-    BAD_REQUEST
+    UNKNOWN, BAD_REQUEST
 }

@@ -9,6 +9,7 @@ import java.util.List;
 @Builder
 public class AddReceiptDto {
 
+    private String description;
     private String date;
     private String budgetUuid;
     private AddReceiptAccountDto account;

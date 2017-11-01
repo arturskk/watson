@@ -11,6 +11,15 @@ public class WatsonException extends RuntimeException {
     private WatsonExceptionCode code;
     private Map<String, Object> data = new HashMap<>();
 
+    public static WatsonException of(final WatsonExceptionCode code, final String message, final Exception cause) {
+        return new WatsonException(code, message, cause);
+    }
+
+    public WatsonException(final WatsonExceptionCode code, final String message, final Exception cause) {
+        super(message, cause);
+        this.code = code;
+    }
+
     public WatsonException(final WatsonExceptionCode code, final String message) {
         super(message);
         this.code = code;

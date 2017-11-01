@@ -3,11 +3,11 @@ package net.lipecki.watson.receipt;
 import net.lipecki.watson.WatsonException;
 import net.lipecki.watson.WatsonExceptionCode;
 import net.lipecki.watson.account.AddAccountService;
+import net.lipecki.watson.category.AddCategory;
 import net.lipecki.watson.category.AddCategoryService;
 import net.lipecki.watson.shop.AddShopService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 @Service
@@ -38,7 +38,8 @@ public class AddReceiptWithDependenciesService {
                         .builder()
                         .budgetUuid(addReceipt.getBudgetUuid())
                         .tags(new ArrayList<>(addReceipt.getTags()))
-                        .date(LocalDate.parse(addReceipt.getDate()))
+                        .date(addReceipt.getDate())
+                        .description(addReceipt.getDescription())
                         .categoryUuid(categoryUuid)
                         .accountUuid(accountUuid)
                         .shopUuid(shopUuid)
@@ -50,7 +51,12 @@ public class AddReceiptWithDependenciesService {
         if (category.getUuid().isPresent()) {
             return category.getUuid().get();
         } else if (category.getName().isPresent()) {
-            return this.addCategoryService.addCategory(Receipt.CATEGORY_TYPE, category.getName().get());
+            return this.addCategoryService.addCategory(
+                    AddCategory.builder()
+                            .type(Receipt.CATEGORY_TYPE)
+                            .name(category.getName().get())
+                            .build()
+            );
         } else {
             throw new WatsonException(
                     WatsonExceptionCode.BAD_REQUEST,

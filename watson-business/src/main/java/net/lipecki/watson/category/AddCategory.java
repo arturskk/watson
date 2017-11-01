@@ -1,14 +1,13 @@
 package net.lipecki.watson.category;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
-public class Category {
+@Builder
+public class AddCategory {
 
     private String type;
     private String name;
-    private String categoryPath;
-    private String uuid;
-    private Category parent;
 
 }

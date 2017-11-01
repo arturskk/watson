@@ -2,6 +2,7 @@ package net.lipecki.watson.receipt;
 
 import net.lipecki.watson.WatsonException;
 import net.lipecki.watson.account.AddAccountService;
+import net.lipecki.watson.category.AddCategory;
 import net.lipecki.watson.category.AddCategoryService;
 import net.lipecki.watson.shop.AddShopService;
 import org.apache.commons.lang.StringUtils;
@@ -13,7 +14,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.function.Consumer;
@@ -54,6 +54,7 @@ public class AddReceiptWithOptionalDataTest {
     @Test
     public void shouldAddReceiptWithProvidedData() {
         // given
+        final String expectedDescription = "expected-description";
         final String expectedBudgetId = "budget-id";
         final String expectedDate = "2017-01-01";
         final String expectedTag1 = "tag1";
@@ -62,6 +63,7 @@ public class AddReceiptWithOptionalDataTest {
         // when
         addReceipt(
                 dto -> dto
+                        .description(expectedDescription)
                         .budgetUuid(expectedBudgetId)
                         .date(expectedDate)
                         .tags(Arrays.asList(expectedTag1, expectedTag2))
@@ -69,14 +71,22 @@ public class AddReceiptWithOptionalDataTest {
 
         // then
         assertThat(receipt().getBudgetUuid()).isEqualTo(expectedBudgetId);
-        assertThat(receipt().getDate()).isEqualTo(LocalDate.of(2017, 1, 1));
+        assertThat(receipt().getDate()).isEqualTo(expectedDate);
         assertThat(receipt().getTags()).containsExactly(expectedTag1, expectedTag2);
+        assertThat(receipt().getDescription()).isEqualTo(expectedDescription);
     }
 
     @Test
     public void shouldAddReceiptCategoryOnTheFly() {
         // given
-        when(addCategoryService.addCategory(Receipt.CATEGORY_TYPE, CATEGORY_NAME)).thenReturn(CATEGORY_UUID);
+        when(
+                addCategoryService.addCategory(
+                        AddCategory.builder()
+                                .type(Receipt.CATEGORY_TYPE)
+                                .name(CATEGORY_NAME)
+                                .build()
+                )
+        ).thenReturn(CATEGORY_UUID);
 
         // when
         addReceipt(dto -> dto.category(AddReceiptCategoryDto.builder().name(CATEGORY_NAME).build()));
@@ -162,6 +172,7 @@ public class AddReceiptWithOptionalDataTest {
     private String addReceipt(final Consumer<AddReceiptDto.AddReceiptDtoBuilder> consumer) {
         final AddReceiptDto.AddReceiptDtoBuilder dtoBuilder = AddReceiptDto.builder();
 
+        dtoBuilder.description(StringUtils.EMPTY);
         dtoBuilder.date("2000-01-01");
         dtoBuilder.budgetUuid(StringUtils.EMPTY);
         dtoBuilder.tags(new ArrayList<>());

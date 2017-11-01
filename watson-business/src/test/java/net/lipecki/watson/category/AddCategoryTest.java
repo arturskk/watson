@@ -1,6 +1,5 @@
 package net.lipecki.watson.category;
 
-import com.google.common.collect.ImmutableMap;
 import net.lipecki.watson.store.AddEvent;
 import net.lipecki.watson.store.EventStore;
 import org.junit.Test;
@@ -17,10 +16,8 @@ public class AddCategoryTest {
 
     private static final String CATEGORY_UUID = "category-0000-0000-0000-000000000001";
     private static final String CATEGORY_TYPE = "category-TYPE";
-
     @Mock
     private EventStore eventStore;
-
     @InjectMocks
     private AddCategoryService uut;
 
@@ -29,12 +26,12 @@ public class AddCategoryTest {
         final String expectedCategoryUuid = CATEGORY_UUID;
         final String categoryName = "Sample category";
         final AddEvent expectedEvent = AddEvent.builder()
-                .type(Category.STREAM_TYPE)
+                .type(AddCategoryService.EVENT_TYPE)
                 .payload(
-                        ImmutableMap.of(
-                                "name", categoryName,
-                                "type", CATEGORY_TYPE
-                        )
+                        AddCategory.builder()
+                                .type(CATEGORY_TYPE)
+                                .name(categoryName)
+                                .build()
                 )
                 .build();
 
@@ -42,7 +39,7 @@ public class AddCategoryTest {
         when(eventStore.storeEvent(expectedEvent)).thenReturn(expectedCategoryUuid);
 
         // when
-        final String categoryUuid = uut.addCategory(CATEGORY_TYPE, categoryName);
+        final String categoryUuid = uut.addCategory(AddCategory.builder().type(CATEGORY_TYPE).name(categoryName).build());
 
         // then
         assertThat(categoryUuid).isEqualTo(expectedCategoryUuid);

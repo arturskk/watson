@@ -2,13 +2,15 @@ package net.lipecki.watson.category;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.lipecki.watson.BaseItTest;
-import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class AddCategoryItTest extends BaseItTest {
 
@@ -23,7 +25,8 @@ public class AddCategoryItTest extends BaseItTest {
 
     @Test
     public void shouldAddCategory() throws Exception {
-        final String categoryUuid = mockMvc.perform(
+        // when
+        final ResultActions result = mockMvc.perform(
                 MockMvcRequestBuilders
                         .post("/category")
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -35,7 +38,10 @@ public class AddCategoryItTest extends BaseItTest {
                                                 .build()
                                 )
                         )
-        ).andExpect(
+        );
+
+        // then
+        final String categoryUuid = result.andExpect(
                 MockMvcResultMatchers
                         .status()
                         .isOk()
@@ -43,7 +49,7 @@ public class AddCategoryItTest extends BaseItTest {
                 .getResponse()
                 .getContentAsString();
 
-        Assertions.assertThat(categoryUuid).isNotNull();
+        assertThat(categoryUuid).isNotNull();
     }
 
 }

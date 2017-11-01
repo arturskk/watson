@@ -19,7 +19,12 @@ public class AddCategoryController {
     @PostMapping("/category")
     public String addCategory(@Validated @RequestBody AddCategoryDto dto) {
         log.info("Request to add category [dto={}]", dto);
-        return service.addCategory(dto.getType(), dto.getName());
+        return service.addCategory(
+                AddCategory.builder()
+                        .type(dto.getType())
+                        .name(dto.getName())
+                        .build()
+        );
     }
 
 }

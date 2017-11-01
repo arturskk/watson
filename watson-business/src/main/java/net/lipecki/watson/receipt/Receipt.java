@@ -14,6 +14,7 @@ import java.util.List;
 public class Receipt implements Expanse {
 
     public static final String CATEGORY_TYPE = "_category_receipt";
+
     private LocalDate date;
     private String uuid;
     private Account account;
