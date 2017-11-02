@@ -25,24 +25,20 @@ public class AddCategoryTest {
     public void shouldAddCategoryToEventStore() {
         final String expectedCategoryUuid = CATEGORY_UUID;
         final String categoryName = "Sample category";
-        final Event<AddCategory> expectedEvent = Event.<AddCategory> builder()
-                .type(AddCategoryService.EVENT_TYPE)
-                .payload(
-                        AddCategory.builder()
-                                .type(CATEGORY_TYPE)
-                                .name(categoryName)
-                                .build()
-                )
-                .build();
 
         // given
-        when(eventStore.storeEvent(expectedEvent)).thenReturn(expectedCategoryUuid);
+        final AddCategory expectedAddCategory = AddCategory.builder().type(CATEGORY_TYPE).name(categoryName).build();
+        when(
+                eventStore.storeEvent(AddCategoryService.EVENT_TYPE, expectedAddCategory)
+        ).thenReturn(
+                Event.<AddCategory> builder().streamId(expectedCategoryUuid).build()
+        );
 
         // when
-        final String categoryUuid = uut.addCategory(AddCategory.builder().type(CATEGORY_TYPE).name(categoryName).build());
+        final Event<AddCategory> storedEvent = uut.addCategory(expectedAddCategory);
 
         // then
-        assertThat(categoryUuid).isEqualTo(expectedCategoryUuid);
+        assertThat(storedEvent.getStreamId()).isEqualTo(expectedCategoryUuid);
     }
 
 }

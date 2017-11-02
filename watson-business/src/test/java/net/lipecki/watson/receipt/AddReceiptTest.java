@@ -28,19 +28,16 @@ public class AddReceiptTest {
 
         // given
         when(
-                eventStore.storeEvent(
-                        Event.builder()
-                                .type(AddReceiptService.EVENT_TYPE)
-                                .payload(expectedAddReceipt)
-                                .build()
-                )
-        ).thenReturn(expectedUuid);
+                eventStore.storeEvent(AddReceiptService.EVENT_TYPE, expectedAddReceipt)
+        ).thenReturn(
+                Event.<AddReceipt> builder().streamId(expectedUuid).build()
+        );
 
         // when
-        final String receiptUuid = uut.addReceipt(expectedAddReceipt);
+        final Event<AddReceipt> storedEvent = uut.addReceipt(expectedAddReceipt);
 
         // then
-        assertThat(receiptUuid).isEqualTo(expectedUuid);
+        assertThat(storedEvent.getStreamId()).isEqualTo(expectedUuid);
     }
 
 }

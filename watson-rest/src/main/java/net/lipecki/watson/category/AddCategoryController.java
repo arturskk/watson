@@ -1,6 +1,7 @@
 package net.lipecki.watson.category;
 
 import lombok.extern.slf4j.Slf4j;
+import net.lipecki.watson.store.Event;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,7 +18,7 @@ public class AddCategoryController {
     }
 
     @PostMapping("/category")
-    public String addCategory(@Validated @RequestBody AddCategoryDto dto) {
+    public Event<AddCategory> addCategory(@Validated @RequestBody AddCategoryDto dto) {
         log.info("Request to add category [dto={}]", dto);
         return service.addCategory(
                 AddCategory.builder()

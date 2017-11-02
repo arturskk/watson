@@ -1,10 +1,13 @@
 package net.lipecki.watson.receipt;
 
 import net.lipecki.watson.WatsonException;
+import net.lipecki.watson.account.AddAccount;
 import net.lipecki.watson.account.AddAccountService;
 import net.lipecki.watson.category.AddCategory;
 import net.lipecki.watson.category.AddCategoryService;
+import net.lipecki.watson.shop.AddShop;
 import net.lipecki.watson.shop.AddShopService;
+import net.lipecki.watson.store.Event;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,7 +51,11 @@ public class AddReceiptWithOptionalDataTest {
     @Before
     public void setUpMocks() {
         addReceiptCaptor = ArgumentCaptor.forClass(AddReceipt.class);
-        when(addReceiptService.addReceipt(addReceiptCaptor.capture())).thenReturn(RECEIPT_UUID);
+        when(
+                addReceiptService.addReceipt(addReceiptCaptor.capture())
+        ).thenReturn(
+                Event.<AddReceipt>builder().streamId(RECEIPT_UUID).build()
+        );
     }
 
     @Test
@@ -86,7 +93,9 @@ public class AddReceiptWithOptionalDataTest {
                                 .name(CATEGORY_NAME)
                                 .build()
                 )
-        ).thenReturn(CATEGORY_UUID);
+        ).thenReturn(
+                Event.<AddCategory>builder().streamId(CATEGORY_UUID).build()
+        );
 
         // when
         addReceipt(dto -> dto.category(AddReceiptCategoryDto.builder().name(CATEGORY_NAME).build()));
@@ -112,7 +121,11 @@ public class AddReceiptWithOptionalDataTest {
     @Test
     public void shouldAddReceiptAccountOnTheFly() {
         // given
-        when(addAccountService.addAccount(ACCOUT_NAME)).thenReturn(ACCOUNT_UUID);
+        when(
+                addAccountService.addAccount(AddAccount.builder().name(ACCOUT_NAME).build())
+        ).thenReturn(
+                Event.<AddAccount>builder().streamId(ACCOUNT_UUID).build()
+        );
 
         // when
         addReceipt(dto -> dto.account(AddReceiptAccountDto.builder().name(ACCOUT_NAME).build()));
@@ -138,7 +151,11 @@ public class AddReceiptWithOptionalDataTest {
     @Test
     public void shouldAddReceiptShopOnTheFly() {
         // given
-        when(addShopService.addShop(SHOP_NAME)).thenReturn(SHOP_UUID);
+        when(
+                addShopService.addShop(AddShop.builder().name(SHOP_NAME).build())
+        ).thenReturn(
+                Event.<AddShop>builder().streamId(SHOP_UUID).build()
+        );
 
         // when
         addReceipt(dto -> dto.shop(AddReceiptShopDto.builder().name(SHOP_NAME).build()));

@@ -13,6 +13,16 @@ public class Event<T> {
     private String type;
 
     /**
+     * Stream id (eg. aggregate id).
+     */
+    private String streamId;
+
+    /**
+     * Event timestamp.
+     */
+    private long timestamp;
+
+    /**
      * Event payload object.
      *
      * Will be serialized to store specific format, eg. JSON.

@@ -2,6 +2,8 @@ package net.lipecki.watson.store;
 
 public interface EventStore {
 
-    String storeEvent(final Event<?> event);
+    <T> Event<T> storeEvent(final String type, final T payload);
+
+    <T> Event<T> storeEvent(final String streamId, final String type, final T payload);
 
 }

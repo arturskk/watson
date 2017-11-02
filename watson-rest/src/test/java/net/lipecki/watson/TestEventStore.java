@@ -16,25 +16,34 @@ import java.util.*;
 @Service
 public class TestEventStore implements EventStore {
 
-    private ThreadLocal<Map<String, List<Event>>> localEventStore = ThreadLocal.withInitial(() -> new HashMap<>());
+    private ThreadLocal<Map<String, List<Event<?>>>> localEventStore = ThreadLocal.withInitial(() -> new HashMap<>());
 
     @Override
-    public String storeEvent(Event event) {
-        log.debug("New event to store [event={}]", event);
-        final String streamId = UUID.randomUUID().toString();
+    public <T> Event<T> storeEvent(final String type, final T payload) {
+        return storeEvent(UUID.randomUUID().toString(), type, payload);
+    }
+
+    @Override
+    public <T> Event<T> storeEvent(final String streamId, final String type, final T payload) {
+        final Event<T> event = Event.<T>builder()
+                .type(type)
+                .timestamp(System.currentTimeMillis())
+                .streamId(streamId)
+                .payload(payload)
+                .build();
         this.localEventStore.get().getOrDefault(streamId, new ArrayList<>()).add(event);
-        return streamId;
+        return event;
     }
 
     public void reset() {
         this.localEventStore.remove();
     }
 
-    public Map<String, List<Event>> getAllEvents() {
+    public Map<String, List<Event<?>>> getAllEvents() {
         return this.localEventStore.get();
     }
 
-    public List<Event> getEvents(final String streamId) {
+    public List<Event<?>> getEvents(final String streamId) {
         return this.localEventStore.get().getOrDefault(streamId, new ArrayList<>());
     }
 

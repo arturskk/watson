@@ -15,13 +15,8 @@ public class AddCategoryService {
         this.eventStore = eventStore;
     }
 
-    public String addCategory(final AddCategory addCategory) {
-        return eventStore.storeEvent(
-                Event.builder()
-                        .type(EVENT_TYPE)
-                        .payload(addCategory)
-                        .build()
-        );
+    public Event<AddCategory> addCategory(final AddCategory addCategory) {
+        return eventStore.storeEvent(EVENT_TYPE, addCategory);
     }
 
 }

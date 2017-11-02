@@ -17,13 +17,8 @@ public class AddReceiptService {
         this.eventStore = eventStore;
     }
 
-    public String addReceipt(final AddReceipt addReceipt) {
-        return eventStore.storeEvent(
-                Event.builder()
-                        .type(EVENT_TYPE)
-                        .payload(addReceipt)
-                        .build()
-        );
+    public Event<AddReceipt> addReceipt(final AddReceipt addReceipt) {
+        return eventStore.storeEvent(EVENT_TYPE, addReceipt);
     }
 
 }
