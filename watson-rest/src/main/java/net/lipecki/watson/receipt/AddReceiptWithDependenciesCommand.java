@@ -8,6 +8,7 @@ import net.lipecki.watson.category.AddCategory;
 import net.lipecki.watson.category.AddCategoryCommand;
 import net.lipecki.watson.shop.AddShop;
 import net.lipecki.watson.shop.AddShopCommand;
+import net.lipecki.watson.store.Event;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class AddReceiptWithDependenciesCommand {
         this.addShopCommand = addShopCommand;
     }
 
-    public String addReceipt(final AddReceiptDto addReceipt) {
+    public Event<AddReceipt> addReceipt(final AddReceiptDto addReceipt) {
         final String categoryUuid = getCategoryUuid(addReceipt.getCategory());
         final String accountUuid = getAccountUuid(addReceipt.getAccount());
         final String shopUuid = getShopUuid(addReceipt.getShop());
@@ -47,8 +48,7 @@ public class AddReceiptWithDependenciesCommand {
                                 .accountUuid(accountUuid)
                                 .shopUuid(shopUuid)
                                 .build()
-                )
-                .getAggregateId();
+                );
     }
 
     private String getCategoryUuid(final AddReceiptCategoryDto category) {

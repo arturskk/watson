@@ -3,11 +3,13 @@ package net.lipecki.watson.store;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 public class InMemoryEventStore implements EventStore {
 
     private List<Event<?>> store = new ArrayList<>();
+    private AtomicLong eventIdSequence = new AtomicLong(0l);
 
     @Override
     public <T> Event<T> storeEvent(final String stream, final String type, final T payload) {
@@ -16,8 +18,9 @@ public class InMemoryEventStore implements EventStore {
 
     @Override
     public <T> Event<T> storeEvent(final String stream, final String streamId, final String type, final T payload) {
-        final Event<T> event = Event.<T>builder()
+        final Event<T> event = Event.<T> builder()
                 .type(type)
+                .sequenceId(this.eventIdSequence.incrementAndGet())
                 .timestamp(System.currentTimeMillis())
                 .stream(stream)
                 .aggregateId(streamId)

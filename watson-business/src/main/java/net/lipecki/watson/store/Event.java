@@ -8,6 +8,11 @@ import lombok.Data;
 public class Event<T> {
 
     /**
+     * System wide unique event sequence id.
+     */
+    private long sequenceId;
+
+    /**
      * Event type.
      */
     private String type;

@@ -186,7 +186,7 @@ public class AddReceiptWithOptionalDataTest {
      * @param consumer
      * @return
      */
-    private String addReceipt(final Consumer<AddReceiptDto.AddReceiptDtoBuilder> consumer) {
+    private Event<AddReceipt> addReceipt(final Consumer<AddReceiptDto.AddReceiptDtoBuilder> consumer) {
         final AddReceiptDto.AddReceiptDtoBuilder dtoBuilder = AddReceiptDto.builder();
 
         dtoBuilder.description(StringUtils.EMPTY);
