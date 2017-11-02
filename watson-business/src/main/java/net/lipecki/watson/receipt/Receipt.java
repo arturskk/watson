@@ -2,7 +2,6 @@ package net.lipecki.watson.receipt;
 
 import lombok.Data;
 import net.lipecki.watson.account.Account;
-import net.lipecki.watson.budget.Budget;
 import net.lipecki.watson.expanse.Expanse;
 import net.lipecki.watson.category.Category;
 import net.lipecki.watson.expanse.ExpanseCost;
@@ -20,7 +19,6 @@ public class Receipt implements Expanse {
     private String uuid;
     private Account account;
     private List<ReceiptItem> items;
-    private Budget budget;
     private Category category;
 
     // shop instance

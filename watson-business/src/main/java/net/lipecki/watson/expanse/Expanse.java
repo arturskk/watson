@@ -1,7 +1,6 @@
 package net.lipecki.watson.expanse;
 
 import net.lipecki.watson.account.Account;
-import net.lipecki.watson.budget.Budget;
 import net.lipecki.watson.category.Category;
 
 import java.time.LocalDate;
@@ -20,13 +19,6 @@ public interface Expanse {
      * @return expanse unique uuid
      */
     String getUuid();
-
-    /**
-     * Gets budget UUID.
-     * Represents concrete parent budget for expanse, used to distinct entities within multi-tenant system.
-     * @return
-     */
-    Budget getBudget();
 
     /**
      * Gets account used to pay for expanse.
