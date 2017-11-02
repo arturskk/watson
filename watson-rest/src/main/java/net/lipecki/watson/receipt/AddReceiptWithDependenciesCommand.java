@@ -67,7 +67,7 @@ public class AddReceiptWithDependenciesCommand {
             throw new WatsonException(
                     WatsonExceptionCode.BAD_REQUEST,
                     "Neither uuid, nor new category name was present"
-            ).put(
+            ).with(
                     "category", category
             );
         }
@@ -86,7 +86,7 @@ public class AddReceiptWithDependenciesCommand {
             throw new WatsonException(
                     WatsonExceptionCode.BAD_REQUEST,
                     "Neither uuid, nor new account name was present"
-            ).put(
+            ).with(
                     "account", account
             );
         }
@@ -105,7 +105,7 @@ public class AddReceiptWithDependenciesCommand {
             throw new WatsonException(
                     WatsonExceptionCode.BAD_REQUEST,
                     "Neither uuid, nor new shop name was present"
-            ).put(
+            ).with(
                     "shop", shop
             );
         }

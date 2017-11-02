@@ -29,7 +29,7 @@ public class WatsonException extends RuntimeException {
         this.code = code;
     }
 
-    public WatsonException put(final String key, final Object value) {
+    public WatsonException with(final String key, final Object value) {
         this.data.put(key, value);
         return this;
     }
