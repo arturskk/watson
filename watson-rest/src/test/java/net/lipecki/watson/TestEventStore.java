@@ -1,7 +1,7 @@
 package net.lipecki.watson;
 
 import lombok.extern.slf4j.Slf4j;
-import net.lipecki.watson.store.AddEvent;
+import net.lipecki.watson.store.Event;
 import net.lipecki.watson.store.EventStore;
 import org.springframework.stereotype.Service;
 
@@ -16,13 +16,13 @@ import java.util.*;
 @Service
 public class TestEventStore implements EventStore {
 
-    private ThreadLocal<Map<String, List<AddEvent>>> localEventStore = ThreadLocal.withInitial(() -> new HashMap<>());
+    private ThreadLocal<Map<String, List<Event>>> localEventStore = ThreadLocal.withInitial(() -> new HashMap<>());
 
     @Override
-    public String storeEvent(AddEvent addEvent) {
-        log.debug("New event to store [event={}]", addEvent);
+    public String storeEvent(Event event) {
+        log.debug("New event to store [event={}]", event);
         final String streamId = UUID.randomUUID().toString();
-        this.localEventStore.get().getOrDefault(streamId, new ArrayList<>()).add(addEvent);
+        this.localEventStore.get().getOrDefault(streamId, new ArrayList<>()).add(event);
         return streamId;
     }
 
@@ -30,11 +30,11 @@ public class TestEventStore implements EventStore {
         this.localEventStore.remove();
     }
 
-    public Map<String, List<AddEvent>> getAllEvents() {
+    public Map<String, List<Event>> getAllEvents() {
         return this.localEventStore.get();
     }
 
-    public List<AddEvent> getEvents(final String streamId) {
+    public List<Event> getEvents(final String streamId) {
         return this.localEventStore.get().getOrDefault(streamId, new ArrayList<>());
     }
 

@@ -1,6 +1,6 @@
 package net.lipecki.watson.category;
 
-import net.lipecki.watson.store.AddEvent;
+import net.lipecki.watson.store.Event;
 import net.lipecki.watson.store.EventStore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +25,7 @@ public class AddCategoryTest {
     public void shouldAddCategoryToEventStore() {
         final String expectedCategoryUuid = CATEGORY_UUID;
         final String categoryName = "Sample category";
-        final AddEvent expectedEvent = AddEvent.builder()
+        final Event<AddCategory> expectedEvent = Event.<AddCategory> builder()
                 .type(AddCategoryService.EVENT_TYPE)
                 .payload(
                         AddCategory.builder()

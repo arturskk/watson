@@ -4,12 +4,12 @@ import java.util.*;
 
 public class InMemoryEventStore implements EventStore {
 
-    private Map<String, List<AddEvent>> store = new HashMap<>();
+    private Map<String, List<Event>> store = new HashMap<>();
 
     @Override
-    public String storeEvent(AddEvent addEvent) {
+    public String storeEvent(Event event) {
         final String streamId = UUID.randomUUID().toString();
-        this.store.getOrDefault(streamId, new ArrayList<>()).add(addEvent);
+        this.store.getOrDefault(streamId, new ArrayList<>()).add(event);
         return streamId;
     }
 

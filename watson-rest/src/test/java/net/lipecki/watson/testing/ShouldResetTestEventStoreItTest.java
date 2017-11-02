@@ -2,7 +2,7 @@ package net.lipecki.watson.testing;
 
 import net.lipecki.watson.BaseItTest;
 import net.lipecki.watson.TestEventStore;
-import net.lipecki.watson.store.AddEvent;
+import net.lipecki.watson.store.Event;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -21,14 +21,14 @@ public class ShouldResetTestEventStoreItTest extends BaseItTest {
     public void shouldResetEventStore1() {
         assertThat(testEventStore.getAllEvents()).isEmpty();
 
-        testEventStore.storeEvent(AddEvent.builder().build());
+        testEventStore.storeEvent(Event.builder().build());
     }
 
     @Test
     public void shouldResetEventStore2() {
         assertThat(testEventStore.getAllEvents()).isEmpty();
 
-        testEventStore.storeEvent(AddEvent.builder().build());
+        testEventStore.storeEvent(Event.builder().build());
     }
 
 }

@@ -1,6 +1,6 @@
 package net.lipecki.watson.category;
 
-import net.lipecki.watson.store.AddEvent;
+import net.lipecki.watson.store.Event;
 import net.lipecki.watson.store.EventStore;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +17,11 @@ public class AddCategoryService {
 
     public String addCategory(final AddCategory addCategory) {
         return eventStore.storeEvent(
-                AddEvent.builder()
+                Event.builder()
                         .type(EVENT_TYPE)
                         .payload(addCategory)
                         .build()
         );
     }
-
 
 }

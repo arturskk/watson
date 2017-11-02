@@ -1,6 +1,6 @@
 package net.lipecki.watson.receipt;
 
-import net.lipecki.watson.store.AddEvent;
+import net.lipecki.watson.store.Event;
 import net.lipecki.watson.store.EventStore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,7 +29,7 @@ public class AddReceiptTest {
         // given
         when(
                 eventStore.storeEvent(
-                        AddEvent.builder()
+                        Event.builder()
                                 .type(AddReceiptService.EVENT_TYPE)
                                 .payload(expectedAddReceipt)
                                 .build()
