@@ -6,11 +6,11 @@ import net.lipecki.watson.store.Event;
 import net.lipecki.watson.store.EventStore;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -23,6 +23,14 @@ public class GetCategoriesQuery {
     }
 
     public List<Category> getCategories(final String categoryType) {
+        final Map<String, Category> categories = getAllCategories();
+        return categories.values()
+                .stream()
+                .filter(category -> category.getType().equals(categoryType))
+                .collect(Collectors.toList());
+    }
+
+    private Map<String, Category> getAllCategories() {
         final Map<String, Category> categories = new HashMap<>();
 
         this.eventStore
@@ -30,8 +38,7 @@ public class GetCategoriesQuery {
                 .stream()
                 .map(this::eventAsCommand)
                 .forEach(command -> command.accept(categories));
-
-        return new ArrayList<>(categories.values());
+        return categories;
     }
 
     private Consumer<Map<String, Category>> eventAsCommand(final Event<?> event) {
