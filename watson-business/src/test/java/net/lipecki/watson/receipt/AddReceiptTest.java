@@ -19,7 +19,7 @@ public class AddReceiptTest {
     @Mock
     private EventStore eventStore;
     @InjectMocks
-    private AddReceiptService uut;
+    private AddReceiptCommand uut;
 
     @Test
     public void shouldStoreAddReceiptEvent() {
@@ -28,16 +28,16 @@ public class AddReceiptTest {
 
         // given
         when(
-                eventStore.storeEvent(AddReceiptService.EVENT_TYPE, expectedAddReceipt)
+                eventStore.storeEvent(Receipt.RECEIPT_STREAM, AddReceiptCommand.ADD_RECEIPT_EVENT, expectedAddReceipt)
         ).thenReturn(
-                Event.<AddReceipt> builder().streamId(expectedUuid).build()
+                Event.<AddReceipt> builder().aggregateId(expectedUuid).build()
         );
 
         // when
         final Event<AddReceipt> storedEvent = uut.addReceipt(expectedAddReceipt);
 
         // then
-        assertThat(storedEvent.getStreamId()).isEqualTo(expectedUuid);
+        assertThat(storedEvent.getAggregateId()).isEqualTo(expectedUuid);
     }
 
 }

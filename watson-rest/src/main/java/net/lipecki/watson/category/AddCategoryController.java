@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AddCategoryController {
 
-    private final AddCategoryService service;
+    private final AddCategoryCommand service;
 
-    public AddCategoryController(AddCategoryService service) {
+    public AddCategoryController(AddCategoryCommand service) {
         this.service = service;
     }
 

@@ -3,39 +3,39 @@ package net.lipecki.watson.receipt;
 import net.lipecki.watson.WatsonException;
 import net.lipecki.watson.WatsonExceptionCode;
 import net.lipecki.watson.account.AddAccount;
-import net.lipecki.watson.account.AddAccountService;
+import net.lipecki.watson.account.AddAccountCommand;
 import net.lipecki.watson.category.AddCategory;
-import net.lipecki.watson.category.AddCategoryService;
+import net.lipecki.watson.category.AddCategoryCommand;
 import net.lipecki.watson.shop.AddShop;
-import net.lipecki.watson.shop.AddShopService;
+import net.lipecki.watson.shop.AddShopCommand;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 
 @Service
-public class AddReceiptWithDependenciesService {
+public class AddReceiptWithDependenciesCommand {
 
-    private final AddReceiptService addReceiptService;
-    private final AddCategoryService addCategoryService;
-    private final AddAccountService addAccountService;
-    private final AddShopService addShopService;
+    private final AddReceiptCommand addReceiptCommand;
+    private final AddCategoryCommand addCategoryCommand;
+    private final AddAccountCommand addAccountCommand;
+    private final AddShopCommand addShopCommand;
 
-    public AddReceiptWithDependenciesService(
-            final AddReceiptService addReceiptService,
-            final AddCategoryService addCategoryService,
-            final AddAccountService addAccountService,
-            final AddShopService addShopService) {
-        this.addReceiptService = addReceiptService;
-        this.addCategoryService = addCategoryService;
-        this.addAccountService = addAccountService;
-        this.addShopService = addShopService;
+    public AddReceiptWithDependenciesCommand(
+            final AddReceiptCommand addReceiptCommand,
+            final AddCategoryCommand addCategoryCommand,
+            final AddAccountCommand addAccountCommand,
+            final AddShopCommand addShopCommand) {
+        this.addReceiptCommand = addReceiptCommand;
+        this.addCategoryCommand = addCategoryCommand;
+        this.addAccountCommand = addAccountCommand;
+        this.addShopCommand = addShopCommand;
     }
 
     public String addReceipt(final AddReceiptDto addReceipt) {
         final String categoryUuid = getCategoryUuid(addReceipt.getCategory());
         final String accountUuid = getAccountUuid(addReceipt.getAccount());
         final String shopUuid = getShopUuid(addReceipt.getShop());
-        return addReceiptService
+        return addReceiptCommand
                 .addReceipt(
                         AddReceipt
                                 .builder()
@@ -48,21 +48,21 @@ public class AddReceiptWithDependenciesService {
                                 .shopUuid(shopUuid)
                                 .build()
                 )
-                .getStreamId();
+                .getAggregateId();
     }
 
     private String getCategoryUuid(final AddReceiptCategoryDto category) {
         if (category.getUuid().isPresent()) {
             return category.getUuid().get();
         } else if (category.getName().isPresent()) {
-            return this.addCategoryService
+            return this.addCategoryCommand
                     .addCategory(
                             AddCategory.builder()
                                     .type(Receipt.CATEGORY_TYPE)
                                     .name(category.getName().get())
                                     .build()
                     )
-                    .getStreamId();
+                    .getAggregateId();
         } else {
             throw new WatsonException(
                     WatsonExceptionCode.BAD_REQUEST,
@@ -77,11 +77,11 @@ public class AddReceiptWithDependenciesService {
         if (account.getUuid().isPresent()) {
             return account.getUuid().get();
         } else if (account.getName().isPresent()) {
-            return this.addAccountService
+            return this.addAccountCommand
                     .addAccount(
                             AddAccount.builder().name(account.getName().get()).build()
                     )
-                    .getStreamId();
+                    .getAggregateId();
         } else {
             throw new WatsonException(
                     WatsonExceptionCode.BAD_REQUEST,
@@ -96,11 +96,11 @@ public class AddReceiptWithDependenciesService {
         if (shop.getUuid().isPresent()) {
             return shop.getUuid().get();
         } else if (shop.getName().isPresent()) {
-            return this.addShopService
+            return this.addShopCommand
                     .addShop(
                             AddShop.builder().name(shop.getName().get()).build()
                     )
-                    .getStreamId();
+                    .getAggregateId();
         } else {
             throw new WatsonException(
                     WatsonExceptionCode.BAD_REQUEST,

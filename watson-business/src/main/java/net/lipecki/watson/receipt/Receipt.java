@@ -13,6 +13,7 @@ import java.util.List;
 @Data
 public class Receipt implements Expanse {
 
+    public static final String RECEIPT_STREAM = "_receipt";
     public static final String CATEGORY_TYPE = "_category_receipt";
 
     private LocalDate date;

@@ -11,17 +11,17 @@ import javax.validation.Valid;
 @RestController
 public class AddReceiptController {
 
-    private final AddReceiptWithDependenciesService addReceiptWithDependenciesService;
+    private final AddReceiptWithDependenciesCommand addReceiptWithDependenciesCommand;
 
-    public AddReceiptController(final AddReceiptWithDependenciesService addReceiptWithDependenciesService) {
-        this.addReceiptWithDependenciesService = addReceiptWithDependenciesService;
+    public AddReceiptController(final AddReceiptWithDependenciesCommand addReceiptWithDependenciesCommand) {
+        this.addReceiptWithDependenciesCommand = addReceiptWithDependenciesCommand;
     }
 
     @PostMapping("/receipt")
     public String addReceipt(@Valid @RequestBody final AddReceiptDto addReceipt) {
         log.info("Request to add new receipt [addReceipt={}]", addReceipt);
 
-        return this.addReceiptWithDependenciesService.addReceipt(addReceipt);
+        return this.addReceiptWithDependenciesCommand.addReceipt(addReceipt);
     }
 
 }

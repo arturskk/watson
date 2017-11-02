@@ -2,11 +2,11 @@ package net.lipecki.watson.receipt;
 
 import net.lipecki.watson.WatsonException;
 import net.lipecki.watson.account.AddAccount;
-import net.lipecki.watson.account.AddAccountService;
+import net.lipecki.watson.account.AddAccountCommand;
 import net.lipecki.watson.category.AddCategory;
-import net.lipecki.watson.category.AddCategoryService;
+import net.lipecki.watson.category.AddCategoryCommand;
 import net.lipecki.watson.shop.AddShop;
-import net.lipecki.watson.shop.AddShopService;
+import net.lipecki.watson.shop.AddShopCommand;
 import net.lipecki.watson.store.Event;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
@@ -31,30 +31,30 @@ public class AddReceiptWithOptionalDataTest {
     private static final String RECEIPT_UUID = "receipt-0000-0000-0000-000000000001";
     private static final String CATEGORY_NAME = "sample-category";
     private static final String CATEGORY_UUID = "category-0000-0000-0000-000000000001";
-    private static final String ACCOUT_NAME = "account-category";
+    private static final String ACCOUNT_NAME = "account-category";
     private static final String ACCOUNT_UUID = "account-0000-0000-0000-000000000001";
     private static final String SHOP_NAME = "shop-category";
     private static final String SHOP_UUID = "shop-0000-0000-0000-000000000001";
 
     @Mock
-    private AddReceiptService addReceiptService;
+    private AddReceiptCommand addReceiptCommand;
     @Mock
-    private AddShopService addShopService;
+    private AddShopCommand addShopCommand;
     @Mock
-    private AddAccountService addAccountService;
+    private AddAccountCommand addAccountCommand;
     @Mock
-    private AddCategoryService addCategoryService;
+    private AddCategoryCommand addCategoryCommand;
     @InjectMocks
-    private AddReceiptWithDependenciesService uut;
+    private AddReceiptWithDependenciesCommand uut;
     private ArgumentCaptor<AddReceipt> addReceiptCaptor;
 
     @Before
     public void setUpMocks() {
         addReceiptCaptor = ArgumentCaptor.forClass(AddReceipt.class);
         when(
-                addReceiptService.addReceipt(addReceiptCaptor.capture())
+                addReceiptCommand.addReceipt(addReceiptCaptor.capture())
         ).thenReturn(
-                Event.<AddReceipt>builder().streamId(RECEIPT_UUID).build()
+                Event.<AddReceipt> builder().aggregateId(RECEIPT_UUID).build()
         );
     }
 
@@ -87,14 +87,14 @@ public class AddReceiptWithOptionalDataTest {
     public void shouldAddReceiptCategoryOnTheFly() {
         // given
         when(
-                addCategoryService.addCategory(
+                addCategoryCommand.addCategory(
                         AddCategory.builder()
                                 .type(Receipt.CATEGORY_TYPE)
                                 .name(CATEGORY_NAME)
                                 .build()
                 )
         ).thenReturn(
-                Event.<AddCategory>builder().streamId(CATEGORY_UUID).build()
+                Event.<AddCategory> builder().aggregateId(CATEGORY_UUID).build()
         );
 
         // when
@@ -122,13 +122,13 @@ public class AddReceiptWithOptionalDataTest {
     public void shouldAddReceiptAccountOnTheFly() {
         // given
         when(
-                addAccountService.addAccount(AddAccount.builder().name(ACCOUT_NAME).build())
+                addAccountCommand.addAccount(AddAccount.builder().name(ACCOUNT_NAME).build())
         ).thenReturn(
-                Event.<AddAccount>builder().streamId(ACCOUNT_UUID).build()
+                Event.<AddAccount> builder().aggregateId(ACCOUNT_UUID).build()
         );
 
         // when
-        addReceipt(dto -> dto.account(AddReceiptAccountDto.builder().name(ACCOUT_NAME).build()));
+        addReceipt(dto -> dto.account(AddReceiptAccountDto.builder().name(ACCOUNT_NAME).build()));
 
         // then
         assertThat(receipt().getAccountUuid()).isEqualTo(ACCOUNT_UUID);
@@ -152,9 +152,9 @@ public class AddReceiptWithOptionalDataTest {
     public void shouldAddReceiptShopOnTheFly() {
         // given
         when(
-                addShopService.addShop(AddShop.builder().name(SHOP_NAME).build())
+                addShopCommand.addShop(AddShop.builder().name(SHOP_NAME).build())
         ).thenReturn(
-                Event.<AddShop>builder().streamId(SHOP_UUID).build()
+                Event.<AddShop> builder().aggregateId(SHOP_UUID).build()
         );
 
         // when

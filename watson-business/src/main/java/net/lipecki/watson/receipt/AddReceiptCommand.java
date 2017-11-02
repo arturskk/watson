@@ -7,18 +7,18 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
-public class AddReceiptService {
+public class AddReceiptCommand {
 
-    public static final String EVENT_TYPE = "_receipt_add";
+    public static final String ADD_RECEIPT_EVENT = "_receipt_add";
 
     private final EventStore eventStore;
 
-    public AddReceiptService(final EventStore eventStore) {
+    public AddReceiptCommand(final EventStore eventStore) {
         this.eventStore = eventStore;
     }
 
     public Event<AddReceipt> addReceipt(final AddReceipt addReceipt) {
-        return eventStore.storeEvent(EVENT_TYPE, addReceipt);
+        return eventStore.storeEvent(Receipt.RECEIPT_STREAM, ADD_RECEIPT_EVENT, addReceipt);
     }
 
 }

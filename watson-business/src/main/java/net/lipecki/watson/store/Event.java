@@ -8,14 +8,19 @@ import lombok.Data;
 public class Event<T> {
 
     /**
-     * Event stream type.
+     * Event type.
      */
     private String type;
 
     /**
-     * Stream id (eg. aggregate id).
+     * Stream.
      */
-    private String streamId;
+    private String stream;
+
+    /**
+     * Aggregate within stream id.
+     */
+    private String aggregateId;
 
     /**
      * Event timestamp.
@@ -28,5 +33,9 @@ public class Event<T> {
      * Will be serialized to store specific format, eg. JSON.
      */
     private T payload;
+
+    public <R> R castPayload(final Class<R> clazz) {
+        return clazz.cast(this.payload);
+    }
 
 }

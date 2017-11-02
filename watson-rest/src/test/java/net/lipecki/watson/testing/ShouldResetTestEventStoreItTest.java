@@ -20,14 +20,14 @@ public class ShouldResetTestEventStoreItTest extends BaseItTest {
     public void shouldResetEventStore1() {
         assertThat(testEventStore.getAllEvents()).isEmpty();
 
-        testEventStore.storeEvent("any", "any");
+        testEventStore.storeEvent("any", "any", "any");
     }
 
     @Test
     public void shouldResetEventStore2() {
         assertThat(testEventStore.getAllEvents()).isEmpty();
 
-        testEventStore.storeEvent("any", "any");
+        testEventStore.storeEvent("any", "any", "any");
     }
 
 }

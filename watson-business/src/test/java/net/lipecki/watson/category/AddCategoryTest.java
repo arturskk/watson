@@ -19,7 +19,7 @@ public class AddCategoryTest {
     @Mock
     private EventStore eventStore;
     @InjectMocks
-    private AddCategoryService uut;
+    private AddCategoryCommand uut;
 
     @Test
     public void shouldAddCategoryToEventStore() {
@@ -29,16 +29,16 @@ public class AddCategoryTest {
         // given
         final AddCategory expectedAddCategory = AddCategory.builder().type(CATEGORY_TYPE).name(categoryName).build();
         when(
-                eventStore.storeEvent(AddCategoryService.EVENT_TYPE, expectedAddCategory)
+                eventStore.storeEvent(Category.CATEGORY_STREAM, AddCategoryCommand.ADD_CATEGORY_EVENT, expectedAddCategory)
         ).thenReturn(
-                Event.<AddCategory> builder().streamId(expectedCategoryUuid).build()
+                Event.<AddCategory> builder().aggregateId(expectedCategoryUuid).build()
         );
 
         // when
         final Event<AddCategory> storedEvent = uut.addCategory(expectedAddCategory);
 
         // then
-        assertThat(storedEvent.getStreamId()).isEqualTo(expectedCategoryUuid);
+        assertThat(storedEvent.getAggregateId()).isEqualTo(expectedCategoryUuid);
     }
 
 }

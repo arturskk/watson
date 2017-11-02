@@ -6,6 +6,7 @@ import net.lipecki.watson.store.EventStore;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Test event store with in-memory events.
@@ -16,35 +17,48 @@ import java.util.*;
 @Service
 public class TestEventStore implements EventStore {
 
-    private ThreadLocal<Map<String, List<Event<?>>>> localEventStore = ThreadLocal.withInitial(() -> new HashMap<>());
+    private ThreadLocal<List<Event<?>>> localEventStore = ThreadLocal.withInitial(() -> new ArrayList<>());
 
     @Override
-    public <T> Event<T> storeEvent(final String type, final T payload) {
-        return storeEvent(UUID.randomUUID().toString(), type, payload);
+    public <T> Event<T> storeEvent(final String stream, final String type, final T payload) {
+        return storeEvent(stream, UUID.randomUUID().toString(), type, payload);
     }
 
     @Override
-    public <T> Event<T> storeEvent(final String streamId, final String type, final T payload) {
-        final Event<T> event = Event.<T>builder()
+    public <T> Event<T> storeEvent(final String stream, final String streamId, final String type, final T payload) {
+        final Event<T> event = Event.<T> builder()
                 .type(type)
                 .timestamp(System.currentTimeMillis())
-                .streamId(streamId)
+                .stream(stream)
+                .aggregateId(streamId)
                 .payload(payload)
                 .build();
-        this.localEventStore.get().getOrDefault(streamId, new ArrayList<>()).add(event);
+        log.debug("Storing event [event={}]", event);
+        this.localEventStore.get().add(event);
         return event;
     }
+
+
+    @Override
+    public List<Event<?>> getEventsByStream(String stream) {
+        return null;
+    }
+
 
     public void reset() {
         this.localEventStore.remove();
     }
 
-    public Map<String, List<Event<?>>> getAllEvents() {
+    public List<Event<?>> getAllEvents() {
         return this.localEventStore.get();
     }
 
     public List<Event<?>> getEvents(final String streamId) {
-        return this.localEventStore.get().getOrDefault(streamId, new ArrayList<>());
+        return this.localEventStore
+                .get()
+                .stream()
+                .filter(event -> event.getAggregateId().equals(streamId))
+                .collect(Collectors.toList());
     }
 
 }
