@@ -40,7 +40,6 @@ public class AddReceiptWithDependenciesCommand {
                 .addReceipt(
                         AddReceipt
                                 .builder()
-                                .budgetUuid(addReceipt.getBudgetUuid())
                                 .tags(new ArrayList<>(addReceipt.getTags()))
                                 .date(addReceipt.getDate())
                                 .description(addReceipt.getDescription())

@@ -11,7 +11,6 @@ public class AddReceiptDto {
 
     private String description;
     private String date;
-    private String budgetUuid;
     private AddReceiptAccountDto account;
     private AddReceiptShopDto shop;
     private AddReceiptCategoryDto category;

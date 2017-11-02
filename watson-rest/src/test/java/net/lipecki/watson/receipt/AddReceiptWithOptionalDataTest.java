@@ -62,7 +62,6 @@ public class AddReceiptWithOptionalDataTest {
     public void shouldAddReceiptWithProvidedData() {
         // given
         final String expectedDescription = "expected-description";
-        final String expectedBudgetId = "budget-id";
         final String expectedDate = "2017-01-01";
         final String expectedTag1 = "tag1";
         final String expectedTag2 = "tag2";
@@ -71,13 +70,11 @@ public class AddReceiptWithOptionalDataTest {
         addReceipt(
                 dto -> dto
                         .description(expectedDescription)
-                        .budgetUuid(expectedBudgetId)
                         .date(expectedDate)
                         .tags(Arrays.asList(expectedTag1, expectedTag2))
         );
 
         // then
-        assertThat(receipt().getBudgetUuid()).isEqualTo(expectedBudgetId);
         assertThat(receipt().getDate()).isEqualTo(expectedDate);
         assertThat(receipt().getTags()).containsExactly(expectedTag1, expectedTag2);
         assertThat(receipt().getDescription()).isEqualTo(expectedDescription);
@@ -191,7 +188,6 @@ public class AddReceiptWithOptionalDataTest {
 
         dtoBuilder.description(StringUtils.EMPTY);
         dtoBuilder.date("2000-01-01");
-        dtoBuilder.budgetUuid(StringUtils.EMPTY);
         dtoBuilder.tags(new ArrayList<>());
         dtoBuilder.shop(AddReceiptShopDto.builder().uuid(DEFAULT_UUID).build());
         dtoBuilder.account(AddReceiptAccountDto.builder().uuid(DEFAULT_UUID).build());

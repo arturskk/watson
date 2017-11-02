@@ -9,10 +9,10 @@ public class Category {
 
     public static final String CATEGORY_STREAM = "_category";
 
+    private String uuid;
     private String type;
     private String name;
     private String categoryPath;
-    private String uuid;
     private Category parent;
 
 }

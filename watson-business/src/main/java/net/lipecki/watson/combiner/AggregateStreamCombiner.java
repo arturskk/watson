@@ -4,6 +4,7 @@ import net.lipecki.watson.WatsonException;
 import net.lipecki.watson.store.Event;
 import net.lipecki.watson.store.EventStore;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +35,10 @@ public class AggregateStreamCombiner<T> {
 
     public void setIgnoreMissingEventTypes(final boolean ignoreMissingEventTypes) {
         this.ignoreMissingEventTypes = ignoreMissingEventTypes;
+    }
+
+    public List<T> getAsList(final String stream) {
+        return new ArrayList<>(get(stream).values());
     }
 
     public Map<String, T> get(final String stream) {

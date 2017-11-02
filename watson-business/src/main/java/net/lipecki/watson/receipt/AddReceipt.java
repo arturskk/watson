@@ -12,7 +12,6 @@ public class AddReceipt {
 
     private String description;
     private String date;
-    private String budgetUuid;
     private String accountUuid;
     private String shopUuid;
     private String categoryUuid;
