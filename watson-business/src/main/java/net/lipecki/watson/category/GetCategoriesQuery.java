@@ -32,7 +32,6 @@ public class GetCategoriesQuery {
 
     private Map<String, Category> getAllCategories() {
         final Map<String, Category> categories = new HashMap<>();
-
         this.eventStore
                 .getEventsByStream(Category.CATEGORY_STREAM)
                 .stream()
