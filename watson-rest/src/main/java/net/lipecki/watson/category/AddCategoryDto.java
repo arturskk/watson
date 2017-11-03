@@ -4,7 +4,6 @@ import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
-import java.util.Optional;
 
 @Data
 @Builder
@@ -14,6 +13,6 @@ public class AddCategoryDto {
     private String type;
     @NotNull
     private String name;
-    private Optional<String> parentUuid;
+    private String parentUuid;
 
 }

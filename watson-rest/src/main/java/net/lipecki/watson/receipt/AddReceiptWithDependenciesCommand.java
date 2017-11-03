@@ -14,6 +14,9 @@ import net.lipecki.watson.store.Event;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,9 +42,6 @@ public class AddReceiptWithDependenciesCommand {
     }
 
     public Event<AddReceipt> addReceipt(final AddReceiptDto dto) {
-        final String categoryUuid = getCategoryUuid(Receipt.CATEGORY_TYPE, dto.getCategory());
-        final String accountUuid = getAccountUuid(dto.getAccount());
-        final String shopUuid = getShopUuid(dto.getShop());
         return addReceiptCommand
                 .addReceipt(
                         AddReceipt
@@ -49,102 +49,82 @@ public class AddReceiptWithDependenciesCommand {
                                 .tags(new ArrayList<>(dto.getTags()))
                                 .date(dto.getDate())
                                 .description(dto.getDescription())
-                                .categoryUuid(categoryUuid)
-                                .accountUuid(accountUuid)
-                                .shopUuid(shopUuid)
+                                .categoryUuid(getCategoryUuid(Receipt.CATEGORY_TYPE, dto.getCategory()))
+                                .accountUuid(getAccountUuid(dto.getAccount()))
+                                .shopUuid(getShopUuid(dto.getShop()))
                                 .items(dto.getItems().stream().map(this::asReceiptItem).collect(Collectors.toList()))
                                 .build()
                 );
     }
 
     private AddReceiptItem asReceiptItem(final AddReceiptItemDto dto) {
-        final String productUuid = getProductUuid(dto.getProduct());
-        final String categoryUuid = getCategoryUuid(ReceiptItem.CATEGORY_TYPE, dto.getCategory());
         return AddReceiptItem.builder()
                 .cost(dto.getCost())
                 .tags(dto.getTags())
-                .productUuid(productUuid)
-                .categoryUuid(categoryUuid)
+                .productUuid(getProductUuid(dto.getProduct()))
+                .categoryUuid(getCategoryUuid(ReceiptItem.CATEGORY_TYPE, dto.getCategory()))
                 .build();
     }
 
-    private String getCategoryUuid(final String categoryType, final AddReceiptCategoryDto category) {
-        if (category.getUuid().isPresent()) {
-            return category.getUuid().get();
-        } else if (category.getName().isPresent()) {
-            return this.addCategoryCommand
-                    .addCategory(
-                            AddCategory.builder()
-                                    .type(categoryType)
-                                    .name(category.getName().get())
-                                    .build()
-                    )
-                    .getAggregateId();
-        } else {
-            throw new WatsonException(
-                    WatsonExceptionCode.BAD_REQUEST,
-                    "Neither uuid, nor new category name was present"
-            ).with(
-                    "category", category
-            );
-        }
+    private String getCategoryUuid(final String categoryType, final AddReceiptCategoryDto addReceiptCategoryDto) {
+        return getOrCreateUuid(
+                addReceiptCategoryDto,
+                AddReceiptCategoryDto::getUuid,
+                dto -> dto.getName()
+                        .map(name -> AddCategory.builder().type(categoryType).name(name).build())
+                        .map(addCategoryCommand::addCategory)
+                        .map(Event::getAggregateId)
+                        .orElseThrow(throwMissingDataException(dto))
+        );
     }
 
-    private String getProductUuid(final AddReceiptProductDto dto) {
-        if (dto.getUuid().isPresent()) {
-            return dto.getUuid().get();
-        } else if (dto.getName().isPresent()) {
-            return this.addProductCommand
-                    .addProduct(
-                            AddProduct.builder().name(dto.getName().get()).build()
-                    )
-                    .getAggregateId();
-        } else {
-            throw new WatsonException(
-                    WatsonExceptionCode.BAD_REQUEST,
-                    "Neither uuid, nor new account name was present"
-            ).with(
-                    "dto", dto
-            );
-        }
+    private String getProductUuid(final AddReceiptProductDto addReceiptProductDto) {
+        return getOrCreateUuid(
+                addReceiptProductDto,
+                AddReceiptProductDto::getUuid,
+                dto -> dto.getName()
+                        .map(name -> AddProduct.builder().name(name).build())
+                        .map(addProductCommand::addProduct)
+                        .map(Event::getAggregateId)
+                        .orElseThrow(throwMissingDataException(dto))
+        );
     }
 
-    private String getAccountUuid(final AddReceiptAccountDto account) {
-        if (account.getUuid().isPresent()) {
-            return account.getUuid().get();
-        } else if (account.getName().isPresent()) {
-            return this.addAccountCommand
-                    .addAccount(
-                            AddAccount.builder().name(account.getName().get()).build()
-                    )
-                    .getAggregateId();
-        } else {
-            throw new WatsonException(
-                    WatsonExceptionCode.BAD_REQUEST,
-                    "Neither uuid, nor new account name was present"
-            ).with(
-                    "account", account
-            );
-        }
+    private String getAccountUuid(final AddReceiptAccountDto addReceiptAccountDto) {
+        return getOrCreateUuid(
+                addReceiptAccountDto,
+                AddReceiptAccountDto::getUuid,
+                dto -> dto.getName()
+                        .map(name -> AddAccount.builder().name(name).build())
+                        .map(addAccountCommand::addAccount)
+                        .map(Event::getAggregateId)
+                        .orElseThrow(throwMissingDataException(dto))
+        );
     }
 
-    private String getShopUuid(final AddReceiptShopDto shop) {
-        if (shop.getUuid().isPresent()) {
-            return shop.getUuid().get();
-        } else if (shop.getName().isPresent()) {
-            return this.addShopCommand
-                    .addShop(
-                            AddShop.builder().name(shop.getName().get()).build()
-                    )
-                    .getAggregateId();
-        } else {
-            throw new WatsonException(
-                    WatsonExceptionCode.BAD_REQUEST,
-                    "Neither uuid, nor new shop name was present"
-            ).with(
-                    "shop", shop
-            );
-        }
+    private String getShopUuid(final AddReceiptShopDto addReceiptShopDto) {
+        return getOrCreateUuid(
+                addReceiptShopDto,
+                AddReceiptShopDto::getUuid,
+                dto -> dto.getName()
+                        .map(name -> AddShop.builder().name(name).build())
+                        .map(addShopCommand::addShop)
+                        .map(Event::getAggregateId)
+                        .orElseThrow(throwMissingDataException(dto))
+        );
+    }
+
+    private <T> String getOrCreateUuid(
+            final T dto,
+            final Function<T, Optional<String>> uuidExtractor,
+            final Function<T, String> uuidGenerator) {
+        return uuidExtractor.apply(dto).orElseGet(() -> uuidGenerator.apply(dto));
+    }
+
+    private <T> Supplier<WatsonException> throwMissingDataException(final T dto) {
+        return () -> new WatsonException(WatsonExceptionCode.BAD_REQUEST, "Missing data to create object")
+                .with("type", dto.getClass().getSimpleName())
+                .with("dto", dto);
     }
 
 }
