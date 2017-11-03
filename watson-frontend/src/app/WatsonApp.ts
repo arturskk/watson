@@ -1,4 +1,6 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs/Observable';
 
 @Component({
   selector: 'watson-app',
@@ -52,5 +54,26 @@ import {Component} from '@angular/core';
     `
   ]
 })
-export class WatsonApp {
+export class WatsonApp implements OnInit {
+
+  constructor(private httpClient: HttpClient) {}
+
+  ngOnInit(): void {
+    const accounts = this.httpClient.get('/api/v1/account');
+    const categoriesReceipt = this.httpClient.get('/api/v1/category/_category_receipt');
+    const categoriesReceiptItems = this.httpClient.get('/api/v1/category/_category_receipt_item');
+    const products = this.httpClient.get('/api/v1/product');
+    const shops = this.httpClient.get('/api/v1/shop');
+
+    Observable.forkJoin(
+      accounts,
+      categoriesReceipt,
+      categoriesReceiptItems,
+      products,
+      shops
+    ).subscribe(result => {
+      console.log(result);
+    });
+  }
+
 }
