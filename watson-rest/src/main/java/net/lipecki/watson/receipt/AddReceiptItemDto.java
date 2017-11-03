@@ -2,18 +2,18 @@ package net.lipecki.watson.receipt;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.Singular;
 
 import java.util.List;
-import java.util.Optional;
 
 @Data
 @Builder
 public class AddReceiptItemDto {
 
-    private Optional<String> description;
+    private String cost;
     private AddReceiptCategoryDto category;
     private AddReceiptProductDto product;
+    @Singular
     private List<String> tags;
-    private String cost;
 
 }

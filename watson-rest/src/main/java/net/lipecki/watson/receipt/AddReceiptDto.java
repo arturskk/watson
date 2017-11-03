@@ -2,6 +2,7 @@ package net.lipecki.watson.receipt;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.Singular;
 
 import java.util.List;
 
@@ -14,7 +15,9 @@ public class AddReceiptDto {
     private AddReceiptAccountDto account;
     private AddReceiptShopDto shop;
     private AddReceiptCategoryDto category;
+    @Singular
     private List<String> tags;
+    @Singular
     private List<AddReceiptItemDto> items;
 
 }
