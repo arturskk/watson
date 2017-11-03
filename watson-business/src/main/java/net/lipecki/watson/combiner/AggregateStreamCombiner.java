@@ -22,11 +22,13 @@ import java.util.stream.Collectors;
 public class AggregateStreamCombiner<T> {
 
     private final EventStore eventStore;
+    private final String stream;
     private final Map<String, BiConsumer<Map<String, T>, Event<?>>> handlerMapping = new HashMap<>();
     private boolean ignoreMissingEventTypes = false;
 
-    public AggregateStreamCombiner(final EventStore eventStore) {
+    public AggregateStreamCombiner(final EventStore eventStore, final String stream) {
         this.eventStore = eventStore;
+        this.stream = stream;
     }
 
     public void registerHandler(final String eventType, final BiConsumer<Map<String, T>, Event<?>> handler) {
@@ -37,13 +39,13 @@ public class AggregateStreamCombiner<T> {
         this.ignoreMissingEventTypes = ignoreMissingEventTypes;
     }
 
-    public List<T> getAsList(final String stream) {
-        return new ArrayList<>(get(stream).values());
+    public List<T> getAsList() {
+        return new ArrayList<>(get().values());
     }
 
-    public Map<String, T> get(final String stream) {
+    public Map<String, T> get() {
         final List<Event<?>> events = this.eventStore
-                .getEventsByStream(stream)
+                .getEventsByStream(this.stream)
                 .stream()
                 .sorted(Comparator.comparing(Event::getSequenceId))
                 .collect(Collectors.toList());
@@ -57,7 +59,7 @@ public class AggregateStreamCombiner<T> {
             } else if (!this.ignoreMissingEventTypes) {
                 throw WatsonException
                         .of("Missing event handler for stream combiner")
-                        .with("stream", stream)
+                        .with("stream", this.stream)
                         .with("missingEventType", eventType);
             }
         }

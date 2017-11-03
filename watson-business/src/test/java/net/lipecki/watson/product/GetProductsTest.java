@@ -1,4 +1,4 @@
-package net.lipecki.watson.shop;
+package net.lipecki.watson.product;
 
 import net.lipecki.watson.store.EventStore;
 import net.lipecki.watson.store.InMemoryEventStore;
@@ -13,32 +13,32 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
-public class GetShopsTest {
+public class GetProductsTest {
 
     @Spy
     private EventStore eventStore = new InMemoryEventStore();
     @InjectMocks
-    private GetShopsQuery uut;
+    private GetProductsQuery uut;
 
     @Test
-    public void shouldGetAllShops() {
-        final String expectedShopName = "expectedShopName";
+    public void shouldGetAllProducts() {
+        final String expectedProductName = "expectedProductName";
 
         // given
         eventStore.storeEvent(
-                Shop.SHOP_STREAM,
-                AddShopCommand.ADD_SHOP_EVENT,
-                AddShop.builder()
-                        .name(expectedShopName)
+                Product.PRODUCT_STREAM,
+                AddProductCommand.ADD_PRODUCT_EVENT,
+                AddProduct.builder()
+                        .name(expectedProductName)
                         .build()
         );
 
         // when
-        final List<Shop> shops = uut.getShops();
+        final List<Product> products = uut.getProducts();
 
         // then
-        assertThat(shops).isNotNull().isNotEmpty();
-        assertThat(shops).extracting("name").contains(expectedShopName);
+        assertThat(products).isNotNull().isNotEmpty();
+        assertThat(products).extracting("name").contains(expectedProductName);
     }
 
 }

@@ -14,8 +14,7 @@ public class GetAccountsQuery {
     private final AggregateStreamCombiner<Account> combiner;
 
     public GetAccountsQuery(final EventStore eventStore) {
-        this.combiner = new AggregateStreamCombiner<>(eventStore);
-
+        this.combiner = new AggregateStreamCombiner<>(eventStore, Account.ACCOUNT_STREAM);
         this.combiner.registerHandler(
                 AddAccountCommand.ADD_ACCOUNT_EVENT,
                 (collection, event) -> collection.put(
@@ -29,7 +28,7 @@ public class GetAccountsQuery {
     }
 
     public List<Account> getAccounts() {
-        return this.combiner.getAsList(Account.ACCOUNT_STREAM);
+        return this.combiner.getAsList();
     }
 
 }

@@ -1,4 +1,4 @@
-package net.lipecki.watson.shop;
+package net.lipecki.watson.product;
 
 import lombok.extern.slf4j.Slf4j;
 import net.lipecki.watson.combiner.AggregateStreamCombiner;
@@ -9,25 +9,25 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class GetShopsQuery {
+public class GetProductsQuery {
 
-    private final AggregateStreamCombiner<Shop> combiner;
+    private final AggregateStreamCombiner<Product> combiner;
 
-    public GetShopsQuery(final EventStore eventStore) {
-        this.combiner = new AggregateStreamCombiner<>(eventStore, Shop.SHOP_STREAM);
+    public GetProductsQuery(final EventStore eventStore) {
+        this.combiner = new AggregateStreamCombiner<>(eventStore, Product.PRODUCT_STREAM);
         this.combiner.registerHandler(
-                AddShopCommand.ADD_SHOP_EVENT,
+                AddProductCommand.ADD_PRODUCT_EVENT,
                 (collection, event) -> collection.put(
                         event.getAggregateId(),
-                        Shop.builder()
+                        Product.builder()
                                 .uuid(event.getAggregateId())
-                                .name(event.castPayload(AddShop.class).getName())
+                                .name(event.castPayload(AddProduct.class).getName())
                                 .build()
                 )
         );
     }
 
-    public List<Shop> getShops() {
+    public List<Product> getProducts() {
         return this.combiner.getAsList();
     }
 

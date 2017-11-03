@@ -31,7 +31,7 @@ public class GetCategoriesTest {
     }
 
     @Test
-    public void shouldGetStoredCategory() {
+    public void shouldGetStoredCategories() {
         final String expectedCategoryName = "expected-category-name";
 
         // given

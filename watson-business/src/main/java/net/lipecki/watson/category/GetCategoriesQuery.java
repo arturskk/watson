@@ -16,7 +16,7 @@ public class GetCategoriesQuery {
     private final AggregateStreamCombiner<Category> combiner;
 
     public GetCategoriesQuery(final EventStore eventStore) {
-        this.combiner = new AggregateStreamCombiner<>(eventStore);
+        this.combiner = new AggregateStreamCombiner<>(eventStore, Category.CATEGORY_STREAM);
         this.combiner.registerHandler(
                 AddCategoryCommand.ADD_CATEGORY_EVENT,
                 (collection, event) -> collection.put(
@@ -41,7 +41,7 @@ public class GetCategoriesQuery {
     }
 
     private Map<String, Category> getAllCategories() {
-        return this.combiner.get(Category.CATEGORY_STREAM);
+        return this.combiner.get();
     }
 
 }
