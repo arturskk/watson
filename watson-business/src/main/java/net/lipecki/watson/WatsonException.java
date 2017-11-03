@@ -15,6 +15,10 @@ public class WatsonException extends RuntimeException {
         return new WatsonException(WatsonExceptionCode.UNKNOWN, message);
     }
 
+    public static WatsonException of(final WatsonExceptionCode code, final String message) {
+        return new WatsonException(code, message);
+    }
+
     public static WatsonException of(final WatsonExceptionCode code, final String message, final Exception cause) {
         return new WatsonException(code, message, cause);
     }
@@ -34,4 +38,12 @@ public class WatsonException extends RuntimeException {
         return this;
     }
 
+    @Override
+    public String getMessage() {
+        return String.format(
+                "%s [%s]",
+                super.getMessage(),
+                this.data
+        );
+    }
 }

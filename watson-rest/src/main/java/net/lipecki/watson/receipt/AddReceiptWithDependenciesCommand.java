@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @Service
@@ -66,65 +65,75 @@ public class AddReceiptWithDependenciesCommand {
                 .build();
     }
 
-    private String getCategoryUuid(final String categoryType, final AddReceiptCategoryDto addReceiptCategoryDto) {
-        return getOrCreateUuid(
-                addReceiptCategoryDto,
+    private String getCategoryUuid(final String categoryType, final AddReceiptCategoryDto dto) {
+        return getUuidOrCreateObject(
+                dto,
                 AddReceiptCategoryDto::getUuid,
-                dto -> dto.getName()
-                        .map(name -> AddCategory.builder().type(categoryType).name(name).build())
-                        .map(addCategoryCommand::addCategory)
-                        .map(Event::getAggregateId)
-                        .orElseThrow(throwMissingDataException(dto))
+                asAddCategory(categoryType),
+                addCategoryCommand::addCategory
         );
     }
 
-    private String getProductUuid(final AddReceiptProductDto addReceiptProductDto) {
-        return getOrCreateUuid(
-                addReceiptProductDto,
+    private Function<AddReceiptCategoryDto, Optional<AddCategory>> asAddCategory(final String categoryType) {
+        return dto -> dto.getName().map(name -> AddCategory.builder().type(categoryType).name(name).build());
+    }
+
+    private String getProductUuid(final AddReceiptProductDto dto) {
+        return getUuidOrCreateObject(
+                dto,
                 AddReceiptProductDto::getUuid,
-                dto -> dto.getName()
-                        .map(name -> AddProduct.builder().name(name).build())
-                        .map(addProductCommand::addProduct)
-                        .map(Event::getAggregateId)
-                        .orElseThrow(throwMissingDataException(dto))
+                this::asAddProduct,
+                addProductCommand::addProduct
         );
     }
 
-    private String getAccountUuid(final AddReceiptAccountDto addReceiptAccountDto) {
-        return getOrCreateUuid(
-                addReceiptAccountDto,
+    private Optional<AddProduct> asAddProduct(final AddReceiptProductDto dto) {
+        return dto.getName().map(name -> AddProduct.builder().name(name).build());
+    }
+
+    private String getAccountUuid(final AddReceiptAccountDto dto) {
+        return getUuidOrCreateObject(
+                dto,
                 AddReceiptAccountDto::getUuid,
-                dto -> dto.getName()
-                        .map(name -> AddAccount.builder().name(name).build())
-                        .map(addAccountCommand::addAccount)
-                        .map(Event::getAggregateId)
-                        .orElseThrow(throwMissingDataException(dto))
+                this::asAddAccount,
+                addAccountCommand::addAccount
         );
     }
 
-    private String getShopUuid(final AddReceiptShopDto addReceiptShopDto) {
-        return getOrCreateUuid(
-                addReceiptShopDto,
+    private Optional<AddAccount> asAddAccount(final AddReceiptAccountDto dto) {
+        return dto.getName().map(name -> AddAccount.builder().name(name).build());
+    }
+
+    private String getShopUuid(final AddReceiptShopDto dto) {
+        return getUuidOrCreateObject(
+                dto,
                 AddReceiptShopDto::getUuid,
-                dto -> dto.getName()
-                        .map(name -> AddShop.builder().name(name).build())
-                        .map(addShopCommand::addShop)
-                        .map(Event::getAggregateId)
-                        .orElseThrow(throwMissingDataException(dto))
+                this::asAddShop,
+                addShopCommand::addShop
         );
     }
 
-    private <T> String getOrCreateUuid(
+    private Optional<AddShop> asAddShop(final AddReceiptShopDto dto) {
+        return dto.getName().map(name -> AddShop.builder().name(name).build());
+    }
+
+    private <T, M> String getUuidOrCreateObject(
             final T dto,
             final Function<T, Optional<String>> uuidExtractor,
-            final Function<T, String> uuidGenerator) {
-        return uuidExtractor.apply(dto).orElseGet(() -> uuidGenerator.apply(dto));
-    }
+            final Function<T, Optional<M>> objectMapper,
+            final Function<M, Event<M>> uuidGenerator) {
+        final Optional<String> existingUuid = uuidExtractor.apply(dto);
+        if (existingUuid.isPresent()) {
+            return existingUuid.get();
+        }
 
-    private <T> Supplier<WatsonException> throwMissingDataException(final T dto) {
-        return () -> new WatsonException(WatsonExceptionCode.BAD_REQUEST, "Missing data to create object")
-                .with("type", dto.getClass().getSimpleName())
-                .with("dto", dto);
+        final M creationModel = objectMapper.apply(dto).orElseThrow(
+                () -> WatsonException.of(WatsonExceptionCode.UNKNOWN, "Can't create receipt dependency on the fly")
+                        .with("type", dto.getClass().getSimpleName())
+                        .with("dto", dto)
+        );
+
+        return uuidGenerator.apply(creationModel).getAggregateId();
     }
 
 }

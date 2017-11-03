@@ -41,7 +41,7 @@ public class TestEventStore implements EventStore {
 
     @Override
     public List<Event<?>> getEventsByStream(String stream) {
-        return null;
+        throw new UnsupportedOperationException("TestEventStore#getEventsByStream not implemented!");
     }
 
 

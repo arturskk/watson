@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 public class AddProductCommand {
 
     public Event<AddProduct> addProduct(final AddProduct addProduct) {
-        return null;
+        throw new UnsupportedOperationException("AddProductCommand#addProduct not implemented!");
     }
 
 }
