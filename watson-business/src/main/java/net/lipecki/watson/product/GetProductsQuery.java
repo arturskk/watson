@@ -2,7 +2,7 @@ package net.lipecki.watson.product;
 
 import lombok.extern.slf4j.Slf4j;
 import net.lipecki.watson.combiner.AggregateStreamCombiner;
-import net.lipecki.watson.store.EventStore;
+import net.lipecki.watson.event.EventStore;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,9 +18,9 @@ public class GetProductsQuery {
         this.combiner.registerHandler(
                 AddProductCommand.ADD_PRODUCT_EVENT,
                 (collection, event) -> collection.put(
-                        event.getAggregateId(),
+                        event.getStreamId(),
                         Product.builder()
-                                .uuid(event.getAggregateId())
+                                .uuid(event.getStreamId())
                                 .name(event.castPayload(AddProduct.class).getName())
                                 .build()
                 )

@@ -1,7 +1,7 @@
 package net.lipecki.watson.receipt;
 
-import net.lipecki.watson.store.Event;
-import net.lipecki.watson.store.EventStore;
+import net.lipecki.watson.event.Event;
+import net.lipecki.watson.event.EventStore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -30,14 +30,14 @@ public class AddReceiptTest {
         when(
                 eventStore.storeEvent(Receipt.RECEIPT_STREAM, AddReceiptCommand.ADD_RECEIPT_EVENT, expectedAddReceipt)
         ).thenReturn(
-                Event.<AddReceipt> builder().aggregateId(expectedUuid).build()
+                Event.<AddReceipt> builder().streamId(expectedUuid).build()
         );
 
         // when
         final Event<AddReceipt> storedEvent = uut.addReceipt(expectedAddReceipt);
 
         // then
-        assertThat(storedEvent.getAggregateId()).isEqualTo(expectedUuid);
+        assertThat(storedEvent.getStreamId()).isEqualTo(expectedUuid);
     }
 
 }

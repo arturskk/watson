@@ -1,7 +1,7 @@
 package net.lipecki.watson.account;
 
-import net.lipecki.watson.store.Event;
-import net.lipecki.watson.store.EventStore;
+import net.lipecki.watson.event.Event;
+import net.lipecki.watson.event.EventStore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -31,7 +31,7 @@ public class AddAccountTest {
         when(
                 eventStore.storeEvent(Account.ACCOUNT_STREAM, AddAccountCommand.ADD_ACCOUNT_EVENT, expectedAddAccount)
         ).thenReturn(
-                Event.<AddAccount> builder().aggregateId(expectedAccountUuid).build()
+                Event.<AddAccount> builder().streamId(expectedAccountUuid).build()
         );
 
         // when
@@ -40,7 +40,7 @@ public class AddAccountTest {
         );
 
         // then
-        assertThat(result.getAggregateId()).isEqualTo(expectedAccountUuid);
+        assertThat(result.getStreamId()).isEqualTo(expectedAccountUuid);
     }
 
 }

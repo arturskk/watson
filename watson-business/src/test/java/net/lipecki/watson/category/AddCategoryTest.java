@@ -1,7 +1,7 @@
 package net.lipecki.watson.category;
 
-import net.lipecki.watson.store.Event;
-import net.lipecki.watson.store.EventStore;
+import net.lipecki.watson.event.Event;
+import net.lipecki.watson.event.EventStore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -15,7 +15,7 @@ import static org.mockito.Mockito.when;
 public class AddCategoryTest {
 
     private static final String CATEGORY_UUID = "category-0000-0000-0000-000000000001";
-    private static final String CATEGORY_TYPE = "category-TYPE";
+    private static final String CATEGORY_TYPE = "category-EVENT_TYPE";
     @Mock
     private EventStore eventStore;
     @InjectMocks
@@ -31,14 +31,14 @@ public class AddCategoryTest {
         when(
                 eventStore.storeEvent(Category.CATEGORY_STREAM, AddCategoryCommand.ADD_CATEGORY_EVENT, expectedAddCategory)
         ).thenReturn(
-                Event.<AddCategory> builder().aggregateId(expectedCategoryUuid).build()
+                Event.<AddCategory> builder().streamId(expectedCategoryUuid).build()
         );
 
         // when
         final Event<AddCategory> storedEvent = uut.addCategory(expectedAddCategory);
 
         // then
-        assertThat(storedEvent.getAggregateId()).isEqualTo(expectedCategoryUuid);
+        assertThat(storedEvent.getStreamId()).isEqualTo(expectedCategoryUuid);
     }
 
 }

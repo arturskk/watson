@@ -28,7 +28,7 @@ public class AddCategoryItTest extends BaseItTest {
         // when
         final ResultActions result = mockMvc.perform(
                 MockMvcRequestBuilders
-                        .post("/category")
+                        .post("/api/v1/category")
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
                         .content(
                                 objectMapper.writeValueAsString(

@@ -2,7 +2,7 @@ package net.lipecki.watson.receipt;
 
 import net.lipecki.watson.category.AddCategory;
 import net.lipecki.watson.product.AddProduct;
-import net.lipecki.watson.store.Event;
+import net.lipecki.watson.event.Event;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -64,7 +64,7 @@ public class AddReceiptWithItemsTest extends AddReceiptWithDependenciesBaseTest 
                                 .build()
                 )
         ).thenReturn(
-                Event.<AddCategory> builder().aggregateId(expectedCategoryUuid).build()
+                Event.<AddCategory> builder().streamId(expectedCategoryUuid).build()
         );
 
         // when
@@ -97,7 +97,7 @@ public class AddReceiptWithItemsTest extends AddReceiptWithDependenciesBaseTest 
                                 .build()
                 )
         ).thenReturn(
-                Event.<AddProduct> builder().aggregateId(expectedProductUuid).build()
+                Event.<AddProduct> builder().streamId(expectedProductUuid).build()
         );
 
         // when

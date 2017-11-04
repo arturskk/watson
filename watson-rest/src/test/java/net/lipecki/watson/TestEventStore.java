@@ -1,17 +1,19 @@
 package net.lipecki.watson;
 
 import lombok.extern.slf4j.Slf4j;
-import net.lipecki.watson.store.Event;
-import net.lipecki.watson.store.EventStore;
+import net.lipecki.watson.event.Event;
+import net.lipecki.watson.event.EventStore;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
- * Test event store with in-memory events.
+ * Test event event with in-memory events.
  *
- * We use thread local to separate each thread and expose reset method to clear store before each test method.
+ * We use thread local to separate each thread and expose reset method to clear event before each test method.
  */
 @Slf4j
 @Service
@@ -30,7 +32,7 @@ public class TestEventStore implements EventStore {
                 .type(type)
                 .timestamp(System.currentTimeMillis())
                 .stream(stream)
-                .aggregateId(streamId)
+                .streamId(streamId)
                 .payload(payload)
                 .build();
         log.debug("Storing event [event={}]", event);
@@ -42,6 +44,11 @@ public class TestEventStore implements EventStore {
     @Override
     public List<Event<?>> getEventsByStream(String stream) {
         throw new UnsupportedOperationException("TestEventStore#getEventsByStream not implemented!");
+    }
+
+    @Override
+    public List<Event<?>> getEvents() {
+        throw new UnsupportedOperationException("TestEventStore#getEvents not implemented");
     }
 
 
@@ -57,7 +64,7 @@ public class TestEventStore implements EventStore {
         return this.localEventStore
                 .get()
                 .stream()
-                .filter(event -> event.getAggregateId().equals(streamId))
+                .filter(event -> event.getStreamId().equals(streamId))
                 .collect(Collectors.toList());
     }
 

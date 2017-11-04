@@ -10,7 +10,7 @@ import net.lipecki.watson.product.AddProduct;
 import net.lipecki.watson.product.AddProductCommand;
 import net.lipecki.watson.shop.AddShop;
 import net.lipecki.watson.shop.AddShopCommand;
-import net.lipecki.watson.store.Event;
+import net.lipecki.watson.event.Event;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -133,7 +133,7 @@ public class AddReceiptWithDependenciesCommand {
                         .with("dto", dto)
         );
 
-        return uuidGenerator.apply(creationModel).getAggregateId();
+        return uuidGenerator.apply(creationModel).getStreamId();
     }
 
 }

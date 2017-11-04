@@ -2,7 +2,7 @@ package net.lipecki.watson.account;
 
 import lombok.extern.slf4j.Slf4j;
 import net.lipecki.watson.combiner.AggregateStreamCombiner;
-import net.lipecki.watson.store.EventStore;
+import net.lipecki.watson.event.EventStore;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,9 +18,9 @@ public class GetAccountsQuery {
         this.combiner.registerHandler(
                 AddAccountCommand.ADD_ACCOUNT_EVENT,
                 (collection, event) -> collection.put(
-                        event.getAggregateId(),
+                        event.getStreamId(),
                         Account.builder()
-                                .uuid(event.getAggregateId())
+                                .uuid(event.getStreamId())
                                 .name(event.castPayload(AddAccount.class).getName())
                                 .build()
                 )

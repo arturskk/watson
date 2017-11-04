@@ -1,4 +1,4 @@
-package net.lipecki.watson.store;
+package net.lipecki.watson.event;
 
 import lombok.Builder;
 import lombok.Data;
@@ -25,7 +25,7 @@ public class Event<T> {
     /**
      * Aggregate within stream id.
      */
-    private String aggregateId;
+    private String streamId;
 
     /**
      * Event timestamp.
@@ -35,7 +35,7 @@ public class Event<T> {
     /**
      * Event payload object.
      *
-     * Will be serialized to store specific format, eg. JSON.
+     * Will be serialized to event specific format, eg. JSON.
      */
     private T payload;
 

@@ -1,7 +1,7 @@
 package net.lipecki.watson.account;
 
-import net.lipecki.watson.store.Event;
-import net.lipecki.watson.store.EventStore;
+import net.lipecki.watson.event.Event;
+import net.lipecki.watson.event.EventStore;
 import org.springframework.stereotype.Service;
 
 @Service

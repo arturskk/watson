@@ -2,7 +2,7 @@ package net.lipecki.watson.category;
 
 import lombok.extern.slf4j.Slf4j;
 import net.lipecki.watson.combiner.AggregateStreamCombiner;
-import net.lipecki.watson.store.EventStore;
+import net.lipecki.watson.event.EventStore;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,11 +20,11 @@ public class GetCategoriesQuery {
         this.combiner.registerHandler(
                 AddCategoryCommand.ADD_CATEGORY_EVENT,
                 (collection, event) -> collection.put(
-                        event.getAggregateId(),
+                        event.getStreamId(),
                         Category.builder()
                                 .name(event.castPayload(AddCategory.class).getName())
                                 .type(event.castPayload(AddCategory.class).getType())
-                                .uuid(event.getAggregateId())
+                                .uuid(event.getStreamId())
                                 .parent(null)
                                 .categoryPath("")
                                 .build()

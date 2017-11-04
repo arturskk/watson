@@ -4,7 +4,7 @@ import net.lipecki.watson.WatsonException;
 import net.lipecki.watson.account.AddAccount;
 import net.lipecki.watson.category.AddCategory;
 import net.lipecki.watson.shop.AddShop;
-import net.lipecki.watson.store.Event;
+import net.lipecki.watson.event.Event;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -50,7 +50,7 @@ public class AddReceiptWithOptionalDataTest extends AddReceiptWithDependenciesBa
                                 .build()
                 )
         ).thenReturn(
-                Event.<AddCategory> builder().aggregateId(CATEGORY_UUID).build()
+                Event.<AddCategory> builder().streamId(CATEGORY_UUID).build()
         );
 
         // when
@@ -80,7 +80,7 @@ public class AddReceiptWithOptionalDataTest extends AddReceiptWithDependenciesBa
         when(
                 addAccountCommand.addAccount(AddAccount.builder().name(ACCOUNT_NAME).build())
         ).thenReturn(
-                Event.<AddAccount> builder().aggregateId(ACCOUNT_UUID).build()
+                Event.<AddAccount> builder().streamId(ACCOUNT_UUID).build()
         );
 
         // when
@@ -110,7 +110,7 @@ public class AddReceiptWithOptionalDataTest extends AddReceiptWithDependenciesBa
         when(
                 addShopCommand.addShop(AddShop.builder().name(SHOP_NAME).build())
         ).thenReturn(
-                Event.<AddShop> builder().aggregateId(SHOP_UUID).build()
+                Event.<AddShop> builder().streamId(SHOP_UUID).build()
         );
 
         // when

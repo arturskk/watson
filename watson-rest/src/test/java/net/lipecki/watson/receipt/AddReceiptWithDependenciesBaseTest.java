@@ -4,7 +4,7 @@ import net.lipecki.watson.account.AddAccountCommand;
 import net.lipecki.watson.category.AddCategoryCommand;
 import net.lipecki.watson.product.AddProductCommand;
 import net.lipecki.watson.shop.AddShopCommand;
-import net.lipecki.watson.store.Event;
+import net.lipecki.watson.event.Event;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.mockito.ArgumentCaptor;
@@ -47,7 +47,7 @@ public abstract class AddReceiptWithDependenciesBaseTest {
         when(
                 addReceiptCommand.addReceipt(addReceiptCaptor.capture())
         ).thenReturn(
-                Event.<AddReceipt> builder().aggregateId(RECEIPT_UUID).build()
+                Event.<AddReceipt> builder().streamId(RECEIPT_UUID).build()
         );
     }
 

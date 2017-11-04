@@ -1,4 +1,4 @@
-package net.lipecki.watson.store;
+package net.lipecki.watson.event;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ public class InMemoryEventStore implements EventStore {
                 .sequenceId(this.eventIdSequence.incrementAndGet())
                 .timestamp(System.currentTimeMillis())
                 .stream(stream)
-                .aggregateId(streamId)
+                .streamId(streamId)
                 .payload(payload)
                 .build();
         this.store.add(event);
@@ -36,6 +36,11 @@ public class InMemoryEventStore implements EventStore {
                 .stream()
                 .filter(event -> event.getStream().equals(stream))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Event<?>> getEvents() {
+        throw new UnsupportedOperationException("InMemoryEventStore#getEvents not implemented");
     }
 
 }

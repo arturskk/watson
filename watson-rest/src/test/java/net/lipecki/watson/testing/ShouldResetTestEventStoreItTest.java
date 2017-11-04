@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Test event store should be cleared before each test.
- * We run two tests, each checks if event store is empty and adds new event.
+ * Test event event should be cleared before each test.
+ * We run two tests, each checks if event event is empty and adds new event.
  */
 public class ShouldResetTestEventStoreItTest extends BaseItTest {
 

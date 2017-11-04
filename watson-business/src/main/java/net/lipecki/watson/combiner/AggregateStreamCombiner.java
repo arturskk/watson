@@ -1,8 +1,8 @@
 package net.lipecki.watson.combiner;
 
 import net.lipecki.watson.WatsonException;
-import net.lipecki.watson.store.Event;
-import net.lipecki.watson.store.EventStore;
+import net.lipecki.watson.event.Event;
+import net.lipecki.watson.event.EventStore;
 
 import java.util.ArrayList;
 import java.util.Comparator;

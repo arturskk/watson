@@ -1,7 +1,7 @@
 package net.lipecki.watson.product;
 
-import net.lipecki.watson.store.EventStore;
-import net.lipecki.watson.store.InMemoryEventStore;
+import net.lipecki.watson.event.EventStore;
+import net.lipecki.watson.event.InMemoryEventStore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

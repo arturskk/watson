@@ -1,8 +1,8 @@
 package net.lipecki.watson.product;
 
 import lombok.extern.slf4j.Slf4j;
-import net.lipecki.watson.store.Event;
-import net.lipecki.watson.store.EventStore;
+import net.lipecki.watson.event.Event;
+import net.lipecki.watson.event.EventStore;
 import org.springframework.stereotype.Service;
 
 @Slf4j

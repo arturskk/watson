@@ -1,7 +1,7 @@
 package net.lipecki.watson.shop;
 
-import net.lipecki.watson.store.Event;
-import net.lipecki.watson.store.EventStore;
+import net.lipecki.watson.event.Event;
+import net.lipecki.watson.event.EventStore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -31,7 +31,7 @@ public class AddShopTest {
         when(
                 eventStore.storeEvent(Shop.SHOP_STREAM, AddShopCommand.ADD_SHOP_EVENT, expectedAddShop)
         ).thenReturn(
-                Event.<AddShop> builder().aggregateId(expectedShopUuid).build()
+                Event.<AddShop> builder().streamId(expectedShopUuid).build()
         );
 
         // when
@@ -40,7 +40,7 @@ public class AddShopTest {
         );
 
         // then
-        assertThat(result.getAggregateId()).isEqualTo(expectedShopUuid);
+        assertThat(result.getStreamId()).isEqualTo(expectedShopUuid);
     }
 
 }

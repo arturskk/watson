@@ -2,7 +2,7 @@ package net.lipecki.watson.category;
 
 import lombok.extern.slf4j.Slf4j;
 import net.lipecki.watson.rest.Api;
-import net.lipecki.watson.store.Event;
+import net.lipecki.watson.event.Event;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
