@@ -4,16 +4,19 @@ import {WatsonApp} from './WatsonApp';
 import {AppRoutingModule} from './AppRoutingModule';
 import {ReceiptService} from './receipt/ReceiptService';
 import {HttpClientModule} from '@angular/common/http';
-
+import {SelectComponent} from './select/SelectComponent';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
+    SelectComponent,
     WatsonApp
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule
   ],
   providers: [
     ReceiptService
