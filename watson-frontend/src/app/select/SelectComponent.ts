@@ -44,7 +44,7 @@ export class SelectComponent implements ControlValueAccessor {
   dropdown = false;
   value = null;
   filtered = [];
-  currentIndex = 0;
+  currentIndex = -1;
   newValuePlaceholder = {};
   rawData = [];
   currentSearchText = null;
@@ -76,13 +76,11 @@ export class SelectComponent implements ControlValueAccessor {
   }
 
   onSearchBoxBlur() {
-    this.dropdown = false;
-    this.clearUi();
     this.touchedEventEmitter.emit();
+    this.clearUi();
   }
 
   itemClicked(item) {
-    this.dropdown = false;
     this.value = item;
     this.changeEventEmitter.emit(this.value);
     this.clearUi();
@@ -91,15 +89,17 @@ export class SelectComponent implements ControlValueAccessor {
   onSearchBoxEnter() {
     if (!this.dropdown) {
       this.dropdown = true;
-    } else {
+    } else if (this.currentIndex >= 0) {
       this.value = this.filtered[this.currentIndex];
       this.changeEventEmitter.emit(this.value);
+      this.clearUi();
+    } else {
       this.clearUi();
     }
   }
 
   onSearchBoxEscape() {
-    this.dropdown = false;
+    this.clearUi();
   }
 
   onSearchBoxArrowUp() {
@@ -178,7 +178,7 @@ export class SelectComponent implements ControlValueAccessor {
     this.dropdown = false;
     this.currentSearchText = null;
     this.filtered = this.rawData;
-    this.currentIndex = 0;
+    this.currentIndex = -1;
     this.searchBox.nativeElement.value = '';
   }
 
