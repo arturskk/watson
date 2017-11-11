@@ -1,16 +1,18 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-import {WatsonApp} from './WatsonApp';
 import {AppRoutingModule} from './AppRoutingModule';
 import {ReceiptService} from './receipt/ReceiptService';
 import {HttpClientModule} from '@angular/common/http';
 import {SelectComponent} from './select/SelectComponent';
 import {FormsModule} from '@angular/forms';
+import {AddReceiptComponent} from './receipt/add/AddReceiptComponent';
+import {WatsonAppComponent} from './WatsonAppComponent';
 
 @NgModule({
   declarations: [
     SelectComponent,
-    WatsonApp
+    AddReceiptComponent,
+    WatsonAppComponent
   ],
   imports: [
     BrowserModule,
@@ -22,7 +24,7 @@ import {FormsModule} from '@angular/forms';
     ReceiptService
   ],
   bootstrap: [
-    WatsonApp
+    WatsonAppComponent
   ]
 })
 export class AppModule {

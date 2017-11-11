@@ -16,8 +16,8 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
         <span class="current-value" *ngIf="value">{{getValueAsDisplayField()}}</span>
         <input
           #searchBox
-          [class.hidden]="this.value"
-          [placeholder]="!this.value && placeholder || ''"
+          [class.hidden]="value"
+          [placeholder]="getPlaceholder()"
           (focus)="onSearchBoxFocus()"
           (blur)="onSearchBoxBlur()"
           (keydown.enter)="onSearchBoxEnter()"
@@ -37,44 +37,7 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
         </div>
       </div>
     </div>
-  `,
-  styles: [
-      `
-      :host {
-        display: block;
-        width: 172px;
-        border: 1px solid deeppink;
-      }
-
-      .dropdown {
-        position: absolute;
-        background-color: aliceblue;
-      }
-
-      .active {
-        background-color: deepskyblue;
-      }
-
-      :host ::ng-deep .match {
-        font-weight: bold;
-      }
-
-      .search-box-wrapper {
-        display: flex;
-      }
-
-      input.hidden {
-        width: 5px;
-      }
-
-      input, input:focus {
-        margin: 0;
-        padding: 0;
-        border: none;
-        outline: none;
-      }
-    `
-  ]
+  `
 })
 export class SelectComponent implements ControlValueAccessor {
 
@@ -86,8 +49,9 @@ export class SelectComponent implements ControlValueAccessor {
   rawData = [];
   currentSearchText = null;
 
-  @Output() valueChange = new EventEmitter();
-  @Input() placeholder: string = undefined;
+  @Output() changeEventEmitter = new EventEmitter();
+  @Output() touchedEventEmitter = new EventEmitter();
+  @Input() placeholder = '';
   @Input() filter: (item: any, searchText: string) => boolean;
   @Input() displayField: string;
   @ContentChild('listItem') itemTemplate: TemplateRef<any>;
@@ -113,21 +77,23 @@ export class SelectComponent implements ControlValueAccessor {
 
   onSearchBoxBlur() {
     this.dropdown = false;
+    this.clearUi();
+    this.touchedEventEmitter.emit();
   }
 
   itemClicked(item) {
     this.dropdown = false;
     this.value = item;
-    this.valueChange.emit(this.value);
+    this.changeEventEmitter.emit(this.value);
     this.clearUi();
   }
 
-  onSearchBoxEnter($event) {
+  onSearchBoxEnter() {
     if (!this.dropdown) {
       this.dropdown = true;
     } else {
       this.value = this.filtered[this.currentIndex];
-      this.valueChange.emit(this.value);
+      this.changeEventEmitter.emit(this.value);
       this.clearUi();
     }
   }
@@ -200,10 +166,11 @@ export class SelectComponent implements ControlValueAccessor {
   }
 
   registerOnChange(fn: any): void {
-    this.valueChange.subscribe(fn);
+    this.changeEventEmitter.subscribe(fn);
   }
 
   registerOnTouched(fn: any): void {
+    this.touchedEventEmitter.subscribe(fn);
   }
 
   private clearUi() {
@@ -213,6 +180,14 @@ export class SelectComponent implements ControlValueAccessor {
     this.filtered = this.rawData;
     this.currentIndex = 0;
     this.searchBox.nativeElement.value = '';
+  }
+
+  getPlaceholder() {
+    if (!this.value) {
+      return this.placeholder;
+    } else {
+      return '';
+    }
   }
 
 }

@@ -6,14 +6,13 @@ import net.lipecki.watson.account.AddAccount;
 import net.lipecki.watson.account.AddAccountCommand;
 import net.lipecki.watson.category.AddCategory;
 import net.lipecki.watson.category.AddCategoryCommand;
+import net.lipecki.watson.event.Event;
 import net.lipecki.watson.product.AddProduct;
 import net.lipecki.watson.product.AddProductCommand;
 import net.lipecki.watson.shop.AddShop;
 import net.lipecki.watson.shop.AddShopCommand;
-import net.lipecki.watson.event.Event;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -45,7 +44,7 @@ public class AddReceiptWithDependenciesCommand {
                 .addReceipt(
                         AddReceipt
                                 .builder()
-                                .tags(new ArrayList<>(dto.getTags()))
+                                .tags(dto.getTags())
                                 .date(dto.getDate())
                                 .description(dto.getDescription())
                                 .categoryUuid(getCategoryUuid(Receipt.CATEGORY_TYPE, dto.getCategory()))
@@ -62,6 +61,12 @@ public class AddReceiptWithDependenciesCommand {
                 .tags(dto.getTags())
                 .productUuid(getProductUuid(dto.getProduct()))
                 .categoryUuid(getCategoryUuid(ReceiptItem.CATEGORY_TYPE, dto.getCategory()))
+                .amout(
+                        AddReceiptItemAmout.builder()
+                                .count(dto.getAmount().getCount())
+                                .unit(dto.getAmount().getUnit())
+                                .build()
+                )
                 .build();
     }
 

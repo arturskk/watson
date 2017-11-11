@@ -1,12 +1,13 @@
 package net.lipecki.watson.receipt;
 
 import net.lipecki.watson.category.AddCategory;
-import net.lipecki.watson.product.AddProduct;
 import net.lipecki.watson.event.Event;
+import net.lipecki.watson.product.AddProduct;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,6 +19,7 @@ public class AddReceiptWithItemsTest extends AddReceiptWithDependenciesBaseTest 
 
     private static final AddReceiptProductDto ANY_PRODUCT = AddReceiptProductDto.builder().uuid(UUID.randomUUID().toString()).build();
     private static final AddReceiptCategoryDto ANY_CATEGORY = AddReceiptCategoryDto.builder().uuid(UUID.randomUUID().toString()).build();
+    private static final AddReceiptAmountDto ANY_AMOUNT = AddReceiptAmountDto.builder().build();
 
     @Test
     public void shouldAddItemWithData() {
@@ -28,17 +30,20 @@ public class AddReceiptWithItemsTest extends AddReceiptWithDependenciesBaseTest 
         final String expectedProductUuid = "expectedProductUuid";
 
         // when
-        addReceipt(dto -> dto.item(
-                AddReceiptItemDto.builder()
-                        .product(
-                                AddReceiptProductDto.builder().uuid(expectedProductUuid).build()
-                        )
-                        .category(
-                                AddReceiptCategoryDto.builder().uuid(expectedCategoryUuid).build()
-                        )
-                        .cost(expectedCost)
-                        .tag(expectedTag)
-                        .build()
+        addReceipt(dto -> dto.items(
+                Arrays.asList(
+                        AddReceiptItemDto.builder()
+                                .product(
+                                        AddReceiptProductDto.builder().uuid(expectedProductUuid).build()
+                                )
+                                .category(
+                                        AddReceiptCategoryDto.builder().uuid(expectedCategoryUuid).build()
+                                )
+                                .amount(ANY_AMOUNT)
+                                .cost(expectedCost)
+                                .tags(Arrays.asList(expectedTag))
+                                .build()
+                )
                 )
         );
 
@@ -64,19 +69,22 @@ public class AddReceiptWithItemsTest extends AddReceiptWithDependenciesBaseTest 
                                 .build()
                 )
         ).thenReturn(
-                Event.<AddCategory> builder().streamId(expectedCategoryUuid).build()
+                Event.<AddCategory>builder().streamId(expectedCategoryUuid).build()
         );
 
         // when
-        addReceipt(dto -> dto.item(
-                AddReceiptItemDto.builder()
-                        .product(ANY_PRODUCT)
-                        .category(
-                                AddReceiptCategoryDto.builder()
-                                        .name(expectedCategoryName)
-                                        .build()
-                        )
-                        .build()
+        addReceipt(dto -> dto.items(
+                Arrays.asList(
+                        AddReceiptItemDto.builder()
+                                .product(ANY_PRODUCT)
+                                .category(
+                                        AddReceiptCategoryDto.builder()
+                                                .name(expectedCategoryName)
+                                                .build()
+                                )
+                                .amount(ANY_AMOUNT)
+                                .build()
+                )
         ));
 
         // then
@@ -97,19 +105,22 @@ public class AddReceiptWithItemsTest extends AddReceiptWithDependenciesBaseTest 
                                 .build()
                 )
         ).thenReturn(
-                Event.<AddProduct> builder().streamId(expectedProductUuid).build()
+                Event.<AddProduct>builder().streamId(expectedProductUuid).build()
         );
 
         // when
-        addReceipt(dto -> dto.item(
-                AddReceiptItemDto.builder()
-                        .product(
-                                AddReceiptProductDto.builder()
-                                        .name(expectedProductName)
-                                        .build()
-                        )
-                        .category(ANY_CATEGORY)
-                        .build()
+        addReceipt(dto -> dto.items(
+                Arrays.asList(
+                        AddReceiptItemDto.builder()
+                                .product(
+                                        AddReceiptProductDto.builder()
+                                                .name(expectedProductName)
+                                                .build()
+                                )
+                                .amount(ANY_AMOUNT)
+                                .category(ANY_CATEGORY)
+                                .build()
+                )
         ));
 
         // then

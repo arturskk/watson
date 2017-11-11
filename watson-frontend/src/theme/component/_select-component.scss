@@ -1,0 +1,35 @@
+select-component {
+  display: block;
+  width: 172px;
+  padding: 2px;
+  border: 1px solid rgb(220, 220, 220);
+  margin: 0 1px;
+
+  .dropdown {
+    position: absolute;
+    background-color: aliceblue;
+  }
+
+  .active {
+    background-color: deepskyblue;
+  }
+
+  .match {
+    font-weight: bold;
+  }
+
+  .search-box-wrapper {
+    display: flex;
+  }
+
+  input.hidden {
+    width: 5px;
+  }
+
+  input, input:focus {
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+  }
+}

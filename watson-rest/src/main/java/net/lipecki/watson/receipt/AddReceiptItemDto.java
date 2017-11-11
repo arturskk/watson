@@ -2,18 +2,23 @@ package net.lipecki.watson.receipt;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.Singular;
 
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @Builder
 public class AddReceiptItemDto {
 
-    private String cost;
-    private AddReceiptCategoryDto category;
-    private AddReceiptProductDto product;
-    @Singular
+    @NotNull private String cost;
+    @NotNull private AddReceiptCategoryDto category;
+    @NotNull private AddReceiptProductDto product;
+    @NotNull private AddReceiptAmountDto amount;
     private List<String> tags;
+
+    public List<String> getTags() {
+        return tags != null ? tags : new ArrayList<>();
+    }
 
 }

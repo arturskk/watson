@@ -4,3 +4,4 @@ node_modules/
 *.iml
 .idea/
 *.mv.db
+events.log

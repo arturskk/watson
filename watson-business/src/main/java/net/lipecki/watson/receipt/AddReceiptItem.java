@@ -13,5 +13,6 @@ public class AddReceiptItem {
     private String productUuid;
     private List<String> tags;
     private String cost;
+    private AddReceiptItemAmout amout;
 
 }

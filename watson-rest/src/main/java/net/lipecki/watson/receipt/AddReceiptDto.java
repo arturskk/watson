@@ -2,8 +2,10 @@ package net.lipecki.watson.receipt;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.Singular;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -11,13 +13,19 @@ import java.util.List;
 public class AddReceiptDto {
 
     private String description;
-    private String date;
-    private AddReceiptAccountDto account;
-    private AddReceiptShopDto shop;
-    private AddReceiptCategoryDto category;
-    @Singular
+    @NotNull private String date;
+    @NotNull private AddReceiptAccountDto account;
+    @NotNull private AddReceiptShopDto shop;
+    @NotNull private AddReceiptCategoryDto category;
+    @NotNull @NotEmpty private List<AddReceiptItemDto> items;
     private List<String> tags;
-    @Singular
-    private List<AddReceiptItemDto> items;
+
+    public List<String> getTags() {
+        return tags != null ? tags : new ArrayList<>();
+    }
+
+    public List<AddReceiptItemDto> getItems() {
+        return items != null ? items : new ArrayList<>();
+    }
 
 }

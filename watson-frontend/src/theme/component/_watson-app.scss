@@ -1,0 +1,16 @@
+watson-app {
+  display: block;
+  nav {
+    display: flex;
+  }
+  aside {
+    display: none;
+  }
+  main {
+    border: 1px solid gray;
+  }
+  footer {
+    font-size: 0.8em;
+    font-style: italic;
+  }
+}
