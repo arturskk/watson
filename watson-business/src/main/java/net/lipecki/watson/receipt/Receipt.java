@@ -1,14 +1,16 @@
 package net.lipecki.watson.receipt;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import net.lipecki.watson.account.Account;
-import net.lipecki.watson.expanse.Expanse;
 import net.lipecki.watson.category.Category;
+import net.lipecki.watson.expanse.Expanse;
 import net.lipecki.watson.expanse.ExpanseCost;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@EqualsAndHashCode(of = "uuid")
 @Data
 public class Receipt implements Expanse {
 

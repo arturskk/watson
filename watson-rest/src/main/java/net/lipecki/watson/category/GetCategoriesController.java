@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -21,8 +22,23 @@ public class GetCategoriesController {
     }
 
     @GetMapping("/category/{categoryType}")
-    public List<Category> getAllCategories(@PathVariable final String categoryType) {
-        return this.query.getCategories(categoryType);
+    public List<ListCategoryDto> getAllCategories(@PathVariable final String categoryType) {
+        return this.query
+                .getCategories(categoryType)
+                .stream()
+                .map(GetCategoriesController::asListCategoryDto)
+                .collect(Collectors.toList());
+    }
+
+    private static ListCategoryDto asListCategoryDto(final Category category) {
+        return ListCategoryDto
+                .builder()
+                .parentUuid(category.getParent().map(Category::getUuid).orElse(null))
+                .type(category.getType())
+                .uuid(category.getUuid())
+                .name(category.getName())
+                .path(category.getCategoryPath())
+                .build();
     }
 
 }

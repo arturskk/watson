@@ -22,12 +22,12 @@ public class GetCategoriesTest {
     private GetCategoriesQuery uut;
 
     @Test
-    public void shouldGetEmptyWhenNoCategories() {
+    public void shouldAlwaysReturnRootCategory() {
         // when
         final List<Category> categories = uut.getCategories(CATEGORY_TYPE);
 
         // then
-        assertThat(categories).isNotNull().isEmpty();
+        assertThat(categories).extracting("uuid").containsExactly(Category.ROOT_UUID);
     }
 
     @Test
@@ -45,9 +45,27 @@ public class GetCategoriesTest {
         final List<Category> categories = uut.getCategories(CATEGORY_TYPE);
 
         // then
-        assertThat(categories).hasSize(1);
-        final Category category = categories.get(0);
-        assertThat(category.getName()).isEqualTo(expectedCategoryName);
+        assertThat(categories).extracting("name").contains(expectedCategoryName);
+    }
+
+    @Test
+    public void shouldReturnCategoryPath() {
+        final String expectedCategoryName = "expected-category-name";
+
+        // given
+        eventStore.storeEvent(
+                Category.CATEGORY_STREAM,
+                AddCategoryCommand.ADD_CATEGORY_EVENT,
+                AddCategory.builder().type(CATEGORY_TYPE).name(expectedCategoryName).build()
+        );
+
+        // when
+        final List<Category> categories = uut.getCategories(CATEGORY_TYPE);
+
+        // then
+        assertThat(categories).extracting("categoryPath").contains(
+                String.format("%s%s%s", Category.ROOT_NAME_KEY, Category.PATH_SEPARATOR, expectedCategoryName)
+        );
     }
 
 }

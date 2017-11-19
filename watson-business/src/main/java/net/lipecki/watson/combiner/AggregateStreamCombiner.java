@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -43,14 +44,14 @@ public class AggregateStreamCombiner<T> {
         return new ArrayList<>(get().values());
     }
 
-    public Map<String, T> get() {
+    public Map<String, T> get(final Supplier<Map<String, T>> stateInitializer) {
         final List<Event<?>> events = this.eventStore
                 .getEventsByStream(this.stream)
                 .stream()
                 .sorted(Comparator.comparing(Event::getSequenceId))
                 .collect(Collectors.toList());
 
-        final Map<String, T> result = new HashMap<>();
+        final Map<String, T> result = stateInitializer.get();
 
         for (final Event<?> event : events) {
             final String eventType = event.getType();
@@ -65,6 +66,10 @@ public class AggregateStreamCombiner<T> {
         }
 
         return result;
+    }
+
+    public Map<String, T> get() {
+        return get(() -> new HashMap<>());
     }
 
 }
