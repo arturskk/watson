@@ -1,24 +1,31 @@
 package net.lipecki.watson.product;
 
+import net.lipecki.watson.category.GetCategoryQuery;
 import net.lipecki.watson.event.EventStore;
 import net.lipecki.watson.event.InMemoryEventStore;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Spy;
-import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
-@RunWith(MockitoJUnitRunner.class)
+
 public class GetProductsTest {
 
-    @Spy
-    private EventStore eventStore = new InMemoryEventStore();
-    @InjectMocks
+    private EventStore eventStore;
     private GetProductsQuery uut;
+    private AddProductEventHandler addProductEventHandler;
+    private GetCategoryQuery categoryQuery;
+
+    @Before
+    public void setUp() {
+        categoryQuery = mock(GetCategoryQuery.class);
+        addProductEventHandler = new AddProductEventHandler(categoryQuery);
+        eventStore = new InMemoryEventStore();
+        uut = new GetProductsQuery(new ProductStore(eventStore, addProductEventHandler));
+    }
 
     @Test
     public void shouldGetAllProducts() {

@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class AddReceiptItemAmout {
+public class AddReceiptItemAmount {
 
     private String count;
     private String unit;

@@ -2,32 +2,33 @@ package net.lipecki.watson.category;
 
 import net.lipecki.watson.event.EventStore;
 import net.lipecki.watson.event.InMemoryEventStore;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Spy;
-import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(MockitoJUnitRunner.class)
 public class GetCategoriesTest {
 
     public static final String CATEGORY_TYPE = "category-type";
-    @Spy
-    private EventStore eventStore = new InMemoryEventStore();
-    @InjectMocks
+
+    private EventStore eventStore;
     private GetCategoriesQuery uut;
 
+    @Before
+    public void setUp() {
+        this.eventStore = new InMemoryEventStore();
+        this.uut = new GetCategoriesQuery(new CategoryStore(eventStore));
+    }
+
     @Test
-    public void shouldAlwaysReturnRootCategory() {
+    public void shouldReturnNonNullCategories() {
         // when
         final List<Category> categories = uut.getCategories(CATEGORY_TYPE);
 
         // then
-        assertThat(categories).extracting("uuid").containsExactly(Category.ROOT_UUID);
+        assertThat(categories).isNotNull();
     }
 
     @Test

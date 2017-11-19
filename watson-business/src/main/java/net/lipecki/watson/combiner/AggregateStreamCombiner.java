@@ -1,5 +1,6 @@
 package net.lipecki.watson.combiner;
 
+import lombok.extern.slf4j.Slf4j;
 import net.lipecki.watson.WatsonException;
 import net.lipecki.watson.event.Event;
 import net.lipecki.watson.event.EventStore;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
  *
  * @param <T>
  */
+@Slf4j
 public class AggregateStreamCombiner<T> {
 
     private final EventStore eventStore;
@@ -56,7 +58,12 @@ public class AggregateStreamCombiner<T> {
         for (final Event<?> event : events) {
             final String eventType = event.getType();
             if (this.handlerMapping.containsKey(eventType)) {
-                this.handlerMapping.get(eventType).accept(result, event);
+                final BiConsumer<Map<String, T>, Event<?>> eventHandler = this.handlerMapping.get(eventType);
+                try {
+                    eventHandler.accept(result, event);
+                } catch (final Exception ex) {
+                    log.warn("Event processing skipped due to handler exception [event={}]", event, ex);
+                }
             } else if (!this.ignoreMissingEventTypes) {
                 throw WatsonException
                         .of("Missing event handler for stream combiner")

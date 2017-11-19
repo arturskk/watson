@@ -1,34 +1,25 @@
 package net.lipecki.watson.product;
 
 import lombok.extern.slf4j.Slf4j;
-import net.lipecki.watson.combiner.AggregateStreamCombiner;
-import net.lipecki.watson.event.EventStore;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
 public class GetProductsQuery {
 
-    private final AggregateStreamCombiner<Product> combiner;
+    private final ProductStore productStore;
 
-    public GetProductsQuery(final EventStore eventStore) {
-        this.combiner = new AggregateStreamCombiner<>(eventStore, Product.PRODUCT_STREAM);
-        this.combiner.registerHandler(
-                AddProductCommand.ADD_PRODUCT_EVENT,
-                (collection, event) -> collection.put(
-                        event.getStreamId(),
-                        Product.builder()
-                                .uuid(event.getStreamId())
-                                .name(event.castPayload(AddProduct.class).getName())
-                                .build()
-                )
-        );
+    public GetProductsQuery(final ProductStore productStore) {
+        this.productStore = productStore;
     }
 
     public List<Product> getProducts() {
-        return this.combiner.getAsList();
+        final Map<String, Product> products = this.productStore.getProducts();
+        return new ArrayList<>(products.values());
     }
 
 }

@@ -4,8 +4,6 @@ import net.lipecki.watson.category.AddCategory;
 import net.lipecki.watson.event.Event;
 import net.lipecki.watson.product.AddProduct;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,7 +12,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+
 public class AddReceiptWithItemsTest extends AddReceiptWithDependenciesBaseTest {
 
     private static final AddReceiptProductDto ANY_PRODUCT = AddReceiptProductDto.builder().uuid(UUID.randomUUID().toString()).build();

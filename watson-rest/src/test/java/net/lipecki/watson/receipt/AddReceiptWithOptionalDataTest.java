@@ -14,7 +14,7 @@ import java.util.Arrays;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+
 public class AddReceiptWithOptionalDataTest extends AddReceiptWithDependenciesBaseTest {
 
     @Test

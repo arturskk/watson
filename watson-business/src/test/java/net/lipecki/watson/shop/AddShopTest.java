@@ -2,25 +2,27 @@ package net.lipecki.watson.shop;
 
 import net.lipecki.watson.event.Event;
 import net.lipecki.watson.event.EventStore;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
 public class AddShopTest {
 
     private static final String SHOP_NAME = "any-shop-name";
-    @Mock
+
     private EventStore eventStore;
-    @InjectMocks
     private AddShopCommand uut;
+
+    @Before
+    public void setUp() {
+        this.eventStore = mock(EventStore.class);
+        this.uut = new AddShopCommand(eventStore);
+    }
 
     @Test
     public void shouldAddShopToEventStore() {

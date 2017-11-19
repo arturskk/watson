@@ -2,23 +2,23 @@ package net.lipecki.watson.shop;
 
 import net.lipecki.watson.event.EventStore;
 import net.lipecki.watson.event.InMemoryEventStore;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Spy;
-import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(MockitoJUnitRunner.class)
 public class GetShopsTest {
 
-    @Spy
-    private EventStore eventStore = new InMemoryEventStore();
-    @InjectMocks
+    private EventStore eventStore;
     private GetShopsQuery uut;
+
+    @Before
+    public void setUp() {
+        this.eventStore = new InMemoryEventStore();
+        this.uut = new GetShopsQuery(eventStore);
+    }
 
     @Test
     public void shouldGetAllShops() {
