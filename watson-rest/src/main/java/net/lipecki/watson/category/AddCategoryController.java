@@ -27,6 +27,7 @@ public class AddCategoryController {
                 AddCategory.builder()
                         .type(dto.getType())
                         .name(dto.getName())
+                        .parentUuid(dto.getParentUuid())
                         .build()
         );
     }
