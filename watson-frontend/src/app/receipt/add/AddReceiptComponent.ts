@@ -60,6 +60,7 @@ import {ReceiptItem} from '../ReceiptItem';
             [displayField]="'name'"
             [filter]="filterByName"
             [placeholder]="'Kategoria'"
+            [disabled]="true"
             [(ngModel)]="item.category">
             <ng-template let-item let-markSearchText="markSearchText" let-newItem="newItem" #listItem>
               <span *ngIf="newItem">Dodaj: </span>
@@ -73,10 +74,16 @@ import {ReceiptItem} from '../ReceiptItem';
             [displayField]="'name'"
             [filter]="filterByName"
             [placeholder]="'Produkt'"
+            (onChange)="onProductSelected(item, $event)"
             [(ngModel)]="item.product">
             <ng-template let-item let-markSearchText="markSearchText" let-newItem="newItem" #listItem>
-              <span *ngIf="newItem">Dodaj: </span>
-              <span [innerHTML]="markSearchText(item.name)"></span>
+              <div>
+                <span *ngIf="newItem">Dodaj: </span>
+                <span [innerHTML]="markSearchText(item.name)"></span>
+              </div>
+              <div *ngIf="item.categoryPath" class="product-category">
+                {{item.categoryPath}}
+              </div>
             </ng-template>
           </select-component>
         </div>
@@ -105,6 +112,12 @@ import {ReceiptItem} from '../ReceiptItem';
       .receipt-item {
         display: flex;
         flex-direction: row;
+      }
+      
+      .product-category {
+        font-style: italic;
+        font-size: 0.9em;
+        color: darkgray;
       }
     `
   ]
@@ -180,6 +193,12 @@ export class AddReceiptComponent implements OnInit {
       date: new Date().toISOString().substr(0, 10),
       items: this.itemsBatch()
     };
+  }
+
+  onProductSelected(item: any, product: any) {
+    console.log(product);
+    item.category = this.categoriesReceiptItems.find(cat => cat.uuid === product.categoryUuid);
+    console.log(item);
   }
 
 }

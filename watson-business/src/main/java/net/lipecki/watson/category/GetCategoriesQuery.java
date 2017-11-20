@@ -21,7 +21,7 @@ public class GetCategoriesQuery {
         final Map<String, Category> categories = this.categoryStore.getCategories();
         return categories.values()
                 .stream()
-                .filter(category -> categoryType.equals(category.getType()))
+                .filter(category -> category.isTypeOf(categoryType) || category.isRootCategory())
                 .collect(Collectors.toList());
     }
 

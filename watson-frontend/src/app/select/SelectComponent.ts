@@ -16,6 +16,7 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
         <span class="current-value" *ngIf="value">{{getValueAsDisplayField()}}</span>
         <input
           #searchBox
+          [disabled]="disabled"
           [class.hidden]="value"
           [placeholder]="getPlaceholder()"
           (focus)="onSearchBoxFocus()"
@@ -30,7 +31,7 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
       </div>
       <div class="dropdown" *ngIf="dropdown">
         <div *ngFor="let item of filtered; let index = index">
-          <div [class.active]="index === currentIndex" (mousedown)="itemClicked(item)">
+          <div [class.active]="index === currentIndex" (mousedown)="itemClicked(item)" class="dropdown-item">
             <ng-template [ngTemplateOutlet]="itemTemplate"
                          [ngTemplateOutletContext]="{$implicit: item, markSearchText: markSearchText.bind(this), newItem: item === newValuePlaceholder}"></ng-template>
           </div>
@@ -49,8 +50,9 @@ export class SelectComponent implements ControlValueAccessor {
   rawData = [];
   currentSearchText = null;
 
-  @Output() changeEventEmitter = new EventEmitter();
-  @Output() touchedEventEmitter = new EventEmitter();
+  @Output() onChange = new EventEmitter();
+  @Output() onTouch = new EventEmitter();
+  @Input() disabled = false;
   @Input() placeholder = '';
   @Input() filter: (item: any, searchText: string) => boolean;
   @Input() displayField: string;
@@ -76,13 +78,13 @@ export class SelectComponent implements ControlValueAccessor {
   }
 
   onSearchBoxBlur() {
-    this.touchedEventEmitter.emit();
+    this.onTouch.emit();
     this.clearUi();
   }
 
   itemClicked(item) {
     this.value = item;
-    this.changeEventEmitter.emit(this.value);
+    this.onChange.emit(this.value);
     this.clearUi();
   }
 
@@ -91,7 +93,7 @@ export class SelectComponent implements ControlValueAccessor {
       this.dropdown = true;
     } else if (this.currentIndex >= 0) {
       this.value = this.filtered[this.currentIndex];
-      this.changeEventEmitter.emit(this.value);
+      this.onChange.emit(this.value);
       this.clearUi();
     } else {
       this.clearUi();
@@ -166,11 +168,11 @@ export class SelectComponent implements ControlValueAccessor {
   }
 
   registerOnChange(fn: any): void {
-    this.changeEventEmitter.subscribe(fn);
+    this.onChange.subscribe(fn);
   }
 
   registerOnTouched(fn: any): void {
-    this.touchedEventEmitter.subscribe(fn);
+    this.onTouch.subscribe(fn);
   }
 
   private clearUi() {

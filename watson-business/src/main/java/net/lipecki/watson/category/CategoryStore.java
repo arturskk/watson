@@ -48,8 +48,8 @@ public class CategoryStore {
                 Category.builder()
                         .type(Category.ROOT_TYPE)
                         .uuid(Category.ROOT_UUID)
-                        .name(Category.ROOT_NAME_KEY)
-                        .categoryPath(Category.ROOT_NAME_KEY)
+                        .name(Category.ROOT_NAME)
+                        .categoryPath(Category.ROOT_NAME)
                         .parent(null)
                         .build()
         );

@@ -10,6 +10,14 @@ select-component {
     background-color: aliceblue;
   }
 
+  .dropdown-item {
+    cursor: pointer;
+  }
+
+  .dropdown-item:hover {
+    background-color: lavender;
+  }
+
   .active {
     background-color: deepskyblue;
   }

@@ -19,7 +19,7 @@ public class Category {
 
     public static final String CATEGORY_STREAM = "_category";
     public static final String ROOT_UUID = "root";
-    public static final String ROOT_NAME_KEY = ":root";
+    public static final String ROOT_NAME = "Wszystkie";
     public static final String ROOT_TYPE = "root";
     public static final String PATH_SEPARATOR = " > ";
 
@@ -38,6 +38,14 @@ public class Category {
 
     public Optional<Category> getParent() {
         return Optional.ofNullable(parent);
+    }
+
+    public boolean isRootCategory() {
+        return ROOT_TYPE.equals(this.type);
+    }
+
+    public boolean isTypeOf(final String categoryType) {
+        return categoryType.equals(this.type);
     }
 
 }

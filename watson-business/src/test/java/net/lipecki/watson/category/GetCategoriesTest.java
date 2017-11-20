@@ -65,7 +65,7 @@ public class GetCategoriesTest {
 
         // then
         assertThat(categories).extracting("categoryPath").contains(
-                String.format("%s%s%s", Category.ROOT_NAME_KEY, Category.PATH_SEPARATOR, expectedCategoryName)
+                String.format("%s%s%s", Category.ROOT_NAME, Category.PATH_SEPARATOR, expectedCategoryName)
         );
     }
 
