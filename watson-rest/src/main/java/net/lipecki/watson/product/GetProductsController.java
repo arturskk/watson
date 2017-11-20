@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -20,8 +21,23 @@ public class GetProductsController {
     }
 
     @GetMapping("/product")
-    public List<Product> getAllProducts() {
-        return this.query.getProducts();
+    public List<ListProductDto> getAllProducts() {
+        return this.query
+                .getProducts()
+                .stream()
+                .map(GetProductsController::asListProductDto)
+                .collect(Collectors.toList());
+    }
+
+    private static ListProductDto asListProductDto(final Product product) {
+        return ListProductDto
+                .builder()
+                .uuid(product.getUuid())
+                .name(product.getName())
+                .categoryUuid(product.getCategory().getUuid())
+                .categoryName(product.getCategory().getName())
+                .categoryPath(product.getCategory().getCategoryPath())
+                .build();
     }
 
 }

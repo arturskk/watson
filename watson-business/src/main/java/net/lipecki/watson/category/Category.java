@@ -19,7 +19,7 @@ public class Category {
 
     public static final String CATEGORY_STREAM = "_category";
     public static final String ROOT_UUID = "root";
-    public static final String ROOT_NAME_KEY = ":root-category";
+    public static final String ROOT_NAME_KEY = ":root";
     public static final String ROOT_TYPE = "root";
     public static final String PATH_SEPARATOR = " > ";
 
