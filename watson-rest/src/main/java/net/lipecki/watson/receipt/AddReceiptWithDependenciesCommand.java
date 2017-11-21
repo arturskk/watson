@@ -60,7 +60,6 @@ public class AddReceiptWithDependenciesCommand {
                 .cost(dto.getCost())
                 .tags(dto.getTags())
                 .productUuid(getProductUuid(dto.getProduct()))
-                .categoryUuid(getCategoryUuid(ReceiptItem.CATEGORY_TYPE, dto.getCategory()))
                 .amount(
                         AddReceiptItemAmount.builder()
                                 .count(dto.getAmount().getCount())

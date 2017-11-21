@@ -12,7 +12,6 @@ import java.util.List;
 public class AddReceiptItemDto {
 
     @NotNull private String cost;
-    @NotNull private AddReceiptCategoryDto category;
     @NotNull private AddReceiptProductDto product;
     @NotNull private AddReceiptAmountDto amount;
     private List<String> tags;

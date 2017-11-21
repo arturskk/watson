@@ -53,28 +53,12 @@ import {ReceiptItem} from '../ReceiptItem';
     <h2>Produkty</h2>
     <div class="receipt-items">
       <div class="receipt-item" *ngFor="let item of receipt.items">
-        <!--<div><input placeholder="Opis" [(ngModel)]="item.description"/></div>-->
-        <div>
-          <select-component
-            [data]="categoriesReceiptItems"
-            [displayField]="'name'"
-            [filter]="filterByName"
-            [placeholder]="'Kategoria'"
-            [disabled]="true"
-            [(ngModel)]="item.category">
-            <ng-template let-item let-markSearchText="markSearchText" let-newItem="newItem" #listItem>
-              <span *ngIf="newItem">Dodaj: </span>
-              <span [innerHTML]="markSearchText(item.name)"></span>
-            </ng-template>
-          </select-component>
-        </div>
         <div>
           <select-component
             [data]="products"
             [displayField]="'name'"
             [filter]="filterByName"
             [placeholder]="'Produkt'"
-            (onChange)="onProductSelected(item, $event)"
             [(ngModel)]="item.product">
             <ng-template let-item let-markSearchText="markSearchText" let-newItem="newItem" #listItem>
               <div>
@@ -127,7 +111,6 @@ export class AddReceiptComponent implements OnInit {
   receipt: Receipt = this.newReceipt();
 
   categoriesReceipt;
-  categoriesReceiptItems;
   shops;
   products;
   accounts;
@@ -147,9 +130,6 @@ export class AddReceiptComponent implements OnInit {
       .get('/api/v1/shop')
       .subscribe(data => this.shops = data);
     this.httpClient
-      .get('/api/v1/category/_category_receipt_item')
-      .subscribe((data: any[]) => this.categoriesReceiptItems = data.map(category => ({name: category.name, uuid: category.uuid})));
-    this.httpClient
       .get('/api/v1/category/_category_receipt')
       .subscribe((data: any[]) => this.categoriesReceipt = data.map(category => ({name: category.name, uuid: category.uuid})));
   }
@@ -166,7 +146,7 @@ export class AddReceiptComponent implements OnInit {
 
   save() {
     this.receipt.items = this.receipt.items.filter(
-      item => !!item['category'] || !!item['product']
+      item => !!item['product']
     );
     this.httpClient
       .post('/api/v1/receipt', this.receipt)
@@ -193,12 +173,6 @@ export class AddReceiptComponent implements OnInit {
       date: new Date().toISOString().substr(0, 10),
       items: this.itemsBatch()
     };
-  }
-
-  onProductSelected(item: any, product: any) {
-    console.log(product);
-    item.category = this.categoriesReceiptItems.find(cat => cat.uuid === product.categoryUuid);
-    console.log(item);
   }
 
 }

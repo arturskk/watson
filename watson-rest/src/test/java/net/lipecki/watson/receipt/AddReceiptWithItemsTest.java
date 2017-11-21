@@ -1,6 +1,5 @@
 package net.lipecki.watson.receipt;
 
-import net.lipecki.watson.category.AddCategory;
 import net.lipecki.watson.event.Event;
 import net.lipecki.watson.product.AddProduct;
 import org.junit.Test;
@@ -24,19 +23,13 @@ public class AddReceiptWithItemsTest extends AddReceiptWithDependenciesBaseTest 
         // given
         final String expectedTag = "any-tag";
         final String expectedCost = "any-cost";
-        final String expectedCategoryUuid = "expectedCategoryUuid";
         final String expectedProductUuid = "expectedProductUuid";
 
         // when
         addReceipt(dto -> dto.items(
                 Arrays.asList(
                         AddReceiptItemDto.builder()
-                                .product(
-                                        AddReceiptProductDto.builder().uuid(expectedProductUuid).build()
-                                )
-                                .category(
-                                        AddReceiptCategoryDto.builder().uuid(expectedCategoryUuid).build()
-                                )
+                                .product(AddReceiptProductDto.builder().uuid(expectedProductUuid).build())
                                 .amount(ANY_AMOUNT)
                                 .cost(expectedCost)
                                 .tags(Arrays.asList(expectedTag))
@@ -49,45 +42,7 @@ public class AddReceiptWithItemsTest extends AddReceiptWithDependenciesBaseTest 
         final List<AddReceiptItem> receiptItems = receipt().getItems();
         assertThat(receiptItems).extracting(AddReceiptItem::getCost).containsExactly(expectedCost);
         assertThat(receiptItems).flatExtracting(AddReceiptItem::getTags).containsExactly(expectedTag);
-        assertThat(receiptItems).extracting(AddReceiptItem::getCategoryUuid).containsExactly(expectedCategoryUuid);
         assertThat(receiptItems).extracting(AddReceiptItem::getProductUuid).containsExactly(expectedProductUuid);
-    }
-
-    @Test
-    public void shouldAddCategoryOnTheFlyIfNeeded() {
-        final String expectedCategoryName = "expectedCategoryName";
-        final String expectedCategoryUuid = "expectedCategoryUuid";
-
-        // given
-        when(
-                addCategoryCommand.addCategory(
-                        AddCategory.builder()
-                                .type(ReceiptItem.CATEGORY_TYPE)
-                                .name(expectedCategoryName)
-                                .build()
-                )
-        ).thenReturn(
-                Event.<AddCategory>builder().streamId(expectedCategoryUuid).build()
-        );
-
-        // when
-        addReceipt(dto -> dto.items(
-                Arrays.asList(
-                        AddReceiptItemDto.builder()
-                                .product(ANY_PRODUCT)
-                                .category(
-                                        AddReceiptCategoryDto.builder()
-                                                .name(expectedCategoryName)
-                                                .build()
-                                )
-                                .amount(ANY_AMOUNT)
-                                .build()
-                )
-        ));
-
-        // then
-        final List<AddReceiptItem> receiptItems = receipt().getItems();
-        assertThat(receiptItems).extracting(AddReceiptItem::getCategoryUuid).containsExactly(expectedCategoryUuid);
     }
 
     @Test
@@ -116,7 +71,6 @@ public class AddReceiptWithItemsTest extends AddReceiptWithDependenciesBaseTest 
                                                 .build()
                                 )
                                 .amount(ANY_AMOUNT)
-                                .category(ANY_CATEGORY)
                                 .build()
                 )
         ));

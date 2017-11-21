@@ -18,12 +18,16 @@ public class ReceiptItem implements ExpanseItem {
     public static final String CATEGORY_TYPE = "_category_receipt_item";
 
     private ExpanseCost cost;
-    private Category category;
     private List<String> tags;
     private Product product;
 
     public String getDescription() {
         return toString();
+    }
+
+    @Override
+    public Category getCategory() {
+        return product.getCategory();
     }
 
 }
