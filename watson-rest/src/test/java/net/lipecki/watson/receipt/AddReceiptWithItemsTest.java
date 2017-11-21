@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -14,8 +13,6 @@ import static org.mockito.Mockito.when;
 
 public class AddReceiptWithItemsTest extends AddReceiptWithDependenciesBaseTest {
 
-    private static final AddReceiptProductDto ANY_PRODUCT = AddReceiptProductDto.builder().uuid(UUID.randomUUID().toString()).build();
-    private static final AddReceiptCategoryDto ANY_CATEGORY = AddReceiptCategoryDto.builder().uuid(UUID.randomUUID().toString()).build();
     private static final AddReceiptAmountDto ANY_AMOUNT = AddReceiptAmountDto.builder().build();
 
     @Test

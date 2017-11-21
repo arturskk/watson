@@ -13,6 +13,9 @@ import net.lipecki.watson.shop.AddShop;
 import net.lipecki.watson.shop.AddShopCommand;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -50,23 +53,56 @@ public class AddReceiptWithDependenciesCommand {
                                 .categoryUuid(getCategoryUuid(Receipt.CATEGORY_TYPE, dto.getCategory()))
                                 .accountUuid(getAccountUuid(dto.getAccount()))
                                 .shopUuid(getShopUuid(dto.getShop()))
-                                .items(dto.getItems().stream().map(this::asReceiptItem).collect(Collectors.toList()))
+                                .items(asReceiptItems(dto))
                                 .build()
                 );
     }
 
-    private AddReceiptItem asReceiptItem(final AddReceiptItemDto dto) {
-        return AddReceiptItem.builder()
-                .cost(dto.getCost())
-                .tags(dto.getTags())
-                .productUuid(getProductUuid(dto.getProduct()))
-                .amount(
-                        AddReceiptItemAmount.builder()
-                                .count(dto.getAmount().getCount())
-                                .unit(dto.getAmount().getUnit())
+    private List<AddReceiptItem> asReceiptItems(final AddReceiptDto dto) {
+        final Map<String, String> addedProducts = new HashMap<>();
+        return dto.getItems()
+                .stream()
+                .map(
+                        itemDto -> AddReceiptItem.builder()
+                                .cost(itemDto.getCost())
+                                .tags(itemDto.getTags())
+                                .productUuid(getCreatedOrCreateProductUuid(addedProducts, itemDto))
+                                .amount(
+                                        AddReceiptItemAmount.builder()
+                                                .count(itemDto.getAmount().getCount())
+                                                .unit(itemDto.getAmount().getUnit())
+                                                .build()
+                                )
                                 .build()
                 )
-                .build();
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Gets product uuid.
+     * <p>
+     * Users one of:
+     * - provided product uuid
+     * - newly created product uuid
+     * - product uuid used to create product within same receipt
+     * </p>
+     *
+     * @param addedProducts
+     * @param itemDto
+     * @return
+     */
+    private String getCreatedOrCreateProductUuid(final Map<String, String> addedProducts, final AddReceiptItemDto itemDto) {
+        return itemDto
+                .getProduct()
+                .getUuid()
+                .orElseGet(
+                        () -> addedProducts.computeIfAbsent(
+                                itemDto.getProduct().getName().orElseThrow(
+                                        () -> WatsonException.of("Can't create receipt item product when name is missing")
+                                ),
+                                key -> getProductUuid(itemDto.getProduct())
+                        )
+                );
     }
 
     private String getCategoryUuid(final String categoryType, final AddReceiptCategoryDto dto) {

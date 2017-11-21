@@ -6,8 +6,6 @@ import net.lipecki.watson.category.AddCategory;
 import net.lipecki.watson.shop.AddShop;
 import net.lipecki.watson.event.Event;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Arrays;
 

@@ -59,11 +59,15 @@ import {ReceiptItem} from '../ReceiptItem';
             [displayField]="'name'"
             [filter]="filterByName"
             [placeholder]="'Produkt'"
+            (onChange)="onProductSelected($event)"
             [(ngModel)]="item.product">
             <ng-template let-item let-markSearchText="markSearchText" let-newItem="newItem" #listItem>
               <div>
                 <span *ngIf="newItem">Dodaj: </span>
                 <span [innerHTML]="markSearchText(item.name)"></span>
+              </div>
+              <div *ngIf="item.dynamic" class="product-category-dynamic">
+                Nowo utworzony produkt
               </div>
               <div *ngIf="item.categoryPath" class="product-category">
                 {{item.categoryPath}}
@@ -98,10 +102,13 @@ import {ReceiptItem} from '../ReceiptItem';
         flex-direction: row;
       }
       
-      .product-category {
+      .product-category, .product-category-dynamic {
         font-style: italic;
         font-size: 0.9em;
         color: darkgray;
+      }
+      .product-category-dynamic {
+        color: darkred;
       }
     `
   ]
@@ -160,6 +167,16 @@ export class AddReceiptComponent implements OnInit {
           alert(err.error.message);
         }
       );
+  }
+
+  onProductSelected(product) {
+    if (!product.uuid && !product.dynamic) {
+      console.log(`Adding newly created product as available product [name=${product}]`);
+      this.products.push({
+        name: product.name,
+        dynamic: true
+      });
+    }
   }
 
   private itemsBatch(): ReceiptItem[] {
