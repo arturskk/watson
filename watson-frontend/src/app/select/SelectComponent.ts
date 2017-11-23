@@ -1,4 +1,14 @@
-import {Component, ContentChild, ElementRef, EventEmitter, forwardRef, Input, Output, TemplateRef, ViewChild} from '@angular/core';
+import {
+  Component,
+  ContentChild,
+  ElementRef,
+  EventEmitter,
+  forwardRef,
+  Input,
+  Output,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 @Component({
@@ -52,6 +62,7 @@ export class SelectComponent implements ControlValueAccessor {
 
   @Output() onChange = new EventEmitter();
   @Output() onTouch = new EventEmitter();
+  @Input() allowNewValues = true;
   @Input() disabled = false;
   @Input() placeholder = '';
   @Input() filter: (item: any, searchText: string) => boolean;
@@ -136,11 +147,13 @@ export class SelectComponent implements ControlValueAccessor {
     }
     this.currentSearchText = this.searchBox.nativeElement.value;
     this.filtered = [];
-    if (this.currentSearchText) {
-      this.filtered.push(this.newValuePlaceholder);
-      this.newValuePlaceholder[this.displayField] = this.currentSearchText;
-    } else {
-      this.newValuePlaceholder[this.displayField] = null;
+    if (this.allowNewValues) {
+      if (this.currentSearchText) {
+        this.filtered.push(this.newValuePlaceholder);
+        this.newValuePlaceholder[this.displayField] = this.currentSearchText;
+      } else {
+        this.newValuePlaceholder[this.displayField] = null;
+      }
     }
     this.filtered.push(...this.rawData.filter(item => this.filter(item, this.currentSearchText)));
   }
