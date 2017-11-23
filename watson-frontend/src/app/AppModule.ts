@@ -1,6 +1,8 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {AppRoutingModule} from './AppRoutingModule';
+import {CategoryListComponent} from "./category/list/CategoryListComponent";
+import {ProductListComponent} from "./product/list/ProductListComponent";
 import {ReceiptService} from './receipt/ReceiptService';
 import {HttpClientModule} from '@angular/common/http';
 import {SelectComponent} from './select/SelectComponent';
@@ -12,6 +14,8 @@ import {WatsonAppComponent} from './WatsonAppComponent';
   declarations: [
     SelectComponent,
     AddReceiptComponent,
+    CategoryListComponent,
+    ProductListComponent,
     WatsonAppComponent
   ],
   imports: [

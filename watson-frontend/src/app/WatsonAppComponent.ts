@@ -4,10 +4,13 @@ import {Component} from '@angular/core';
   selector: 'watson-app',
   template: `
     <nav>
-      <div>Dashboard</div>
-      <div>Budżet</div>
-      <div>Zakupy</div>
-      <div>Dieta</div>
+      <div><a routerLink="/receipt/add">Dodaj rachunek</a></div>
+      <div>&nbsp;|&nbsp;</div>
+      <div><a routerLink="/product/list">Produkty</a></div>
+      <div>&nbsp;|&nbsp;</div>
+      <div><a routerLink="/category/list">Kategorie rachunków</a></div>
+      <div>&nbsp;|&nbsp;</div>
+      <div><a routerLink="/category/list">Kategorie produktów</a></div>
     </nav>
     <main>
       <router-outlet></router-outlet>
