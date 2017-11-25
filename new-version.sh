@@ -14,13 +14,14 @@ mvnw versions:commit
 
 mvnw clean install
 
-git add .   
+git add .
 git commit -m "Release: $RV"
 git tag "v$RV"
 
 mvnw versions:set -DnewVersion="$SV"
 mvnw versions:commit
 
+git add .
 git commit -m "Snapshot: $SV"
 
 git push
