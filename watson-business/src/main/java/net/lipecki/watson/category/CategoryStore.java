@@ -29,10 +29,24 @@ public class CategoryStore {
                             .type(addCategory.getType())
                             .uuid(event.getStreamId())
                             .parent(parent)
-                            .categoryPath(Category.combineCategoryPath(addCategory.getName(), parent))
                             .build();
                     parent.addChild(category);
                     collection.put(category.getUuid(), category);
+                }
+        );
+        this.combiner.registerHandler(
+                ModifyCategoryCommand.MODIFY_CATEGORY_EVENT,
+                (collection, event) -> {
+                    final ModifyCategory modifyCategory = event.castPayload(ModifyCategory.class);
+
+                    final Category category = collection.get(modifyCategory.getUuid());
+                    modifyCategory
+                            .getNameOptional()
+                            .ifPresent(category::setName);
+                    modifyCategory
+                            .getParentUuidOptional()
+                            .map(collection::get)
+                            .ifPresent(category::setParent);
                 }
         );
     }
@@ -49,7 +63,6 @@ public class CategoryStore {
                         .type(Category.ROOT_TYPE)
                         .uuid(Category.ROOT_UUID)
                         .name(Category.ROOT_NAME)
-                        .categoryPath(Category.ROOT_NAME)
                         .parent(null)
                         .build()
         );

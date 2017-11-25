@@ -6,7 +6,7 @@ import {AddReceiptComponent} from './receipt/add/AddReceiptComponent';
 
 const routes: Routes = [
   {path: 'receipt/add', component: AddReceiptComponent},
-  {path: 'category/list', component: CategoryListComponent},
+  {path: 'category/:type/list', component: CategoryListComponent},
   {path: 'product/list', component: ProductListComponent},
   {path: '', redirectTo: '/receipt/add', pathMatch: 'full'}
 ];

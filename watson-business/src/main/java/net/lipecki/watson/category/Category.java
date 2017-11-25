@@ -13,20 +13,15 @@ import java.util.Set;
 @Builder
 public class Category {
 
-    public static String combineCategoryPath(final String categoryName, final Category parent) {
-        return parent.getCategoryPath() + Category.PATH_SEPARATOR + categoryName;
-    }
-
     public static final String CATEGORY_STREAM = "_category";
     public static final String ROOT_UUID = "root";
-    public static final String ROOT_NAME = "Wszystkie";
+    public static final String ROOT_NAME = "Root";
     public static final String ROOT_TYPE = "root";
     public static final String PATH_SEPARATOR = " > ";
 
     private String uuid;
     private String type;
     private String name;
-    private String categoryPath;
     private Category parent;
     @SuppressWarnings("UnusedAssignment")
     @Builder.Default
@@ -46,6 +41,14 @@ public class Category {
 
     public boolean isTypeOf(final String categoryType) {
         return categoryType.equals(this.type);
+    }
+
+    public String getCategoryPath() {
+        if (parent == null) {
+            return name;
+        } else {
+            return parent.getCategoryPath() + PATH_SEPARATOR + name;
+        }
     }
 
 }

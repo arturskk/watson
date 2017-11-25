@@ -11,11 +11,15 @@ import {AddReceiptComponent} from './receipt/add/AddReceiptComponent';
 import {WatsonAppComponent} from './WatsonAppComponent';
 import {EditProductComponent} from './product/list/EditProductComponent';
 import {ProductListItemComponent} from './product/list/ProductListItemComponent';
+import {CategoryListItemComponent} from './category/list/CategoryListItemComponent';
+import {EditCategoryComponent} from './category/list/EditCategoryComponent';
 
 @NgModule({
   declarations: [
     SelectComponent,
     AddReceiptComponent,
+    CategoryListItemComponent,
+    EditCategoryComponent,
     CategoryListComponent,
     ProductListComponent,
     EditProductComponent,

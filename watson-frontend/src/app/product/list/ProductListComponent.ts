@@ -10,7 +10,7 @@ import {ModifyEvent} from '../ModifyEvent';
   template: `
     <h1>Produkty</h1>
     <h2>Dodaj produkt</h2>
-    <div *ngIf="categories" class="add-new-category">
+    <div *ngIf="categories">
       <edit-product-component
         [cancelable]="false"
         [resettable]="true"
