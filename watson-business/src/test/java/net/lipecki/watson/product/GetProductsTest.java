@@ -1,32 +1,20 @@
 package net.lipecki.watson.product;
 
-import net.lipecki.watson.category.GetCategoryQuery;
-import net.lipecki.watson.event.EventStore;
-import net.lipecki.watson.event.InMemoryEventStore;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 
 
-public class GetProductsTest {
+public class GetProductsTest extends ProductStoreBaseTest {
 
-    private EventStore eventStore;
     private GetProductsQuery uut;
-    private AddProductEventHandler addProductEventHandler;
-    private GetCategoryQuery categoryQuery;
-    private ModifyProductEventHandler modifyProductEventHandler;
 
     @Before
     public void setUp() {
-        categoryQuery = mock(GetCategoryQuery.class);
-        addProductEventHandler = new AddProductEventHandler(categoryQuery);
-        modifyProductEventHandler = new ModifyProductEventHandler(categoryQuery);
-        eventStore = new InMemoryEventStore();
-        uut = new GetProductsQuery(new ProductStore(eventStore, addProductEventHandler, modifyProductEventHandler));
+        uut = new GetProductsQuery(productStore);
     }
 
     @Test
