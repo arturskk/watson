@@ -9,7 +9,7 @@ import {ModifyEvent} from '../ModifyEvent';
     <div *ngIf="state == ItemState.SUMMARY">
       {{product.name}} ({{product.category.path}})
       <a (click)="editClicked()">(edytuj)</a>
-      <a (click)="deleteClicked()">(usuń)</a>
+      <!--<a (click)="deleteClicked()">(usuń)</a>-->
     </div>
     <div *ngIf="state == ItemState.EDIT">
       <edit-product-component
