@@ -6,7 +6,7 @@ import {ProductSummary} from '../ProductSummary';
 @Component({
   selector: 'edit-product-component',
   template: `
-    <input [(ngModel)]="value.name" placeholder="Nazwa" />
+    <input [(ngModel)]="value.name" placeholder="Nazwa"/>
     <select-component
       [(ngModel)]="value.category"
       [data]="categories"
@@ -22,7 +22,7 @@ import {ProductSummary} from '../ProductSummary';
     <a (click)="saveClicked()">(zapisz)</a>
   `,
   styles: [
-    `
+      `
       :host {
         display: flex;
       }

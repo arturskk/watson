@@ -49,9 +49,14 @@ export class ProductListComponent implements OnInit {
   }
 
   onAddItem(product: ProductSummary) {
-    console.log({
-      product
-    });
+    this.httpClient
+      .post(`/api/v1/product`, {
+        name: product.name,
+        categoryUuid: product.category ? product.category.uuid : undefined
+      })
+      .subscribe(() => {
+        window.location.reload();
+      });
   }
 
   onItemChange(change: ModifyEvent<ProductSummary>) {
@@ -62,13 +67,7 @@ export class ProductListComponent implements OnInit {
     this.httpClient
       .put(`/api/v1/product/${change.oldValue.uuid}`, diff)
       .subscribe(() => {
-        if (diff.name) {
-          change.oldValue.name = change.newValue.name;
-        }
-        if (diff.categoryUuid) {
-          change.oldValue.category = change.newValue.category;
-        }
-        alert('Zmodyfikowano!');
+        window.location.reload();
       });
   }
 
