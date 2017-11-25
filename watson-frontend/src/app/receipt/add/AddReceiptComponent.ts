@@ -18,7 +18,7 @@ import {ReceiptItem} from '../ReceiptItem';
           [(ngModel)]="receipt.account">
           <ng-template let-item let-markSearchText="markSearchText" let-newItem="newItem" #listItem>
             <span *ngIf="newItem">Dodaj: </span>
-            <span [innerHTML]="markSearchText(item.name)"></span>
+            <span [innerHTML]="markSearchText.call(undefined, item.name)"></span>
           </ng-template>
         </select-component>
       </div>
@@ -31,7 +31,7 @@ import {ReceiptItem} from '../ReceiptItem';
           [(ngModel)]="receipt.shop">
           <ng-template let-item let-markSearchText="markSearchText" let-newItem="newItem" #listItem>
             <span *ngIf="newItem">Dodaj: </span>
-            <span [innerHTML]="markSearchText(item.name)"></span>
+            <span [innerHTML]="markSearchText.call(undefined, item.name)"></span>
           </ng-template>
         </select-component>
       </div>
@@ -44,7 +44,7 @@ import {ReceiptItem} from '../ReceiptItem';
           [(ngModel)]="receipt.category">
           <ng-template let-item let-markSearchText="markSearchText" let-newItem="newItem" #listItem>
             <span *ngIf="newItem">Dodaj: </span>
-            <span [innerHTML]="markSearchText(item.name)"></span>
+            <span [innerHTML]="markSearchText.call(undefined, item.name)"></span>
           </ng-template>
         </select-component>
       </div>
@@ -60,11 +60,11 @@ import {ReceiptItem} from '../ReceiptItem';
             [filter]="filterByName"
             [placeholder]="'Produkt'"
             (onChange)="onProductSelected($event)"
-            [(ngModel)]="item.product">
+            [(ngModel)]="item.productListDto">
             <ng-template let-item let-markSearchText="markSearchText" let-newItem="newItem" #listItem>
               <div>
                 <span *ngIf="newItem">Dodaj: </span>
-                <span [innerHTML]="markSearchText(item.name)"></span>
+                <span [innerHTML]="markSearchText.call(undefined, item.name)"></span>
               </div>
               <div *ngIf="item.dynamic" class="product-category-dynamic">
                 Nowo utworzony produkt
@@ -75,7 +75,6 @@ import {ReceiptItem} from '../ReceiptItem';
             </ng-template>
           </select-component>
         </div>
-        <!--<div><input placeholder="Tagi" [(ngModel)]="item.tags"/></div>-->
         <div><input placeholder="Ilość" [(ngModel)]="item.amount.count"/></div>
         <div>
           <select [(ngModel)]="item.amount.unit">
@@ -153,7 +152,7 @@ export class AddReceiptComponent implements OnInit {
 
   save() {
     this.receipt.items = this.receipt.items.filter(
-      item => !!item['product']
+      item => !!item['productListDto']
     );
     this.httpClient
       .post('/api/v1/receipt', this.receipt)

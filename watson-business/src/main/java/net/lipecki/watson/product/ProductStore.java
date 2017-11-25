@@ -13,9 +13,13 @@ public class ProductStore {
 
     private final AggregateStreamCombiner<Product> combiner;
 
-    public ProductStore(final EventStore eventStore, final AddProductEventHandler addProductEventHandler) {
+    public ProductStore(
+            final EventStore eventStore,
+            final AddProductEventHandler addProductEventHandler,
+            final ModifyProductEventHandler modifyProductEventHandler) {
         this.combiner = new AggregateStreamCombiner<>(eventStore, Product.PRODUCT_STREAM);
         this.combiner.registerHandler(AddProductCommand.ADD_PRODUCT_EVENT, addProductEventHandler);
+        this.combiner.registerHandler(ModifyProductCommand.MODIFY_PRODUCT_EVENT, modifyProductEventHandler);
     }
 
     public Map<String, Product> getProducts() {

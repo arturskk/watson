@@ -18,13 +18,15 @@ public class GetProductsTest {
     private GetProductsQuery uut;
     private AddProductEventHandler addProductEventHandler;
     private GetCategoryQuery categoryQuery;
+    private ModifyProductEventHandler modifyProductEventHandler;
 
     @Before
     public void setUp() {
         categoryQuery = mock(GetCategoryQuery.class);
         addProductEventHandler = new AddProductEventHandler(categoryQuery);
+        modifyProductEventHandler = new ModifyProductEventHandler(categoryQuery);
         eventStore = new InMemoryEventStore();
-        uut = new GetProductsQuery(new ProductStore(eventStore, addProductEventHandler));
+        uut = new GetProductsQuery(new ProductStore(eventStore, addProductEventHandler, modifyProductEventHandler));
     }
 
     @Test

@@ -21,22 +21,28 @@ public class GetProductsController {
     }
 
     @GetMapping("/product")
-    public List<ListProductDto> getAllProducts() {
+    public List<ProductSummaryDto> getAllProducts() {
         return this.query
                 .getProducts()
                 .stream()
-                .map(GetProductsController::asListProductDto)
+                .map(GetProductsController::asProductSummaryDto)
                 .collect(Collectors.toList());
     }
 
-    private static ListProductDto asListProductDto(final Product product) {
-        return ListProductDto
+    private static ProductSummaryDto asProductSummaryDto(final Product product) {
+        return ProductSummaryDto
                 .builder()
                 .uuid(product.getUuid())
                 .name(product.getName())
-                .categoryUuid(product.getCategory().getUuid())
-                .categoryName(product.getCategory().getName())
-                .categoryPath(product.getCategory().getCategoryPath())
+                .category(
+                        ProductSummaryDto
+                                .ProductSummaryCategory
+                                .builder()
+                                .uuid(product.getCategory().getUuid())
+                                .name(product.getCategory().getName())
+                                .path(product.getCategory().getCategoryPath())
+                                .build()
+                )
                 .build();
     }
 
