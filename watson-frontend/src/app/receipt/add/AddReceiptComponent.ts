@@ -1,5 +1,6 @@
-import {Component, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {Component, OnInit} from '@angular/core';
+import {ArrayUtil} from '../../util/ArrayUtil';
 import {ReceiptItem} from '../ReceiptItem';
 
 @Component({
@@ -60,7 +61,7 @@ import {ReceiptItem} from '../ReceiptItem';
             [filter]="filterByName"
             [placeholder]="'Produkt'"
             (onChange)="onProductSelected($event)"
-            [(ngModel)]="item.productListDto">
+            [(ngModel)]="item.product">
             <ng-template let-item let-markSearchText="markSearchText" let-newItem="newItem" #listItem>
               <div>
                 <span *ngIf="newItem">Dodaj: </span>
@@ -100,12 +101,13 @@ import {ReceiptItem} from '../ReceiptItem';
         display: flex;
         flex-direction: row;
       }
-      
+
       .product-category, .product-category-dynamic {
         font-style: italic;
         font-size: 0.9em;
         color: darkgray;
       }
+
       .product-category-dynamic {
         color: darkred;
       }
@@ -137,7 +139,10 @@ export class AddReceiptComponent implements OnInit {
       .subscribe(data => this.shops = data);
     this.httpClient
       .get('/api/v1/category/_category_receipt')
-      .subscribe((data: any[]) => this.categoriesReceipt = data.map(category => ({name: category.name, uuid: category.uuid})));
+      .subscribe((data: any[]) => this.categoriesReceipt = data.map(category => ({
+        name: category.name,
+        uuid: category.uuid
+      })));
   }
 
   addItem() {
@@ -152,7 +157,7 @@ export class AddReceiptComponent implements OnInit {
 
   save() {
     this.receipt.items = this.receipt.items.filter(
-      item => !!item['productListDto']
+      item => !!item['product']
     );
     this.httpClient
       .post('/api/v1/receipt', this.receipt)
@@ -170,7 +175,7 @@ export class AddReceiptComponent implements OnInit {
 
   onProductSelected(product) {
     if (!product.uuid && !product.dynamic) {
-      console.log(`Adding newly created product as available product [name=${product}]`);
+      console.log('Adding newly created product as available product [product=%o]', product);
       this.products.push({
         name: product.name,
         dynamic: true
@@ -178,10 +183,9 @@ export class AddReceiptComponent implements OnInit {
     }
   }
 
-  private itemsBatch(): ReceiptItem[] {
-    return [
-      {amount: {unit: 'kg'}}
-    ];
+  private itemsBatch(): Partial<ReceiptItem>[] {
+    const itemPrototype: Partial<ReceiptItem> = {amount: {unit: 'kg'}};
+    return ArrayUtil.fillWithCopies(5, itemPrototype);
   }
 
   private newReceipt(): Receipt {

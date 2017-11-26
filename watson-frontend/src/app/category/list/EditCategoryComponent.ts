@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {ObjectUtil} from '../../util/ObjetUtil';
+import {ObjectUtil} from '../../util/ObjectUtil';
 import {CategorySummary} from '../../category/CategorySummary';
 
 @Component({

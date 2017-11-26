@@ -1,5 +1,5 @@
 import {DiffUtil} from './DiffUtil';
-import {ObjectUtil} from './ObjetUtil';
+import {ObjectUtil} from './ObjectUtil';
 
 describe('DiffUtil', () => {
 
