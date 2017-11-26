@@ -1,11 +1,10 @@
 package net.lipecki.watson.account;
 
+import net.lipecki.watson.combiner.TestAggregateCombinerWithCacheFactory;
 import net.lipecki.watson.event.EventStore;
 import net.lipecki.watson.event.InMemoryEventStore;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class GetAccountsTest {
     @Before
     public void setUp() {
         this.eventStore = new InMemoryEventStore();
-        this.uut = new GetAccountsQuery(eventStore);
+        this.uut = new GetAccountsQuery(new AccountStore(TestAggregateCombinerWithCacheFactory.of(eventStore)));
     }
 
     @Test

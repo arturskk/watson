@@ -4,20 +4,20 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
-public class GetAccountsQuery {
+public class GetAccountQuery {
 
     private final AccountStore accountStore;
 
-    public GetAccountsQuery(final AccountStore accountStore) {
+    public GetAccountQuery(final AccountStore accountStore) {
         this.accountStore = accountStore;
     }
 
-    public List<Account> getAccounts() {
-        return this.accountStore.getAccounts();
+    public Optional<Account> getAccount(final String uuid) {
+        return this.accountStore.getAccount(uuid);
     }
 
 }

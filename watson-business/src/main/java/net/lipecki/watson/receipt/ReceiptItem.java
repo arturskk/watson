@@ -20,6 +20,7 @@ public class ReceiptItem implements ExpanseItem {
     private ExpanseCost cost;
     private List<String> tags;
     private Product product;
+    private ReceiptItemAmount amount;
 
     public String getDescription() {
         return toString();

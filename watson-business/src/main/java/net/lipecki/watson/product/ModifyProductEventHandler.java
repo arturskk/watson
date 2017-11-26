@@ -2,15 +2,15 @@ package net.lipecki.watson.product;
 
 import lombok.extern.slf4j.Slf4j;
 import net.lipecki.watson.category.GetCategoryQuery;
+import net.lipecki.watson.combiner.AggregateCombinerHandler;
 import net.lipecki.watson.event.Event;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
-import java.util.function.BiConsumer;
 
 @Slf4j
 @Service
-public class ModifyProductEventHandler implements BiConsumer<Map<String, Product>, Event<?>> {
+public class ModifyProductEventHandler implements AggregateCombinerHandler<Product> {
 
     private final GetCategoryQuery categoryQuery;
 

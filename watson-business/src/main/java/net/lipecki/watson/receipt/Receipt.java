@@ -1,17 +1,20 @@
 package net.lipecki.watson.receipt;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import net.lipecki.watson.account.Account;
 import net.lipecki.watson.category.Category;
 import net.lipecki.watson.expanse.Expanse;
 import net.lipecki.watson.expanse.ExpanseCost;
+import net.lipecki.watson.shop.Shop;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @EqualsAndHashCode(of = "uuid")
 @Data
+@Builder
 public class Receipt implements Expanse {
 
     public static final String RECEIPT_STREAM = "_receipt";
@@ -22,6 +25,7 @@ public class Receipt implements Expanse {
     private Account account;
     private List<ReceiptItem> items;
     private Category category;
+    private Shop shop;
 
     // shop instance
 

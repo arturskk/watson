@@ -1,6 +1,7 @@
 package net.lipecki.watson.product;
 
 import net.lipecki.watson.category.GetCategoryQuery;
+import net.lipecki.watson.combiner.TestAggregateCombinerWithCacheFactory;
 import net.lipecki.watson.event.InMemoryEventStore;
 import org.junit.Before;
 
@@ -17,7 +18,7 @@ public abstract class ProductStoreBaseTest {
         categoryQuery = mock(GetCategoryQuery.class);
         eventStore = new InMemoryEventStore();
         productStore = new ProductStore(
-                eventStore,
+                TestAggregateCombinerWithCacheFactory.of(eventStore),
                 new AddProductEventHandler(categoryQuery),
                 new ModifyProductEventHandler(categoryQuery)
         );

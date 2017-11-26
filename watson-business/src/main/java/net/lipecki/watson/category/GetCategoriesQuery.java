@@ -1,10 +1,10 @@
 package net.lipecki.watson.category;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -18,8 +18,8 @@ public class GetCategoriesQuery {
     }
 
     public List<Category> getCategories(final String categoryType) {
-        final Map<String, Category> categories = this.categoryStore.getCategories();
-        return categories.values()
+        final List<Category> categories = this.categoryStore.getCategories();
+        return categories
                 .stream()
                 .filter(category -> category.isTypeOf(categoryType) || category.isRootCategory())
                 .collect(Collectors.toList());

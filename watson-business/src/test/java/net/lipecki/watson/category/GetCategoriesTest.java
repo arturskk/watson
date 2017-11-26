@@ -1,5 +1,6 @@
 package net.lipecki.watson.category;
 
+import net.lipecki.watson.combiner.TestAggregateCombinerWithCacheFactory;
 import net.lipecki.watson.event.EventStore;
 import net.lipecki.watson.event.InMemoryEventStore;
 import org.junit.Before;
@@ -19,7 +20,7 @@ public class GetCategoriesTest {
     @Before
     public void setUp() {
         this.eventStore = new InMemoryEventStore();
-        this.uut = new GetCategoriesQuery(new CategoryStore(eventStore, new AddCategoryEventHandler(), new ModifyCategoryEventHandler()));
+        this.uut = new GetCategoriesQuery(new CategoryStore(TestAggregateCombinerWithCacheFactory.of(eventStore), new AddCategoryEventHandler(), new ModifyCategoryEventHandler()));
     }
 
     @Test

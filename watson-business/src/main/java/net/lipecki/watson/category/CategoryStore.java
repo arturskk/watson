@@ -1,30 +1,38 @@
 package net.lipecki.watson.category;
 
 import lombok.extern.slf4j.Slf4j;
-import net.lipecki.watson.combiner.AggregateStreamCombiner;
-import net.lipecki.watson.event.EventStore;
+import net.lipecki.watson.combiner.AggregateCombiner;
+import net.lipecki.watson.combiner.AggregateCombinerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @Service
-public class CategoryStore {
+class CategoryStore {
 
-    private final AggregateStreamCombiner<Category> combiner;
+    private final AggregateCombiner<Category> combiner;
 
     public CategoryStore(
-            final EventStore eventStore,
+            final AggregateCombinerFactory aggregateCombinerFactory,
             final AddCategoryEventHandler addCategoryEventHandler,
             final ModifyCategoryEventHandler modifyCategoryEventHandler) {
-        this.combiner = new AggregateStreamCombiner<>(eventStore, Category.CATEGORY_STREAM);
-        this.combiner.registerHandler(AddCategoryCommand.ADD_CATEGORY_EVENT, addCategoryEventHandler);
-        this.combiner.registerHandler(ModifyCategoryCommand.MODIFY_CATEGORY_EVENT, modifyCategoryEventHandler);
+        this.combiner = aggregateCombinerFactory.getAggregateCombiner(Category.CATEGORY_STREAM, CategoryStore::rootCategoryInitializer);
+        this.combiner.addHandler(AddCategoryCommand.ADD_CATEGORY_EVENT, addCategoryEventHandler);
+        this.combiner.addHandler(ModifyCategoryCommand.MODIFY_CATEGORY_EVENT, modifyCategoryEventHandler);
     }
 
-    public Map<String, Category> getCategories() {
-        return this.combiner.get(CategoryStore::rootCategoryInitializer);
+    public List<Category> getCategories() {
+        return this.combiner.getAsList();
+    }
+
+    public Optional<Category> getCategory(final String uuid) {
+        return Optional.ofNullable(
+                this.combiner.get().get(uuid)
+        );
     }
 
     private static Map<String, Category> rootCategoryInitializer() {

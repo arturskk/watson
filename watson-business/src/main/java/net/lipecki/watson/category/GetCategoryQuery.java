@@ -1,9 +1,9 @@
 package net.lipecki.watson.category;
 
 import lombok.extern.slf4j.Slf4j;
+import net.lipecki.watson.WatsonException;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
@@ -17,13 +17,11 @@ public class GetCategoryQuery {
     }
 
     public Optional<Category> getCategory(final String uuid) {
-        final Map<String, Category> categories = this.categoryStore.getCategories();
-        return Optional.ofNullable(categories.get(uuid));
+        return this.categoryStore.getCategory(uuid);
     }
 
     public Category getRootCategory() {
-        final Map<String, Category> categories = this.categoryStore.getCategories();
-        return categories.get(Category.ROOT_UUID);
+        return this.categoryStore.getCategory(Category.ROOT_UUID).orElseThrow(() -> WatsonException.of("Missing root category!"));
     }
 
 }

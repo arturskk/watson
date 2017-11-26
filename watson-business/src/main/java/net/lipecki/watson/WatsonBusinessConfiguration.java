@@ -3,12 +3,14 @@ package net.lipecki.watson;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 @Configuration
 @PropertySource("classpath:business-application.properties")
+@EnableCaching
 public class WatsonBusinessConfiguration {
 
     @Bean

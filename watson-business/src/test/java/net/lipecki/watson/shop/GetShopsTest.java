@@ -1,5 +1,6 @@
 package net.lipecki.watson.shop;
 
+import net.lipecki.watson.combiner.TestAggregateCombinerWithCacheFactory;
 import net.lipecki.watson.event.EventStore;
 import net.lipecki.watson.event.InMemoryEventStore;
 import org.junit.Before;
@@ -17,7 +18,7 @@ public class GetShopsTest {
     @Before
     public void setUp() {
         this.eventStore = new InMemoryEventStore();
-        this.uut = new GetShopsQuery(eventStore);
+        this.uut = new GetShopsQuery(new ShopStore(TestAggregateCombinerWithCacheFactory.of(eventStore)));
     }
 
     @Test

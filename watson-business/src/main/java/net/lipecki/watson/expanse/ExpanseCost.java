@@ -1,9 +1,24 @@
 package net.lipecki.watson.expanse;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 
 public class ExpanseCost {
+
+    public static ExpanseCost empty() {
+        return new ExpanseCost("0");
+    }
+
+    public static ExpanseCost of(final String cost) {
+        if (StringUtils.isBlank(cost)) {
+            return empty();
+        } else {
+            return new ExpanseCost(cost.replaceAll(",", "."));
+        }
+    }
 
     private BigDecimal amount;
 
@@ -16,18 +31,15 @@ public class ExpanseCost {
     }
 
     public String getDescription() {
-        final DecimalFormat df = new DecimalFormat("0.00");
-        return df.format(this.amount);
+        final DecimalFormatSymbols decimalSymbols = DecimalFormatSymbols.getInstance();
+        decimalSymbols.setDecimalSeparator('.');
+        return new DecimalFormat("0.00", decimalSymbols).format(this.amount);
     }
 
     public ExpanseCost add(ExpanseCost other) {
         return new ExpanseCost(
                 this.amount.add(other.amount)
         );
-    }
-
-    public static ExpanseCost empty() {
-        return new ExpanseCost("0");
     }
 
 }
