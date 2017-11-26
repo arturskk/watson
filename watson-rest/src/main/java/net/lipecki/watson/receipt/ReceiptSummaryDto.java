@@ -10,6 +10,7 @@ import java.util.List;
 public class ReceiptSummaryDto {
 
     private String uuid;
+    private String cost;
     private String date;
     private String categoryName;
     private String categoryPath;

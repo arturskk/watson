@@ -20,8 +20,8 @@ public class Receipt implements Expanse {
     public static final String RECEIPT_STREAM = "_receipt";
     public static final String CATEGORY_TYPE = "_category_receipt";
 
-    private LocalDate date;
     private String uuid;
+    private LocalDate date;
     private Account account;
     private List<ReceiptItem> items;
     private Category category;

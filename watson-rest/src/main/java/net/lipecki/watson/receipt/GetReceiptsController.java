@@ -35,6 +35,7 @@ public class GetReceiptsController {
         return ReceiptSummaryDto
                 .builder()
                 .uuid(receipt.getUuid())
+                .cost(receipt.getCost().getDescription())
                 .date(receipt.getDate().format(fullDateFormat))
                 .accountName(receipt.getAccount().getName())
                 .categoryName(receipt.getCategory().getName())
