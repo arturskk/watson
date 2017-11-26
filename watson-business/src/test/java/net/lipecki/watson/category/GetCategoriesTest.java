@@ -19,7 +19,7 @@ public class GetCategoriesTest {
     @Before
     public void setUp() {
         this.eventStore = new InMemoryEventStore();
-        this.uut = new GetCategoriesQuery(new CategoryStore(eventStore));
+        this.uut = new GetCategoriesQuery(new CategoryStore(eventStore, new AddCategoryEventHandler(), new ModifyCategoryEventHandler()));
     }
 
     @Test

@@ -14,41 +14,13 @@ public class CategoryStore {
 
     private final AggregateStreamCombiner<Category> combiner;
 
-    public CategoryStore(final EventStore eventStore) {
-        this.combiner = new AggregateStreamCombiner<>(
-                eventStore,
-                Category.CATEGORY_STREAM
-        );
-        this.combiner.registerHandler(
-                AddCategoryCommand.ADD_CATEGORY_EVENT,
-                (collection, event) -> {
-                    final AddCategory addCategory = event.castPayload(AddCategory.class);
-                    final Category parent = collection.get(addCategory.getParentUuidOptional().orElse(Category.ROOT_UUID));
-                    final Category category = Category.builder()
-                            .name(addCategory.getName())
-                            .type(addCategory.getType())
-                            .uuid(event.getStreamId())
-                            .parent(parent)
-                            .build();
-                    parent.addChild(category);
-                    collection.put(category.getUuid(), category);
-                }
-        );
-        this.combiner.registerHandler(
-                ModifyCategoryCommand.MODIFY_CATEGORY_EVENT,
-                (collection, event) -> {
-                    final ModifyCategory modifyCategory = event.castPayload(ModifyCategory.class);
-
-                    final Category category = collection.get(modifyCategory.getUuid());
-                    modifyCategory
-                            .getNameOptional()
-                            .ifPresent(category::setName);
-                    modifyCategory
-                            .getParentUuidOptional()
-                            .map(collection::get)
-                            .ifPresent(category::setParent);
-                }
-        );
+    public CategoryStore(
+            final EventStore eventStore,
+            final AddCategoryEventHandler addCategoryEventHandler,
+            final ModifyCategoryEventHandler modifyCategoryEventHandler) {
+        this.combiner = new AggregateStreamCombiner<>(eventStore, Category.CATEGORY_STREAM);
+        this.combiner.registerHandler(AddCategoryCommand.ADD_CATEGORY_EVENT, addCategoryEventHandler);
+        this.combiner.registerHandler(ModifyCategoryCommand.MODIFY_CATEGORY_EVENT, modifyCategoryEventHandler);
     }
 
     public Map<String, Category> getCategories() {
