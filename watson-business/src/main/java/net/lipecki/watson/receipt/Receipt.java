@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import net.lipecki.watson.account.Account;
 import net.lipecki.watson.category.Category;
-import net.lipecki.watson.expanse.Expanse;
 import net.lipecki.watson.expanse.ExpanseCost;
 import net.lipecki.watson.shop.Shop;
 
@@ -15,7 +14,7 @@ import java.util.List;
 @EqualsAndHashCode(of = "uuid")
 @Data
 @Builder
-public class Receipt implements Expanse {
+public class Receipt {
 
     public static final String RECEIPT_STREAM = "_receipt";
     public static final String CATEGORY_TYPE = "_category_receipt";

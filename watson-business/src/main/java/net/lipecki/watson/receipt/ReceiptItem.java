@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import net.lipecki.watson.category.Category;
 import net.lipecki.watson.expanse.ExpanseCost;
-import net.lipecki.watson.expanse.ExpanseItem;
 import net.lipecki.watson.product.Product;
 
 import java.util.List;
@@ -13,7 +12,7 @@ import java.util.List;
 @EqualsAndHashCode(of = "uuid")
 @Data
 @Builder
-public class ReceiptItem implements ExpanseItem {
+public class ReceiptItem {
 
     public static final String CATEGORY_TYPE = "_category_receipt_item";
 
@@ -26,7 +25,6 @@ public class ReceiptItem implements ExpanseItem {
         return toString();
     }
 
-    @Override
     public Category getCategory() {
         return product.getCategory();
     }
