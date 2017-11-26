@@ -4,6 +4,7 @@ import net.lipecki.watson.testing.BaseJpaTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +27,7 @@ public class GetEventByStreamItTest extends BaseJpaTest {
         uut.storeEvent(EVENT_STREAM, EVENT_TYPE, expectedPayload);
 
         // when
-        final List<Event<?>> events = uut.getEventsByStream(EVENT_STREAM).collect(Collectors.toList());
+        final List<Event<?>> events = uut.getEventsByStream(Collections.singletonList(EVENT_STREAM)).collect(Collectors.toList());
 
         // then
         assertThat(events).extracting("payload").containsExactly(expectedPayload);

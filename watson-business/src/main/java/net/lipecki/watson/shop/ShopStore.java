@@ -5,6 +5,7 @@ import net.lipecki.watson.combiner.AggregateCombiner;
 import net.lipecki.watson.combiner.AggregateCombinerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +16,7 @@ class ShopStore {
     private final AggregateCombiner<Shop> combiner;
 
     public ShopStore(final AggregateCombinerFactory aggregateCombinerFactory) {
-        this.combiner = aggregateCombinerFactory.getAggregateCombiner(Shop.SHOP_STREAM);
+        this.combiner = aggregateCombinerFactory.getAggregateCombiner(Collections.singletonList(Shop.SHOP_STREAM));
         this.combiner.addHandler(
                 AddShopCommand.ADD_SHOP_EVENT,
                 (collection, event) -> collection.put(

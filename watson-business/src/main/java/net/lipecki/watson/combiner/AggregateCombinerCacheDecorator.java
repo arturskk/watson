@@ -6,15 +6,16 @@ import org.springframework.cache.CacheManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class AggregateCombinerCacheDecorator<T> implements AggregateCombiner<T> {
 
     private final Cache cache;
-    private final String stream;
+    private final List<String> streams;
     private AggregateCombiner<T> delegate;
 
-    public AggregateCombinerCacheDecorator(final CacheManager cacheManager, final String stream, final AggregateCombiner<T> delegate) {
-        this.stream = stream;
+    public AggregateCombinerCacheDecorator(final CacheManager cacheManager, final List<String> streams, final AggregateCombiner<T> delegate) {
+        this.streams = streams;
         this.delegate = delegate;
         this.cache = cacheManager.getCache("AggregateCombinerCacheDecorator");
     }
@@ -40,7 +41,7 @@ public class AggregateCombinerCacheDecorator<T> implements AggregateCombiner<T> 
     }
 
     private String getCacheKey() {
-        return this.stream;
+        return this.streams.stream().collect(Collectors.joining("+"));
     }
 
 }

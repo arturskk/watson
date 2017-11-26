@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 /**
  * Utility class for in-memory aggregates.
  * <p>
- * Allows for in-memory parsing all stream events with provided event handlers.
+ * Allows for in-memory parsing all streams events with provided event handlers.
  *
  * @param <T>
  */
@@ -23,18 +23,18 @@ import java.util.stream.Collectors;
 public class InMemoryAggregateCombiner<T> implements AggregateCombiner<T> {
 
     private final EventStore eventStore;
-    private final String stream;
+    private final List<String> streams;
     private final Supplier<Map<String, T>> stateInitializer;
     private final Map<String, AggregateCombinerHandler<T>> handlerMapping = new HashMap<>();
     private boolean ignoreMissingEventTypes = false;
 
-    InMemoryAggregateCombiner(final EventStore eventStore, final String stream) {
-        this(eventStore, stream, HashMap::new);
+    InMemoryAggregateCombiner(final EventStore eventStore, final List<String> streams) {
+        this(eventStore, streams, HashMap::new);
     }
 
-    InMemoryAggregateCombiner(final EventStore eventStore, final String stream, final Supplier<Map<String, T>> stateInitializer) {
+    InMemoryAggregateCombiner(final EventStore eventStore, final List<String> streams, final Supplier<Map<String, T>> stateInitializer) {
         this.eventStore = eventStore;
-        this.stream = stream;
+        this.streams = streams;
         this.stateInitializer = stateInitializer;
     }
 
@@ -50,13 +50,13 @@ public class InMemoryAggregateCombiner<T> implements AggregateCombiner<T> {
 
     @Override
     public Map<String, T> get() {
-        log.debug("Combining stream [stream={}]", this.stream);
+        log.debug("Combining streams [streams={}]", this.streams);
 
         final List<Event<?>> events = this.eventStore
-                .getEventsByStream(this.stream)
+                .getEventsByStream(this.streams)
                 .sorted(Comparator.comparing(Event::getSequenceId))
                 .collect(Collectors.toList());
-        log.trace("Events selected to combine for stream [stream={}, eventsCount={}]", this.stream, events.size());
+        log.trace("Events selected to combine for streams [streams={}, eventsCount={}]", this.streams, events.size());
 
         final Map<String, T> result = this.stateInitializer.get();
 
@@ -71,8 +71,8 @@ public class InMemoryAggregateCombiner<T> implements AggregateCombiner<T> {
                 }
             } else if (!this.ignoreMissingEventTypes) {
                 throw WatsonException
-                        .of("Missing event handler for stream combiner")
-                        .with("stream", this.stream)
+                        .of("Missing event handler for streams combiner")
+                        .with("streams", this.streams)
                         .with("missingEventType", eventType);
             }
         }

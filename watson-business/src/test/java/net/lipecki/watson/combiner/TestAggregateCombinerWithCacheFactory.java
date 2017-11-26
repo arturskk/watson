@@ -2,6 +2,7 @@ package net.lipecki.watson.combiner;
 
 import net.lipecki.watson.event.EventStore;
 
+import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -18,13 +19,13 @@ public class TestAggregateCombinerWithCacheFactory implements AggregateCombinerF
     }
 
     @Override
-    public <T> AggregateCombiner<T> getAggregateCombiner(final String stream) {
-        return new InMemoryAggregateCombiner<>(eventStore, stream);
+    public <T> AggregateCombiner<T> getAggregateCombiner(final List<String> streams) {
+        return new InMemoryAggregateCombiner<>(eventStore, streams);
     }
 
     @Override
-    public <T> AggregateCombiner<T> getAggregateCombiner(final String stream, final Supplier<Map<String, T>> initializer) {
-        return new InMemoryAggregateCombiner<>(eventStore, stream, initializer);
+    public <T> AggregateCombiner<T> getAggregateCombiner(final List<String> streams, final Supplier<Map<String, T>> initializer) {
+        return new InMemoryAggregateCombiner<>(eventStore, streams, initializer);
     }
 
 }

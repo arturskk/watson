@@ -5,6 +5,7 @@ import net.lipecki.watson.combiner.AggregateCombiner;
 import net.lipecki.watson.combiner.AggregateCombinerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +19,7 @@ class ProductStore {
             final AggregateCombinerFactory aggregateCombinerFactory,
             final AddProductEventHandler addProductEventHandler,
             final ModifyProductEventHandler modifyProductEventHandler) {
-        this.combiner = aggregateCombinerFactory.getAggregateCombiner(Product.PRODUCT_STREAM);
+        this.combiner = aggregateCombinerFactory.getAggregateCombiner(Collections.singletonList(Product.PRODUCT_STREAM));
         this.combiner.addHandler(AddProductCommand.ADD_PRODUCT_EVENT, addProductEventHandler);
         this.combiner.addHandler(ModifyProductCommand.MODIFY_PRODUCT_EVENT, modifyProductEventHandler);
     }

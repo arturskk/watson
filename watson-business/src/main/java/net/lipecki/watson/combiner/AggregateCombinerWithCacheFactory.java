@@ -6,6 +6,7 @@ import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -22,26 +23,18 @@ public class AggregateCombinerWithCacheFactory implements AggregateCombinerFacto
     }
 
     @Override
-    public <T> AggregateCombiner<T> getAggregateCombiner(final String stream) {
-        return new AggregateCombinerCacheDecorator<>(
-                this.cacheManager,
-                stream,
-                new InMemoryAggregateCombiner<>(
-                        this.eventStore,
-                        stream,
-                        HashMap<String, T>::new
-                )
-        );
+    public <T> AggregateCombiner<T> getAggregateCombiner(final List<String> streams) {
+        return getAggregateCombiner(streams, HashMap<String, T>::new);
     }
 
     @Override
-    public <T> AggregateCombiner<T> getAggregateCombiner(final String stream, final Supplier<Map<String, T>> initializer) {
+    public <T> AggregateCombiner<T> getAggregateCombiner(final List<String> streams, final Supplier<Map<String, T>> initializer) {
         return new AggregateCombinerCacheDecorator<>(
                 this.cacheManager,
-                stream,
+                streams,
                 new InMemoryAggregateCombiner<>(
                         this.eventStore,
-                        stream,
+                        streams,
                         initializer
                 )
         );

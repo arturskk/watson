@@ -31,10 +31,10 @@ public class InMemoryEventStore implements EventStore {
     }
 
     @Override
-    public Stream<Event<?>> getEventsByStream(final String stream) {
+    public Stream<Event<?>> getEventsByStream(final List<String> streams) {
         return this.store
                 .stream()
-                .filter(event -> event.getStream().equals(stream));
+                .filter(event -> streams.contains(event.getStream()));
     }
 
     @Override

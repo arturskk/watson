@@ -5,6 +5,7 @@ import net.lipecki.watson.combiner.AggregateCombiner;
 import net.lipecki.watson.combiner.AggregateCombinerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +21,7 @@ class CategoryStore {
             final AggregateCombinerFactory aggregateCombinerFactory,
             final AddCategoryEventHandler addCategoryEventHandler,
             final ModifyCategoryEventHandler modifyCategoryEventHandler) {
-        this.combiner = aggregateCombinerFactory.getAggregateCombiner(Category.CATEGORY_STREAM, CategoryStore::rootCategoryInitializer);
+        this.combiner = aggregateCombinerFactory.getAggregateCombiner(Collections.singletonList(Category.CATEGORY_STREAM), CategoryStore::rootCategoryInitializer);
         this.combiner.addHandler(AddCategoryCommand.ADD_CATEGORY_EVENT, addCategoryEventHandler);
         this.combiner.addHandler(ModifyCategoryCommand.MODIFY_CATEGORY_EVENT, modifyCategoryEventHandler);
     }

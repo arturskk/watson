@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface EventRepository extends JpaRepository<EventEntity, Long> {
 
-    List<EventEntity> findByStream(final String stream);
+    List<EventEntity> findByStreamIn(final List<String> streams);
 
 }

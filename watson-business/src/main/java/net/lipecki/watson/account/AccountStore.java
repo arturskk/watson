@@ -5,6 +5,7 @@ import net.lipecki.watson.combiner.AggregateCombiner;
 import net.lipecki.watson.combiner.AggregateCombinerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +16,7 @@ class AccountStore {
     private final AggregateCombiner<Account> combiner;
 
     public AccountStore(final AggregateCombinerFactory aggregateCombinerFactory) {
-        this.combiner = aggregateCombinerFactory.getAggregateCombiner(Account.ACCOUNT_STREAM);
+        this.combiner = aggregateCombinerFactory.getAggregateCombiner(Collections.singletonList(Account.ACCOUNT_STREAM));
         combiner.addHandler(
                 AddAccountCommand.ADD_ACCOUNT_EVENT,
                 (collection, event) -> collection.put(
