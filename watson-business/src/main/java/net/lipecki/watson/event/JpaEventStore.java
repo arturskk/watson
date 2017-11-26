@@ -5,9 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import net.lipecki.watson.WatsonException;
 import net.lipecki.watson.WatsonExceptionCode;
 
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 public class JpaEventStore implements EventStore {
@@ -47,21 +46,19 @@ public class JpaEventStore implements EventStore {
     }
 
     @Override
-    public List<Event<?>> getEventsByStream(final String stream) {
+    public Stream<Event<?>> getEventsByStream(final String stream) {
         return this.eventRepository
                 .findByStream(stream)
                 .stream()
-                .map(this::asEvent)
-                .collect(Collectors.toList());
+                .map(this::asEvent);
     }
 
     @Override
-    public List<Event<?>> getEvents() {
+    public Stream<Event<?>> getEvents() {
         return this.eventRepository
                 .findAll()
                 .stream()
-                .map(this::asEvent)
-                .collect(Collectors.toList());
+                .map(this::asEvent);
     }
 
     private <T> Event<T> asEvent(final EventEntity entity) {

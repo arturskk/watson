@@ -26,7 +26,7 @@ public class AggregateCombinerCacheDecorator<T> implements AggregateCombiner<T> 
 
     @Override
     public Map<String, T> get() {
-        return cache.get(this.stream, () -> delegate.get());
+        return cache.get(getCacheKey(), () -> delegate.get());
     }
 
     @Override
@@ -37,6 +37,10 @@ public class AggregateCombinerCacheDecorator<T> implements AggregateCombiner<T> 
     @Override
     public void setIgnoreMissingEventTypes(final boolean ignoreMissingEventTypes) {
         delegate.setIgnoreMissingEventTypes(ignoreMissingEventTypes);
+    }
+
+    private String getCacheKey() {
+        return this.stream;
     }
 
 }

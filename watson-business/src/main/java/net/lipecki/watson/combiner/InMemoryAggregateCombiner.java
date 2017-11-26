@@ -54,7 +54,6 @@ public class InMemoryAggregateCombiner<T> implements AggregateCombiner<T> {
 
         final List<Event<?>> events = this.eventStore
                 .getEventsByStream(this.stream)
-                .stream()
                 .sorted(Comparator.comparing(Event::getSequenceId))
                 .collect(Collectors.toList());
         log.trace("Events selected to combine for stream [stream={}, eventsCount={}]", this.stream, events.size());

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class InMemoryEventStore implements EventStore {
 
@@ -31,15 +31,14 @@ public class InMemoryEventStore implements EventStore {
     }
 
     @Override
-    public List<Event<?>> getEventsByStream(final String stream) {
+    public Stream<Event<?>> getEventsByStream(final String stream) {
         return this.store
                 .stream()
-                .filter(event -> event.getStream().equals(stream))
-                .collect(Collectors.toList());
+                .filter(event -> event.getStream().equals(stream));
     }
 
     @Override
-    public List<Event<?>> getEvents() {
+    public Stream<Event<?>> getEvents() {
         throw new UnsupportedOperationException("InMemoryEventStore#getEvents not implemented");
     }
 

@@ -2,7 +2,7 @@ package net.lipecki.watson.event;
 
 import org.springframework.context.ApplicationEventPublisher;
 
-import java.util.List;
+import java.util.stream.Stream;
 
 public class PublishingEventStoreDecorator implements EventStore {
 
@@ -29,12 +29,12 @@ public class PublishingEventStoreDecorator implements EventStore {
     }
 
     @Override
-    public List<Event<?>> getEventsByStream(final String stream) {
+    public Stream<Event<?>> getEventsByStream(final String stream) {
         return eventStore.getEventsByStream(stream);
     }
 
     @Override
-    public List<Event<?>> getEvents() {
+    public Stream<Event<?>> getEvents() {
         return eventStore.getEvents();
     }
 

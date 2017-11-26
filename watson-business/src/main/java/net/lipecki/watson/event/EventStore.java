@@ -1,6 +1,6 @@
 package net.lipecki.watson.event;
 
-import java.util.List;
+import java.util.stream.Stream;
 
 public interface EventStore {
 
@@ -8,8 +8,8 @@ public interface EventStore {
 
     <T> Event<T> storeEvent(final String stream, final String streamId, final String type, final T payload);
 
-    List<Event<?>> getEventsByStream(final String stream);
+    Stream<Event<?>> getEventsByStream(final String stream);
 
-    List<Event<?>> getEvents();
+    Stream<Event<?>> getEvents();
 
 }

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Test event event with in-memory events.
@@ -42,12 +43,12 @@ public class TestEventStore implements EventStore {
 
 
     @Override
-    public List<Event<?>> getEventsByStream(String stream) {
+    public Stream<Event<?>> getEventsByStream(String stream) {
         throw new UnsupportedOperationException("TestEventStore#getEventsByStream not implemented!");
     }
 
     @Override
-    public List<Event<?>> getEvents() {
+    public Stream<Event<?>> getEvents() {
         throw new UnsupportedOperationException("TestEventStore#getEvents not implemented");
     }
 

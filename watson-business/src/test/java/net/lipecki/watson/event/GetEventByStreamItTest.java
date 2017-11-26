@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -25,7 +26,7 @@ public class GetEventByStreamItTest extends BaseJpaTest {
         uut.storeEvent(EVENT_STREAM, EVENT_TYPE, expectedPayload);
 
         // when
-        final List<Event<?>> events = uut.getEventsByStream(EVENT_STREAM);
+        final List<Event<?>> events = uut.getEventsByStream(EVENT_STREAM).collect(Collectors.toList());
 
         // then
         assertThat(events).extracting("payload").containsExactly(expectedPayload);

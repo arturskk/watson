@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -21,7 +22,7 @@ public class ShouldPersistEventItTest extends BaseJpaTest {
     @Test
     public void shouldGetEmptyEvents() {
         // when
-        final List<Event<?>> events = uut.getEvents();
+        final List<Event<?>> events = uut.getEvents().collect(Collectors.toList());
 
         // then
         assertThat(events).isEmpty();
@@ -37,7 +38,7 @@ public class ShouldPersistEventItTest extends BaseJpaTest {
         uut.storeEvent(expectedStream, expectedType, expectedStringPayload);
 
         // when
-        final List<Event<?>> events = uut.getEvents();
+        final List<Event<?>> events = uut.getEvents().collect(Collectors.toList());
 
         // then
         assertThat(events).hasSize(1);
@@ -55,7 +56,7 @@ public class ShouldPersistEventItTest extends BaseJpaTest {
         uut.storeEvent(EVENT_STREAM, EVENT_TYPE, payload);
 
         // when
-        final List<Event<?>> events = uut.getEvents();
+        final List<Event<?>> events = uut.getEvents().collect(Collectors.toList());
 
         // then
         assertThat(events).hasSize(1);
