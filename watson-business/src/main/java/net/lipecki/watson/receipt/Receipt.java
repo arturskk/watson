@@ -32,8 +32,8 @@ public class Receipt {
         return this.items
                 .stream()
                 .map(ReceiptItem::getCost)
-                .reduce((a, b) -> a.add(b))
-                .orElse(ExpanseCost.empty());
+                .reduce(ExpanseCost::add)
+                .orElse(ExpanseCost.ZERO);
     }
 
 }

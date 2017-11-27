@@ -1,45 +1,55 @@
 package net.lipecki.watson.expanse;
 
+import lombok.Getter;
+import net.lipecki.watson.WatsonException;
 import org.apache.commons.lang.StringUtils;
 
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-
+@Getter
 public class ExpanseCost {
 
-    public static ExpanseCost empty() {
-        return new ExpanseCost("0");
-    }
+    public static final ExpanseCost ZERO = new ExpanseCost(0L);
 
-    public static ExpanseCost of(final String cost) {
-        if (StringUtils.isBlank(cost)) {
-            return empty();
+    public static ExpanseCost of(final String rawCost) {
+        if (StringUtils.isBlank(rawCost)) {
+            return ZERO;
+        }
+        final String cost = rawCost.replace(",", ".");
+        if (cost.matches("\\d+\\.\\d\\d")) {
+            return new ExpanseCost(parseCostWithSuffix(cost, ""));
+        } else if (cost.matches("\\d+\\.\\d")) {
+            return new ExpanseCost(parseCostWithSuffix(cost, "0"));
+        } else if (cost.matches("\\d+")) {
+            return new ExpanseCost(parseCostWithSuffix(cost, "00"));
         } else {
-            return new ExpanseCost(cost.replaceAll(",", "."));
+            throw WatsonException.of("Can't parse cost as any expected format").with("cost", cost);
         }
     }
 
-    private BigDecimal amount;
-
-    public ExpanseCost(final String amount) {
-        this(new BigDecimal(amount));
+    private static String asDescription(final long amount) {
+        final String amountString = Long.toString(amount);
+        if (amount >= 100) {
+            return amountString.substring(0, amountString.length() - 2) + "." + amountString.substring(amountString.length() - 2);
+        } else if (amount >= 10) {
+            return "0." + amountString;
+        } else {
+            return "0.0" + amountString;
+        }
     }
 
-    private ExpanseCost(final BigDecimal amount) {
+    private static long parseCostWithSuffix(final String cost, final String suffix) {
+        return Long.parseLong(cost.replace(".", "") + suffix);
+    }
+
+    private final long amount;
+    private final String description;
+
+    private ExpanseCost(final long amount) {
         this.amount = amount;
+        this.description = asDescription(amount);
     }
 
-    public String getDescription() {
-        final DecimalFormatSymbols decimalSymbols = DecimalFormatSymbols.getInstance();
-        decimalSymbols.setDecimalSeparator('.');
-        return new DecimalFormat("0.00", decimalSymbols).format(this.amount);
-    }
-
-    public ExpanseCost add(ExpanseCost other) {
-        return new ExpanseCost(
-                this.amount.add(other.amount)
-        );
+    public ExpanseCost add(final ExpanseCost other) {
+        return new ExpanseCost(this.amount + other.amount);
     }
 
 }
