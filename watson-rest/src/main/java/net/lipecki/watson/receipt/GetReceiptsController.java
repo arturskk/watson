@@ -15,8 +15,8 @@ import java.util.stream.Collectors;
 @RequestMapping(Api.V1)
 public class GetReceiptsController {
 
+    private static final DateTimeFormatter fullDateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private final GetReceiptsQuery query;
-    private final DateTimeFormatter fullDateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public GetReceiptsController(final GetReceiptsQuery query) {
         this.query = query;
