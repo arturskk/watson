@@ -3,12 +3,15 @@ package net.lipecki.watson.category;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Consumer;
 
 @EqualsAndHashCode(of = "uuid")
+@ToString(of = {"uuid", "name", "type", "children"})
 @Data
 @Builder
 public class Category {
@@ -49,6 +52,11 @@ public class Category {
         } else {
             return parent.getCategoryPath() + PATH_SEPARATOR + name;
         }
+    }
+
+    public void accept(final Consumer<Category> visitor) {
+        visitor.accept(this);
+        children.forEach(child -> child.accept(visitor));
     }
 
 }

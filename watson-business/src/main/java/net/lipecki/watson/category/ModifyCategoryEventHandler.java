@@ -14,7 +14,6 @@ public class ModifyCategoryEventHandler implements AggregateCombinerHandler<Cate
     @Override
     public void accept(Map<String, Category> collection, Event<?> event) {
         final ModifyCategory modifyCategory = event.castPayload(ModifyCategory.class);
-
         final Category category = collection.get(modifyCategory.getUuid());
         modifyCategory
                 .getNameOptional()
