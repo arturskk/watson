@@ -25,3 +25,4 @@ git add .
 git commit -m "Snapshot: $SV"
 
 git push
+git push --tags
