@@ -24,7 +24,7 @@ public class GetCategoryReportController {
     @GetMapping("/report/category")
     public CategoryReport getCategoryReportDto(@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final LocalDate from,
                                                @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final LocalDate to) {
-        log.debug("Request for categories report [from=[}, to=[}]", from, to);
+        log.debug("Request for categories report [from={}, to={}]", from, to);
         return this.query.getCategoryReport(from, to);
     }
 

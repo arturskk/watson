@@ -6,6 +6,8 @@ import {Component} from '@angular/core';
     <nav>
       <div><a routerLink="/receipt/add">Dodaj rachunek</a></div>
       <div>&nbsp;|&nbsp;</div>
+      <div><a routerLink="/report/category">Raport wydatków - kategorie</a></div>
+      <div>&nbsp;|&nbsp;</div>
       <div><a routerLink="/product/list">Produkty</a></div>
       <div>&nbsp;|&nbsp;</div>
       <div><a routerLink="/category/receipt_item/list">Kategorie produktów</a></div>
