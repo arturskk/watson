@@ -21,7 +21,7 @@ public class ModifyCategoryEventHandler implements AggregateCombinerHandler<Cate
         modifyCategory
                 .getParentUuidOptional()
                 .map(collection::get)
-                .ifPresent(category::setParent);
+                .ifPresent(Category.linkToParent(category));
     }
 
 }

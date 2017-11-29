@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -15,6 +16,30 @@ import java.util.function.Consumer;
 @Data
 @Builder
 public class Category {
+
+    public static Consumer<Category> linkToParent(final Category category) {
+        return parent -> linkCategoryWithParent(category, parent);
+    }
+
+    public static Consumer<Category> linkToChildren(final Category parent) {
+        return category -> linkCategoryWithParent(category, parent);
+    }
+
+    public static void linkCategoryWithParent(final Category category, final Category parent) {
+        Objects.requireNonNull(category);
+        if (category.parent != parent) {
+            // remove from current parent children if has parent
+            if (category.parent != null) {
+                category.parent.children.remove(category);
+            }
+            // change category parent
+            category.parent = parent;
+            // add to parents children if has parent
+            if (parent != null) {
+                parent.children.add(category);
+            }
+        }
+    }
 
     public static final String CATEGORY_STREAM = "_category";
     public static final String ROOT_UUID = "root";
@@ -31,7 +56,11 @@ public class Category {
     private Set<Category> children = new HashSet<>();
 
     public void addChild(final Category category) {
-        this.children.add(category);
+        linkCategoryWithParent(category, this);
+    }
+
+    public void setParent(final Category parent) {
+        linkCategoryWithParent(this, parent);
     }
 
     public Optional<Category> getParent() {

@@ -19,9 +19,8 @@ public class AddCategoryEventHandler implements AggregateCombinerHandler<Categor
                 .name(addCategory.getName())
                 .type(addCategory.getType())
                 .uuid(event.getStreamId())
-                .parent(parent)
                 .build();
-        parent.addChild(category);
+        Category.linkCategoryWithParent(category, parent);
         collection.put(category.getUuid(), category);
     }
 

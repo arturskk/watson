@@ -5,8 +5,13 @@ import {Component, Input} from '@angular/core';
   template: `
     <div>
       <div (click)="expanded = !expanded" class="description">
-        <span *ngIf="expanded">(-)</span>
-        <span *ngIf="!expanded">(+)</span>
+        <ng-container *ngIf="category.subCategories && category.subCategories.length > 0">
+          <span *ngIf="expanded">(-)</span>
+          <span *ngIf="!expanded">(+)</span>
+        </ng-container>
+        <ng-container *ngIf="!category.subCategories || category.subCategories.length == 0">
+          <span *ngIf="!expanded">(&nbsp;)</span>
+        </ng-container>
         <span>{{category.name}} - {{category.totalCost.description}}zł</span>
       </div>
       <div class="subcategories" *ngIf="expanded">
