@@ -4,12 +4,17 @@ import lombok.ToString;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 @ToString(of = {"code", "message", "data"})
 public class WatsonException extends RuntimeException {
 
-    private WatsonExceptionCode code;
-    private Map<String, Object> data = new HashMap<>();
+    private final WatsonExceptionCode code;
+    private final Map<String, Object> data = new HashMap<>();
+
+    public static Supplier<WatsonException> supplier(final String message) {
+        return () -> WatsonException.of(message);
+    }
 
     public static WatsonException of(final String message) {
         return new WatsonException(WatsonExceptionCode.UNKNOWN, message);

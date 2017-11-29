@@ -21,7 +21,7 @@ public class GetCategoryQuery {
     }
 
     public Category getRootCategory() {
-        return this.categoryStore.getCategory(Category.ROOT_UUID).orElseThrow(() -> WatsonException.of("Missing root category!"));
+        return this.categoryStore.getCategory(Category.ROOT_UUID).orElseThrow(WatsonException.supplier("Missing root category!"));
     }
 
 }
