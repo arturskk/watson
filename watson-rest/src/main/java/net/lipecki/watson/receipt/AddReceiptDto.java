@@ -2,6 +2,7 @@ package net.lipecki.watson.receipt;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.Singular;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -17,7 +18,10 @@ public class AddReceiptDto {
     @NotNull private AddReceiptAccountDto account;
     @NotNull private AddReceiptShopDto shop;
     @NotNull private AddReceiptCategoryDto category;
-    @NotNull @NotEmpty private List<AddReceiptItemDto> items;
+    @Singular
+    @NotNull
+    @NotEmpty
+    private List<AddReceiptItemDto> items;
     private List<String> tags;
 
     public List<String> getTags() {

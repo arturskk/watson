@@ -34,8 +34,12 @@ public class GetProductsTest extends ProductStoreBaseTest {
         final List<Product> products = uut.getProducts();
 
         // then
-        assertThat(products).isNotNull().isNotEmpty();
-        assertThat(products).extracting("name").contains(expectedProductName);
+        assertThat(products)
+                .isNotNull()
+                .isNotEmpty();
+        assertThat(products)
+                .extracting(Product::getName)
+                .contains(expectedProductName);
     }
 
 }

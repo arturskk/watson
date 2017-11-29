@@ -9,15 +9,14 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 public class AddSameProductOnceTest extends AddReceiptWithDependenciesBaseTest {
 
-    public static final String PRODUCT_NAME = "sample-product";
-    public static final String PRODUCT_UUID_1 = "product-uuid-1";
-    public static final String PRODUCT_UUID_2 = "product-uuid-2";
-    public static final AddReceiptAmountDto ANY_AMOUNT  = AddReceiptAmountDto.builder().build();
+    private static final String PRODUCT_NAME = "sample-product";
+    private static final String PRODUCT_UUID_1 = "product-uuid-1";
+    private static final String PRODUCT_UUID_2 = "product-uuid-2";
+    private static final AddReceiptAmountDto ANY_AMOUNT = AddReceiptAmountDto.builder().build();
 
     @Test
     public void shouldAddSameProductOnce() {
@@ -27,20 +26,21 @@ public class AddSameProductOnceTest extends AddReceiptWithDependenciesBaseTest {
         receiptItems.add(item(item -> item.product(sameProduct)));
         receiptItems.add(item(item -> item.product(sameProduct)));
 
-        when(
-                addProductCommand.addProduct(
-                        eq(AddProduct.builder().name(PRODUCT_NAME).build())
-                )
-        ).thenReturn(
-                Event.<AddProduct>builder().streamId(PRODUCT_UUID_1).build(),
-                Event.<AddProduct>builder().streamId(PRODUCT_UUID_2).build()
+        final AddProduct expectedAddProduct = AddProduct.builder().name(PRODUCT_NAME).categoryUuid(null).build();
+        //noinspection unchecked
+        when(addProductCommand.addProduct(expectedAddProduct)).thenReturn(
+                Event.<AddProduct>builder().streamId(PRODUCT_UUID_1).payload(expectedAddProduct).build(),
+                Event.<AddProduct>builder().streamId(PRODUCT_UUID_2).payload(expectedAddProduct).build()
         );
 
         // when
         addReceipt(dto -> dto.items(receiptItems));
 
         // then
-        assertThat(receipt().getItems()).extracting("productUuid").containsExactly(PRODUCT_UUID_1, PRODUCT_UUID_1);
+        assertThat(receipt().getItems())
+                .extracting(AddReceiptItem::getProduct)
+                .extracting(AddReceiptItemProduct::getUuid)
+                .containsExactly(PRODUCT_UUID_1, PRODUCT_UUID_1);
     }
 
     private AddReceiptItemDto item(final Consumer<AddReceiptItemDto.AddReceiptItemDtoBuilder> consumer) {

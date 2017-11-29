@@ -11,6 +11,11 @@ public class AddReceiptProductDto {
 
     private String uuid;
     private String name;
+    private AddReceiptCategoryDto category;
+
+    public Optional<AddReceiptCategoryDto> getCategory() {
+        return Optional.ofNullable(category);
+    }
 
     public Optional<String> getUuid() {
         return Optional.ofNullable(this.uuid);

@@ -38,8 +38,12 @@ public class GetShopsTest {
         final List<Shop> shops = uut.getShops();
 
         // then
-        assertThat(shops).isNotNull().isNotEmpty();
-        assertThat(shops).extracting("name").contains(expectedShopName);
+        assertThat(shops)
+                .isNotNull()
+                .isNotEmpty();
+        assertThat(shops)
+                .extracting(Shop::getName)
+                .contains(expectedShopName);
     }
 
 }

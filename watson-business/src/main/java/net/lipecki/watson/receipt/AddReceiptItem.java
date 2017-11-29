@@ -9,7 +9,7 @@ import java.util.List;
 @Builder
 public class AddReceiptItem {
 
-    private String productUuid;
+    private AddReceiptItemProduct product;
     private List<String> tags;
     private String cost;
     private AddReceiptItemAmount amount;

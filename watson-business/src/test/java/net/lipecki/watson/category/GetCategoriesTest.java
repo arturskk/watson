@@ -12,8 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class GetCategoriesTest {
 
-    public static final String CATEGORY_TYPE = "category-type";
-
+    private static final String CATEGORY_TYPE = "category-type";
     private EventStore eventStore;
     private GetCategoriesQuery uut;
 
@@ -47,7 +46,9 @@ public class GetCategoriesTest {
         final List<Category> categories = uut.getCategories(CATEGORY_TYPE);
 
         // then
-        assertThat(categories).extracting("name").contains(expectedCategoryName);
+        assertThat(categories)
+                .extracting(Category::getName)
+                .contains(expectedCategoryName);
     }
 
     @Test
@@ -65,9 +66,11 @@ public class GetCategoriesTest {
         final List<Category> categories = uut.getCategories(CATEGORY_TYPE);
 
         // then
-        assertThat(categories).extracting("categoryPath").contains(
-                String.format("%s%s%s", Category.ROOT_NAME, Category.PATH_SEPARATOR, expectedCategoryName)
-        );
+        assertThat(categories)
+                .extracting(Category::getCategoryPath)
+                .contains(
+                        String.format("%s%s%s", Category.ROOT_NAME, Category.PATH_SEPARATOR, expectedCategoryName)
+                );
     }
 
 }

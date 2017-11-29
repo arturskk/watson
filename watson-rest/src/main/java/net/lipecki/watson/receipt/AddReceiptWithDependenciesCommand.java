@@ -59,14 +59,14 @@ public class AddReceiptWithDependenciesCommand {
     }
 
     private List<AddReceiptItem> asReceiptItems(final AddReceiptDto dto) {
-        final Map<String, String> addedProducts = new HashMap<>();
+        final Map<String, AddReceiptItemProduct> addedProducts = new HashMap<>();
         return dto.getItems()
                 .stream()
                 .map(
                         itemDto -> AddReceiptItem.builder()
                                 .cost(itemDto.getCost())
                                 .tags(itemDto.getTags())
-                                .productUuid(getCreatedOrCreateProductUuid(addedProducts, itemDto))
+                                .product(getCreatedOrCreateProductUuid(addedProducts, itemDto))
                                 .amount(
                                         AddReceiptItemAmount.builder()
                                                 .count(itemDto.getAmount().getCount())
@@ -87,22 +87,46 @@ public class AddReceiptWithDependenciesCommand {
      * - product uuid used to create product within same receipt
      * </p>
      *
-     * @param addedProducts
-     * @param itemDto
-     * @return
+     * @param addedProducts - products added within single add receipt request
+     * @param itemDto - add receipt item dto
+     * @return product for receipt item
      */
-    private String getCreatedOrCreateProductUuid(final Map<String, String> addedProducts, final AddReceiptItemDto itemDto) {
-        return itemDto
-                .getProduct()
-                .getUuid()
-                .orElseGet(
-                        () -> addedProducts.computeIfAbsent(
-                                itemDto.getProduct().getName().orElseThrow(
-                                        () -> WatsonException.of("Can't create receipt item product when name is missing")
-                                ),
-                                key -> getProductUuid(itemDto.getProduct())
+    private AddReceiptItemProduct getCreatedOrCreateProductUuid(final Map<String, AddReceiptItemProduct> addedProducts, final AddReceiptItemDto itemDto) {
+        // Use existing product
+        final AddReceiptProductDto product = itemDto.getProduct();
+        final Optional<String> productUuid = product.getUuid();
+        if (productUuid.isPresent()) {
+            return AddReceiptItemProduct.builder().uuid(productUuid.get()).build();
+        }
+
+        // Use previously created product
+        final String name = product.getName().orElseThrow(() -> WatsonException.of("Can't create receipt item product when name is missing"));
+        if (addedProducts.containsKey(name)) {
+            return addedProducts.get(name);
+        }
+
+        // Create new product
+        final Event<AddProduct> addProductEvent = addProductCommand.addProduct(
+                AddProduct
+                        .builder()
+                        .name(name)
+                        .categoryUuid(
+                                product.getCategory()
+                                        .map(category -> getCategoryUuid(ReceiptItem.CATEGORY_TYPE, category))
+                                        .orElse(null)
                         )
-                );
+                        .build()
+        );
+
+        // Create result dto
+        final AddReceiptItemProduct addedProduct = AddReceiptItemProduct
+                .builder()
+                .uuid(addProductEvent.getStreamId())
+                .categoryUuid(addProductEvent.getPayload().getCategoryUuid())
+                .build();
+        addedProducts.put(addProductEvent.getPayload().getName(), addedProduct);
+
+        return addedProduct;
     }
 
     private String getCategoryUuid(final String categoryType, final AddReceiptCategoryDto dto) {
@@ -116,19 +140,6 @@ public class AddReceiptWithDependenciesCommand {
 
     private Function<AddReceiptCategoryDto, Optional<AddCategory>> asAddCategory(final String categoryType) {
         return dto -> dto.getName().map(name -> AddCategory.builder().type(categoryType).name(name).build());
-    }
-
-    private String getProductUuid(final AddReceiptProductDto dto) {
-        return getUuidOrCreateObject(
-                dto,
-                AddReceiptProductDto::getUuid,
-                this::asAddProduct,
-                addProductCommand::addProduct
-        );
-    }
-
-    private Optional<AddProduct> asAddProduct(final AddReceiptProductDto dto) {
-        return dto.getName().map(name -> AddProduct.builder().name(name).build());
     }
 
     private String getAccountUuid(final AddReceiptAccountDto dto) {

@@ -40,7 +40,7 @@ public class GetAccountsTest {
 
         // then
         assertThat(accounts).isNotNull().isNotEmpty();
-        assertThat(accounts).extracting("name").contains(expectedAccountName);
+        assertThat(accounts).extracting(Account::getName).contains(expectedAccountName);
     }
 
 }

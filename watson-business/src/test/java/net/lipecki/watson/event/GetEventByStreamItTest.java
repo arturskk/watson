@@ -12,9 +12,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class GetEventByStreamItTest extends BaseJpaTest {
 
-    public static final String EVENT_STREAM = "stream";
-    public static final String EVENT_OTHER_STREAM = "other-stream";
-    public static final String EVENT_TYPE = "type";
+    private static final String EVENT_STREAM = "stream";
+    private static final String EVENT_OTHER_STREAM = "other-stream";
+    private static final String EVENT_TYPE = "type";
     @Autowired
     private EventStore uut;
 
@@ -30,7 +30,9 @@ public class GetEventByStreamItTest extends BaseJpaTest {
         final List<Event<?>> events = uut.getEventsByStream(Collections.singletonList(EVENT_STREAM)).collect(Collectors.toList());
 
         // then
-        assertThat(events).extracting("payload").containsExactly(expectedPayload);
+        assertThat(events)
+                .extracting(item -> item.castPayload(String.class))
+                .containsExactly(expectedPayload);
     }
 
 }

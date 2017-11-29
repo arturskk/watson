@@ -64,7 +64,7 @@ public class AddReceiptHandler implements AggregateCombinerHandler<Receipt> {
                         .unit(AmountUnit.getByAlias(dto.getAmount().getUnit()).orElse(AmountUnit.UNKNOWN))
                         .build()
         );
-        productsQuery.getProduct(dto.getProductUuid()).ifPresent(item::product);
+        productsQuery.getProduct(dto.getProduct().getUuid()).ifPresent(item::product);
 
         return item.build();
     }

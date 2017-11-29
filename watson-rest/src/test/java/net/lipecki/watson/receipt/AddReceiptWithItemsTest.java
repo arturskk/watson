@@ -4,9 +4,9 @@ import net.lipecki.watson.event.Event;
 import net.lipecki.watson.product.AddProduct;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.List;
 
+import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -23,23 +23,31 @@ public class AddReceiptWithItemsTest extends AddReceiptWithDependenciesBaseTest 
         final String expectedProductUuid = "expectedProductUuid";
 
         // when
-        addReceipt(dto -> dto.items(
-                Arrays.asList(
-                        AddReceiptItemDto.builder()
-                                .product(AddReceiptProductDto.builder().uuid(expectedProductUuid).build())
-                                .amount(ANY_AMOUNT)
-                                .cost(expectedCost)
-                                .tags(Arrays.asList(expectedTag))
-                                .build()
-                )
+        addReceipt(
+                dto -> dto.items(
+                        singletonList(
+                                AddReceiptItemDto.builder()
+                                        .product(AddReceiptProductDto.builder().uuid(expectedProductUuid).build())
+                                        .amount(ANY_AMOUNT)
+                                        .cost(expectedCost)
+                                        .tags(singletonList(expectedTag))
+                                        .build()
+                        )
                 )
         );
 
         //then
         final List<AddReceiptItem> receiptItems = receipt().getItems();
-        assertThat(receiptItems).extracting(AddReceiptItem::getCost).containsExactly(expectedCost);
-        assertThat(receiptItems).flatExtracting(AddReceiptItem::getTags).containsExactly(expectedTag);
-        assertThat(receiptItems).extracting(AddReceiptItem::getProductUuid).containsExactly(expectedProductUuid);
+        assertThat(receiptItems)
+                .extracting(AddReceiptItem::getCost)
+                .containsExactly(expectedCost);
+        assertThat(receiptItems)
+                .flatExtracting(AddReceiptItem::getTags)
+                .containsExactly(expectedTag);
+        assertThat(receiptItems)
+                .extracting(AddReceiptItem::getProduct)
+                .extracting(AddReceiptItemProduct::getUuid)
+                .containsExactly(expectedProductUuid);
     }
 
     @Test
@@ -48,19 +56,13 @@ public class AddReceiptWithItemsTest extends AddReceiptWithDependenciesBaseTest 
         final String expectedProductUuid = "expectedProductUuid";
 
         // given
-        when(
-                addProductCommand.addProduct(
-                        AddProduct.builder()
-                                .name(expectedProductName)
-                                .build()
-                )
-        ).thenReturn(
-                Event.<AddProduct>builder().streamId(expectedProductUuid).build()
-        );
+        final AddProduct expectedAddProduct = AddProduct.builder().name(expectedProductName).categoryUuid(null).build();
+        when(addProductCommand.addProduct(expectedAddProduct))
+                .thenReturn(Event.<AddProduct>builder().streamId(expectedProductUuid).payload(expectedAddProduct).build());
 
         // when
         addReceipt(dto -> dto.items(
-                Arrays.asList(
+                singletonList(
                         AddReceiptItemDto.builder()
                                 .product(
                                         AddReceiptProductDto.builder()
@@ -74,7 +76,10 @@ public class AddReceiptWithItemsTest extends AddReceiptWithDependenciesBaseTest 
 
         // then
         final List<AddReceiptItem> receiptItems = receipt().getItems();
-        assertThat(receiptItems).extracting(AddReceiptItem::getProductUuid).containsExactly(expectedProductUuid);
+        assertThat(receiptItems)
+                .extracting(AddReceiptItem::getProduct)
+                .extracting(AddReceiptItemProduct::getUuid)
+                .containsExactly(expectedProductUuid);
     }
 
 }

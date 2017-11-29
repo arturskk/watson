@@ -36,8 +36,8 @@ class ExpanseStore {
                         final String itemKey = event.getStreamId() + "#" + itemIndex;
 
                         final Product product = productQuery
-                                .getProduct(item.getProductUuid())
-                                .orElseThrow(() -> WatsonException.of("Missing product with item ref uuid").with("uuid", item.getProductUuid()));
+                                .getProduct(item.getProduct().getUuid())
+                                .orElseThrow(() -> WatsonException.of("Missing product with item ref uuid").with("uuid", item.getProduct().getUuid()));
 
                         final Expanse.ExpanseBuilder expanse = Expanse.builder();
                         expanse.type(Product.PRODUCT_STREAM);
