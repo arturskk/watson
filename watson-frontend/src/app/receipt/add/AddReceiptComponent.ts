@@ -54,7 +54,7 @@ import {ReceiptItem} from '../ReceiptItem';
     <h2>Produkty</h2>
     <div class="receipt-items">
       <div class="receipt-item" *ngFor="let item of receipt.items">
-        <div>
+        <div class="select-product-cell">
           <select-component
             [data]="products"
             [displayField]="'name'"
@@ -67,10 +67,31 @@ import {ReceiptItem} from '../ReceiptItem';
                 <span *ngIf="newItem">Dodaj: </span>
                 <span [innerHTML]="markSearchText.call(undefined, item.name)"></span>
               </div>
-              <div *ngIf="item.dynamic" class="product-category-dynamic">
+              <div *ngIf="item.dynamic" class="dynamic-select-item">
                 Nowo utworzony produkt
               </div>
-              <div *ngIf="item.categoryPath" class="product-category">
+              <div *ngIf="item.categoryPath" class="select-item-description">
+                {{item.categoryPath}}
+              </div>
+            </ng-template>
+          </select-component>
+          <select-component
+            *ngIf="item.product && item.product.dynamic"
+            [data]="categoriesItem"
+            [displayField]="'name'"
+            [filter]="filterByName"
+            (onChange)="onProductCategorySelected($event)"
+            [placeholder]="'Kategoria nowego produktu'"
+            [(ngModel)]="item.product.category">
+            <ng-template let-item let-markSearchText="markSearchText" let-newItem="newItem" #listItem>
+              <div>
+                <span *ngIf="newItem">Dodaj: </span>
+                <span [innerHTML]="markSearchText.call(undefined, item.name)"></span>
+              </div>
+              <div *ngIf="item.dynamic" class="dynamic-select-item">
+                Nowo utworzona kategoria produktu
+              </div>
+              <div *ngIf="item.categoryPath" class="select-item-description">
                 {{item.categoryPath}}
               </div>
             </ng-template>
@@ -102,26 +123,43 @@ import {ReceiptItem} from '../ReceiptItem';
         flex-direction: row;
       }
 
-      .product-category, .product-category-dynamic {
+      .select-item-description, .dynamic-select-item {
         font-style: italic;
         font-size: 0.9em;
         color: darkgray;
       }
 
-      .product-category-dynamic {
+      .dynamic-select-item {
         color: darkred;
+      }
+
+      .select-product-cell {
+        display: flex;
       }
     `
   ]
 })
 export class AddReceiptComponent implements OnInit {
 
-  receipt: Receipt = this.newReceipt();
-
+  receipt: Receipt = AddReceiptComponent.newReceipt();
   categoriesReceipt;
+  categoriesItem;
   shops;
   products;
   accounts;
+
+  static itemsBatch(): Partial<ReceiptItem>[] {
+    const itemPrototype: Partial<ReceiptItem> = {amount: {unit: 'kg'}};
+    return ArrayUtil.fillWithCopies(5, itemPrototype);
+  }
+
+  static newReceipt(): Receipt {
+    return {
+      date: new Date().toISOString().substr(0, 10),
+      items: AddReceiptComponent.itemsBatch()
+    };
+  }
+
   filterByName = (item, searchText) => item.name.toLocaleLowerCase().indexOf(searchText.toLocaleLowerCase()) >= 0;
 
   constructor(private httpClient: HttpClient) {
@@ -143,11 +181,17 @@ export class AddReceiptComponent implements OnInit {
         name: category.name,
         uuid: category.uuid
       })));
+    this.httpClient
+      .get('/api/v1/category/_category_receipt_item')
+      .subscribe((data: any[]) => this.categoriesItem = data.map(category => ({
+        name: category.name,
+        uuid: category.uuid
+      })));
   }
 
   addItem() {
     this.receipt.items.push(
-      ...this.itemsBatch()
+      ...AddReceiptComponent.itemsBatch()
     );
   }
 
@@ -163,7 +207,7 @@ export class AddReceiptComponent implements OnInit {
       .post('/api/v1/receipt', this.receipt)
       .subscribe(
         () => {
-          this.receipt = this.newReceipt();
+          this.receipt = AddReceiptComponent.newReceipt();
           alert('Dodane');
         },
         (err) => {
@@ -173,26 +217,24 @@ export class AddReceiptComponent implements OnInit {
       );
   }
 
+  onProductCategorySelected(category) {
+    if (!category.uuid && category.dynamic) {
+      console.log('Adding newly created product category as available category [category=%o]', category);
+      this.categoriesItem.push({
+        name: category.name,
+        dynamic: true
+      });
+    }
+  }
+
   onProductSelected(product) {
-    if (!product.uuid && !product.dynamic) {
+    if (!product.uuid && product.dynamic) {
       console.log('Adding newly created product as available product [product=%o]', product);
       this.products.push({
         name: product.name,
         dynamic: true
       });
     }
-  }
-
-  private itemsBatch(): Partial<ReceiptItem>[] {
-    const itemPrototype: Partial<ReceiptItem> = {amount: {unit: 'kg'}};
-    return ArrayUtil.fillWithCopies(5, itemPrototype);
-  }
-
-  private newReceipt(): Receipt {
-    return {
-      date: new Date().toISOString().substr(0, 10),
-      items: this.itemsBatch()
-    };
   }
 
 }

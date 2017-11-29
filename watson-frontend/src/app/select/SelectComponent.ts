@@ -95,7 +95,7 @@ export class SelectComponent implements ControlValueAccessor {
 
   itemClicked(item) {
     this.value = item;
-    this.onChange.emit(this.value);
+    this.emitValueSelection();
     this.clearUi();
   }
 
@@ -104,7 +104,7 @@ export class SelectComponent implements ControlValueAccessor {
       this.dropdown = true;
     } else if (this.currentIndex >= 0) {
       this.value = this.filtered[this.currentIndex];
-      this.onChange.emit(this.value);
+      this.emitValueSelection();
       this.clearUi();
     } else {
       this.clearUi();
@@ -188,6 +188,14 @@ export class SelectComponent implements ControlValueAccessor {
     this.onTouch.subscribe(fn);
   }
 
+  getPlaceholder() {
+    if (!this.value) {
+      return this.placeholder;
+    } else {
+      return '';
+    }
+  }
+
   private clearUi() {
     this.newValuePlaceholder = {};
     this.dropdown = false;
@@ -197,12 +205,12 @@ export class SelectComponent implements ControlValueAccessor {
     this.searchBox.nativeElement.value = '';
   }
 
-  getPlaceholder() {
-    if (!this.value) {
-      return this.placeholder;
-    } else {
-      return '';
-    }
+  private emitValueSelection() {
+    const currentValue = this.value;
+    this.onChange.emit({
+      ...currentValue,
+      dynamic: true
+    });
   }
 
 }
