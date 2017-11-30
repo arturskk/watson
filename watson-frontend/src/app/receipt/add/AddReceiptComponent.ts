@@ -60,14 +60,14 @@ import {ReceiptItem} from '../ReceiptItem';
             [displayField]="'name'"
             [filter]="filterByName"
             [placeholder]="'Produkt'"
-            (onChange)="onProductSelected($event)"
+            (onChange)="onProductSelected(item, $event)"
             [(ngModel)]="item.product">
             <ng-template let-item let-markSearchText="markSearchText" let-newItem="newItem" #listItem>
               <div>
                 <span *ngIf="newItem">Dodaj: </span>
                 <span [innerHTML]="markSearchText.call(undefined, item.name)"></span>
               </div>
-              <div *ngIf="item.dynamic" class="dynamic-select-item">
+              <div *ngIf="item.createdWithinReceipt" class="dynamic-select-item">
                 Nowo utworzony produkt
               </div>
               <div *ngIf="item.categoryPath" class="select-item-description">
@@ -76,7 +76,7 @@ import {ReceiptItem} from '../ReceiptItem';
             </ng-template>
           </select-component>
           <select-component
-            *ngIf="item.product && item.product.dynamic"
+            *ngIf="item.product && item.product.newValue && !item.product.createdWithinReceipt"
             [data]="categoriesItem"
             [displayField]="'name'"
             [filter]="filterByName"
@@ -88,7 +88,7 @@ import {ReceiptItem} from '../ReceiptItem';
                 <span *ngIf="newItem">Dodaj: </span>
                 <span [innerHTML]="markSearchText.call(undefined, item.name)"></span>
               </div>
-              <div *ngIf="item.dynamic" class="dynamic-select-item">
+              <div *ngIf="item.createdWithinReceipt" class="dynamic-select-item">
                 Nowo utworzona kategoria produktu
               </div>
               <div *ngIf="item.categoryPath" class="select-item-description">
@@ -218,21 +218,21 @@ export class AddReceiptComponent implements OnInit {
   }
 
   onProductCategorySelected(category) {
-    if (!category.uuid && category.dynamic) {
+    if (category.newValue && !category.createdWithinReceipt) {
       console.log('Adding newly created product category as available category [category=%o]', category);
       this.categoriesItem.push({
         name: category.name,
-        dynamic: true
+        createdWithinReceipt: true
       });
     }
   }
 
-  onProductSelected(product) {
-    if (!product.uuid && product.dynamic) {
+  onProductSelected(item, product) {
+    if (product.newValue && !product.createdWithinReceipt) {
       console.log('Adding newly created product as available product [product=%o]', product);
       this.products.push({
         name: product.name,
-        dynamic: true
+        createdWithinReceipt: true
       });
     }
   }

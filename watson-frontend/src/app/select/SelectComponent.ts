@@ -52,11 +52,12 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 })
 export class SelectComponent implements ControlValueAccessor {
 
+  static newValuePlaceholderTemplate = {newValue: true};
   dropdown = false;
   value = null;
   filtered = [];
   currentIndex = -1;
-  newValuePlaceholder = {};
+  newValuePlaceholder: any = {...SelectComponent.newValuePlaceholderTemplate};
   rawData = [];
   currentSearchText = null;
 
@@ -197,7 +198,7 @@ export class SelectComponent implements ControlValueAccessor {
   }
 
   private clearUi() {
-    this.newValuePlaceholder = {};
+    this.newValuePlaceholder = {...SelectComponent.newValuePlaceholderTemplate};
     this.dropdown = false;
     this.currentSearchText = null;
     this.filtered = this.rawData;
@@ -208,8 +209,7 @@ export class SelectComponent implements ControlValueAccessor {
   private emitValueSelection() {
     const currentValue = this.value;
     this.onChange.emit({
-      ...currentValue,
-      dynamic: true
+      ...currentValue
     });
   }
 
