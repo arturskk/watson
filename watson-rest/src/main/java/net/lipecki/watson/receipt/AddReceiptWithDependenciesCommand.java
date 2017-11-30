@@ -64,8 +64,7 @@ public class AddReceiptWithDependenciesCommand {
         return dto.getItems()
                 .stream()
                 .map(
-                        itemDto -> AddReceiptItem
-                                .builder()
+                        itemDto -> AddReceiptItem.builder()
                                 .cost(itemDto.getCost())
                                 .tags(itemDto.getTags())
                                 .product(getExistingOrCreateProductUuid(addedProducts, itemDto))
