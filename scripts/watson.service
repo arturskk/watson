@@ -1,0 +1,10 @@
+[Unit]
+Description=Watson
+
+[Service]
+WorkingDirectory=/opt/watson/
+ExecStart=/usr/bin/java -server -jar /opt/watson/watson.jar
+User=watson
+
+[Install]
+WantedBy=multi-user.target
