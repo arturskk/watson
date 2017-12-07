@@ -20,8 +20,8 @@ class ProductStore {
             final AddProductEventHandler addProductEventHandler,
             final ModifyProductEventHandler modifyProductEventHandler) {
         this.combiner = aggregateCombinerFactory.getAggregateCombiner(Collections.singletonList(Product.PRODUCT_STREAM));
-        this.combiner.addHandler(AddProductCommand.ADD_PRODUCT_EVENT, addProductEventHandler);
-        this.combiner.addHandler(ModifyProductCommand.MODIFY_PRODUCT_EVENT, modifyProductEventHandler);
+        this.combiner.addHandler(AddProduct.class, addProductEventHandler);
+        this.combiner.addHandler(ModifyProduct.class, modifyProductEventHandler);
     }
 
     public List<Product> getProducts() {

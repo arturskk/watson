@@ -39,8 +39,11 @@ public class InMemoryAggregateCombiner<T> implements AggregateCombiner<T> {
     }
 
     @Override
-    public void addHandler(final String eventType, final AggregateCombinerHandler<T> handler) {
-        this.handlerMapping.put(eventType, handler);
+    public void addHandler(final Class<?> eventClass, final AggregateCombinerHandler<T> handler) {
+        this.handlerMapping.put(
+                eventClass.getTypeName(),
+                handler
+        );
     }
 
     @Override

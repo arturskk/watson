@@ -31,7 +31,7 @@ public class AggregateCombinerCacheDecorator<T> implements AggregateCombiner<T> 
     }
 
     @Override
-    public void addHandler(final String eventType, final AggregateCombinerHandler<T> handler) {
+    public void addHandler(final Class<?> eventType, final AggregateCombinerHandler<T> handler) {
         delegate.addHandler(eventType, handler);
     }
 

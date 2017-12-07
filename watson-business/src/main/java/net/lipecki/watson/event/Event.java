@@ -48,7 +48,7 @@ public class Event<T> {
 
     public Map<String, Object> asMap() {
         final Map<String, Object> map = new HashMap<>();
-        map.put("sequenceId", getStream());
+        map.put("sequenceId", getSequenceId());
         map.put("stream", getStream());
         map.put("streamId", getStreamId());
         map.put("type", getType());

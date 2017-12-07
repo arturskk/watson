@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class AddAccountCommand {
 
-    public static final String ADD_ACCOUNT_EVENT = "_account_add";
     private EventStore eventStore;
 
     public AddAccountCommand(EventStore eventStore) {
@@ -15,7 +14,7 @@ public class AddAccountCommand {
     }
 
     public Event<AddAccount> addAccount(final AddAccount addAccount) {
-        return this.eventStore.storeEvent(Account.ACCOUNT_STREAM, ADD_ACCOUNT_EVENT, addAccount);
+        return this.eventStore.storeEvent(Account.ACCOUNT_STREAM, addAccount);
     }
 
 }

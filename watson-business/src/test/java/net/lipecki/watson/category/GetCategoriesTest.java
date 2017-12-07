@@ -38,7 +38,6 @@ public class GetCategoriesTest {
         // given
         eventStore.storeEvent(
                 Category.CATEGORY_STREAM,
-                AddCategoryCommand.ADD_CATEGORY_EVENT,
                 AddCategory.builder().type(CATEGORY_TYPE).name(expectedCategoryName).build()
         );
 
@@ -58,7 +57,6 @@ public class GetCategoriesTest {
         // given
         eventStore.storeEvent(
                 Category.CATEGORY_STREAM,
-                AddCategoryCommand.ADD_CATEGORY_EVENT,
                 AddCategory.builder().type(CATEGORY_TYPE).name(expectedCategoryName).build()
         );
 

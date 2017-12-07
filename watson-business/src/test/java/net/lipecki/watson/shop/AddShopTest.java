@@ -31,7 +31,7 @@ public class AddShopTest {
         // given
         final AddShop expectedAddShop = AddShop.builder().name(SHOP_NAME).build();
         when(
-                eventStore.storeEvent(Shop.SHOP_STREAM, AddShopCommand.ADD_SHOP_EVENT, expectedAddShop)
+                eventStore.storeEvent(Shop.SHOP_STREAM, expectedAddShop)
         ).thenReturn(
                 Event.<AddShop> builder().streamId(expectedShopUuid).build()
         );

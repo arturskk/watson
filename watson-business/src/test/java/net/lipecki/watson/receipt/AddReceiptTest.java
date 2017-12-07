@@ -4,8 +4,6 @@ import net.lipecki.watson.event.Event;
 import net.lipecki.watson.event.EventStore;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.UUID;
 
@@ -32,7 +30,7 @@ public class AddReceiptTest {
 
         // given
         when(
-                eventStore.storeEvent(Receipt.RECEIPT_STREAM, AddReceiptCommand.ADD_RECEIPT_EVENT, expectedAddReceipt)
+                eventStore.storeEvent(Receipt.RECEIPT_STREAM, expectedAddReceipt)
         ).thenReturn(
                 Event.<AddReceipt> builder().streamId(expectedUuid).build()
         );

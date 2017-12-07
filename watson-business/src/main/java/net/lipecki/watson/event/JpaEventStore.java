@@ -21,19 +21,19 @@ public class JpaEventStore implements EventStore {
     }
 
     @Override
-    public <T> Event<T> storeEvent(final String stream, final String type, final T payload) {
-        return storeEvent(stream, UUID.randomUUID().toString(), type, payload);
+    public <T> Event<T> storeEvent(final String stream, final T payload) {
+        return storeEvent(stream, UUID.randomUUID(), payload);
     }
 
     @Override
-    public <T> Event<T> storeEvent(final String stream, final String streamId, final String type, final T payload) {
+    public <T> Event<T> storeEvent(final String stream, final UUID streamId, final T payload) {
         try {
             final EventEntity entity = EventEntity.builder()
                     .payload(objectMapper.writeValueAsString(payload))
                     .payloadClass(payload.getClass().getTypeName())
-                    .streamId(streamId)
+                    .streamId(streamId.toString())
                     .stream(stream)
-                    .type(type)
+                    .type(payload.getClass().getTypeName())
                     .timestamp(System.currentTimeMillis())
                     .build();
             this.eventRepository.save(entity);
@@ -41,7 +41,6 @@ public class JpaEventStore implements EventStore {
         } catch (final Exception ex) {
             throw WatsonException.of(WatsonExceptionCode.UNKNOWN, "Can't store event", ex)
                     .with("stream", stream)
-                    .with("type", type)
                     .with("payload", payload);
         }
     }

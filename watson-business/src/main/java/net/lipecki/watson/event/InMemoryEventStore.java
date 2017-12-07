@@ -9,21 +9,21 @@ import java.util.stream.Stream;
 public class InMemoryEventStore implements EventStore {
 
     private List<Event<?>> store = new ArrayList<>();
-    private AtomicLong eventIdSequence = new AtomicLong(0l);
+    private AtomicLong eventIdSequence = new AtomicLong(0L);
 
     @Override
-    public <T> Event<T> storeEvent(final String stream, final String type, final T payload) {
-        return storeEvent(stream, UUID.randomUUID().toString(), type, payload);
+    public <T> Event<T> storeEvent(final String stream, final T payload) {
+        return storeEvent(stream, UUID.randomUUID(), payload);
     }
 
     @Override
-    public <T> Event<T> storeEvent(final String stream, final String streamId, final String type, final T payload) {
+    public <T> Event<T> storeEvent(final String stream, final UUID streamId, final T payload) {
         final Event<T> event = Event.<T> builder()
-                .type(type)
+                .type(payload.getClass().getTypeName())
                 .sequenceId(this.eventIdSequence.incrementAndGet())
                 .timestamp(System.currentTimeMillis())
                 .stream(stream)
-                .streamId(streamId)
+                .streamId(streamId.toString())
                 .payload(payload)
                 .build();
         this.store.add(event);

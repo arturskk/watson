@@ -7,7 +7,6 @@ import net.lipecki.watson.combiner.AggregateCombinerFactory;
 import net.lipecki.watson.product.GetProductQuery;
 import net.lipecki.watson.product.Product;
 import net.lipecki.watson.receipt.AddReceipt;
-import net.lipecki.watson.receipt.AddReceiptCommand;
 import net.lipecki.watson.receipt.AddReceiptItem;
 import net.lipecki.watson.receipt.Receipt;
 import org.springframework.stereotype.Service;
@@ -26,7 +25,7 @@ class ExpanseStore {
     public ExpanseStore(final AggregateCombinerFactory aggregateCombinerFactory, final GetProductQuery productQuery) {
         this.combiner = aggregateCombinerFactory.getAggregateCombiner(Collections.singletonList(Receipt.RECEIPT_STREAM));
         this.combiner.addHandler(
-                AddReceiptCommand.ADD_RECEIPT_EVENT,
+                AddReceipt.class,
                 (collection, event) -> {
                     final AddReceipt addReceipt = event.castPayload(AddReceipt.class);
 

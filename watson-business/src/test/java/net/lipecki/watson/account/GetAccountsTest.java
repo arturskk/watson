@@ -29,7 +29,6 @@ public class GetAccountsTest {
         // given
         eventStore.storeEvent(
                 Account.ACCOUNT_STREAM,
-                AddAccountCommand.ADD_ACCOUNT_EVENT,
                 AddAccount.builder()
                         .name(expectedAccountName)
                         .build()

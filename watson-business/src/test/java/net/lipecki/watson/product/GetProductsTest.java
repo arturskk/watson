@@ -24,7 +24,6 @@ public class GetProductsTest extends ProductStoreBaseTest {
         // given
         eventStore.storeEvent(
                 Product.PRODUCT_STREAM,
-                AddProductCommand.ADD_PRODUCT_EVENT,
                 AddProduct.builder()
                         .name(expectedProductName)
                         .build()

@@ -3,6 +3,7 @@ package net.lipecki.watson.event;
 import org.springframework.context.ApplicationEventPublisher;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 public class PublishingEventStoreDecorator implements EventStore {
@@ -16,15 +17,15 @@ public class PublishingEventStoreDecorator implements EventStore {
     }
 
     @Override
-    public <T> Event<T> storeEvent(final String stream, final String type, final T payload) {
-        final Event<T> event = eventStore.storeEvent(stream, type, payload);
+    public <T> Event<T> storeEvent(final String stream, final T payload) {
+        final Event<T> event = eventStore.storeEvent(stream, payload);
         this.eventPublisher.publishEvent(event);
         return event;
     }
 
     @Override
-    public <T> Event<T> storeEvent(final String stream, final String streamId, final String type, final T payload) {
-        final Event<T> event = eventStore.storeEvent(stream, streamId, type, payload);
+    public <T> Event<T> storeEvent(final String stream, final UUID streamId, final T payload) {
+        final Event<T> event = eventStore.storeEvent(stream, streamId, payload);
         this.eventPublisher.publishEvent(event);
         return event;
     }

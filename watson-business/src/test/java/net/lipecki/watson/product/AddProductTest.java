@@ -4,8 +4,6 @@ import net.lipecki.watson.event.Event;
 import net.lipecki.watson.event.EventStore;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.UUID;
 
@@ -34,7 +32,7 @@ public class AddProductTest {
         // given
         final AddProduct expectedAddProduct = AddProduct.builder().name(PRODUCT_NAME).build();
         when(
-                eventStore.storeEvent(Product.PRODUCT_STREAM, AddProductCommand.ADD_PRODUCT_EVENT, expectedAddProduct)
+                eventStore.storeEvent(Product.PRODUCT_STREAM, expectedAddProduct)
         ).thenReturn(
                 Event.<AddProduct> builder().streamId(expectedProductUuid).build()
         );

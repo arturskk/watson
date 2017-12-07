@@ -18,7 +18,7 @@ class AccountStore {
     public AccountStore(final AggregateCombinerFactory aggregateCombinerFactory) {
         this.combiner = aggregateCombinerFactory.getAggregateCombiner(Collections.singletonList(Account.ACCOUNT_STREAM));
         combiner.addHandler(
-                AddAccountCommand.ADD_ACCOUNT_EVENT,
+                AddAccount.class,
                 (collection, event) -> collection.put(
                         event.getStreamId(),
                         Account.builder()

@@ -9,8 +9,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class AddReceiptCommand {
 
-    public static final String ADD_RECEIPT_EVENT = "_receipt_add";
-
     private final EventStore eventStore;
 
     public AddReceiptCommand(final EventStore eventStore) {
@@ -18,7 +16,7 @@ public class AddReceiptCommand {
     }
 
     public Event<AddReceipt> addReceipt(final AddReceipt addReceipt) {
-        return eventStore.storeEvent(Receipt.RECEIPT_STREAM, ADD_RECEIPT_EVENT, addReceipt);
+        return eventStore.storeEvent(Receipt.RECEIPT_STREAM, addReceipt);
     }
 
 }

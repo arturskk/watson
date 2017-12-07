@@ -14,7 +14,6 @@ public class GetEventByStreamItTest extends BaseJpaTest {
 
     private static final String EVENT_STREAM = "stream";
     private static final String EVENT_OTHER_STREAM = "other-stream";
-    private static final String EVENT_TYPE = "type";
     @Autowired
     private EventStore uut;
 
@@ -23,8 +22,8 @@ public class GetEventByStreamItTest extends BaseJpaTest {
         final String expectedPayload = "expected-payload";
 
         // given
-        uut.storeEvent(EVENT_OTHER_STREAM, EVENT_TYPE, "unexpected-payload");
-        uut.storeEvent(EVENT_STREAM, EVENT_TYPE, expectedPayload);
+        uut.storeEvent(EVENT_OTHER_STREAM, "unexpected-payload");
+        uut.storeEvent(EVENT_STREAM, expectedPayload);
 
         // when
         final List<Event<?>> events = uut.getEventsByStream(Collections.singletonList(EVENT_STREAM)).collect(Collectors.toList());

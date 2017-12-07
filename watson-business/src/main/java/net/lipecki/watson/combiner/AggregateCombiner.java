@@ -12,7 +12,7 @@ public interface AggregateCombiner<T> {
 
     Map<String, T> get();
 
-    void addHandler(final String eventType, final AggregateCombinerHandler<T> handler);
+    void addHandler(final Class<?> eventClass, final AggregateCombinerHandler<T> handler);
 
     void setIgnoreMissingEventTypes(final boolean ignoreMissingEventTypes);
 

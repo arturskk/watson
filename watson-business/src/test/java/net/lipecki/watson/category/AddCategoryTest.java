@@ -4,8 +4,6 @@ import net.lipecki.watson.event.Event;
 import net.lipecki.watson.event.EventStore;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -33,7 +31,7 @@ public class AddCategoryTest {
         // given
         final AddCategory expectedAddCategory = AddCategory.builder().type(CATEGORY_TYPE).name(categoryName).build();
         when(
-                eventStore.storeEvent(Category.CATEGORY_STREAM, AddCategoryCommand.ADD_CATEGORY_EVENT, expectedAddCategory)
+                eventStore.storeEvent(Category.CATEGORY_STREAM, expectedAddCategory)
         ).thenReturn(
                 Event.<AddCategory> builder().streamId(expectedCategoryUuid).build()
         );

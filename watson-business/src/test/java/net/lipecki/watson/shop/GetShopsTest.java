@@ -28,7 +28,6 @@ public class GetShopsTest {
         // given
         eventStore.storeEvent(
                 Shop.SHOP_STREAM,
-                AddShopCommand.ADD_SHOP_EVENT,
                 AddShop.builder()
                         .name(expectedShopName)
                         .build()

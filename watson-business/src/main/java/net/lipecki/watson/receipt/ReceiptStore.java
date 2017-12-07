@@ -18,7 +18,7 @@ class ReceiptStore {
             final AggregateCombinerFactory aggregateCombinerFactory,
             final AddReceiptHandler addReceiptHandler) {
         this.combiner = aggregateCombinerFactory.getAggregateCombiner(Collections.singletonList(Receipt.RECEIPT_STREAM));
-        this.combiner.addHandler(AddReceiptCommand.ADD_RECEIPT_EVENT, addReceiptHandler);
+        this.combiner.addHandler(AddReceipt.class, addReceiptHandler);
     }
 
     public List<Receipt> getReceipts() {

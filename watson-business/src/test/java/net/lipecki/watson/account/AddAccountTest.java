@@ -30,7 +30,7 @@ public class AddAccountTest {
         // given
         final AddAccount expectedAddAccount = AddAccount.builder().name(ACCOUNT_NAME).build();
         when(
-                eventStore.storeEvent(Account.ACCOUNT_STREAM, AddAccountCommand.ADD_ACCOUNT_EVENT, expectedAddAccount)
+                eventStore.storeEvent(Account.ACCOUNT_STREAM, expectedAddAccount)
         ).thenReturn(
                 Event.<AddAccount> builder().streamId(expectedAccountUuid).build()
         );

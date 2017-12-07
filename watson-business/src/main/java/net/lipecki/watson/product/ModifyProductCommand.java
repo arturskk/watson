@@ -9,8 +9,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class ModifyProductCommand {
 
-    public static final String MODIFY_PRODUCT_EVENT = "_product_modify";
-
     private final EventStore eventStore;
 
     public ModifyProductCommand(final EventStore eventStore) {
@@ -20,7 +18,6 @@ public class ModifyProductCommand {
     public Event<ModifyProduct> modifyProduct(final ModifyProduct modifyProduct) {
         return this.eventStore.storeEvent(
                 Product.PRODUCT_STREAM,
-                MODIFY_PRODUCT_EVENT,
                 modifyProduct
         );
     }

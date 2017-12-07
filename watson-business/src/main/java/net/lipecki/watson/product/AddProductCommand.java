@@ -9,8 +9,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class AddProductCommand {
 
-    public static final String ADD_PRODUCT_EVENT = "_product_add";
-
     private final EventStore eventStore;
 
     public AddProductCommand(final EventStore eventStore) {
@@ -20,7 +18,6 @@ public class AddProductCommand {
     public Event<AddProduct> addProduct(final AddProduct addProduct) {
         return this.eventStore.storeEvent(
                 Product.PRODUCT_STREAM,
-                ADD_PRODUCT_EVENT,
                 addProduct
         );
     }
