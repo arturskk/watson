@@ -16,10 +16,7 @@ public class AddProductCommand {
     }
 
     public Event<AddProduct> addProduct(final AddProduct addProduct) {
-        return this.eventStore.storeEvent(
-                Product.PRODUCT_STREAM,
-                addProduct
-        );
+        return this.eventStore.storeEvent(Product.PRODUCT_STREAM, addProduct);
     }
 
 }

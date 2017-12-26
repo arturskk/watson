@@ -16,10 +16,7 @@ public class ModifyCategoryCommand {
     }
 
     public Event<ModifyCategory> modifyCategory(final ModifyCategory modifyCategory) {
-        return this.eventStore.storeEvent(
-                Category.CATEGORY_STREAM,
-                modifyCategory
-        );
+        return this.eventStore.storeEvent(Category.CATEGORY_STREAM, modifyCategory);
     }
 
 }

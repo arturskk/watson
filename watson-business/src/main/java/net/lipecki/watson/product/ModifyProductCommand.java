@@ -16,10 +16,7 @@ public class ModifyProductCommand {
     }
 
     public Event<ModifyProduct> modifyProduct(final ModifyProduct modifyProduct) {
-        return this.eventStore.storeEvent(
-                Product.PRODUCT_STREAM,
-                modifyProduct
-        );
+        return this.eventStore.storeEvent(Product.PRODUCT_STREAM, modifyProduct);
     }
 
 }
