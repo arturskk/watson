@@ -5,6 +5,7 @@ import net.lipecki.watson.event.EventStore;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,18 +26,18 @@ public class AddReceiptTest {
 
     @Test
     public void shouldStoreAddReceiptEvent() {
-        final AddReceipt expectedAddReceipt = AddReceipt.builder().build();
+        final ReceiptAdded expectedAddReceipt = ReceiptAdded.builder().items(new ArrayList<>()).build();
         final String expectedUuid = UUID.randomUUID().toString();
 
         // given
         when(
                 eventStore.storeEvent(Receipt.RECEIPT_STREAM, expectedAddReceipt)
         ).thenReturn(
-                Event.<AddReceipt> builder().streamId(expectedUuid).build()
+                Event.<ReceiptAdded> builder().streamId(expectedUuid).build()
         );
 
         // when
-        final Event<AddReceipt> storedEvent = uut.addReceipt(expectedAddReceipt);
+        final Event storedEvent = uut.addReceipt(AddReceiptData.builder().items(new ArrayList<>()).build());
 
         // then
         assertThat(storedEvent.getStreamId()).isEqualTo(expectedUuid);

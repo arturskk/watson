@@ -1,7 +1,8 @@
 package net.lipecki.watson.receipt;
 
 import net.lipecki.watson.event.Event;
-import net.lipecki.watson.product.AddProduct;
+import net.lipecki.watson.product.AddProductData;
+import net.lipecki.watson.product.ProductAdded;
 import org.junit.Test;
 
 import java.util.List;
@@ -37,15 +38,15 @@ public class AddReceiptWithItemsTest extends AddReceiptWithDependenciesBaseTest 
         );
 
         //then
-        final List<AddReceiptItem> receiptItems = receipt().getItems();
+        final List<AddReceiptItemData> receiptItems = receipt().getItems();
         assertThat(receiptItems)
-                .extracting(AddReceiptItem::getCost)
+                .extracting(AddReceiptItemData::getCost)
                 .containsExactly(expectedCost);
         assertThat(receiptItems)
-                .flatExtracting(AddReceiptItem::getTags)
+                .flatExtracting(AddReceiptItemData::getTags)
                 .containsExactly(expectedTag);
         assertThat(receiptItems)
-                .extracting(AddReceiptItem::getProduct)
+                .extracting(AddReceiptItemData::getProduct)
                 .extracting(AddReceiptItemProduct::getUuid)
                 .containsExactly(expectedProductUuid);
     }
@@ -56,9 +57,10 @@ public class AddReceiptWithItemsTest extends AddReceiptWithDependenciesBaseTest 
         final String expectedProductUuid = "expectedProductUuid";
 
         // given
-        final AddProduct expectedAddProduct = AddProduct.builder().name(expectedProductName).categoryUuid(null).build();
+        final AddProductData expectedAddProduct = AddProductData.builder().name(expectedProductName).categoryUuid(null).build();
+        final ProductAdded productAdded = ProductAdded.builder().name(expectedProductName).categoryUuid(null).build();
         when(addProductCommand.addProduct(expectedAddProduct))
-                .thenReturn(Event.<AddProduct>builder().streamId(expectedProductUuid).payload(expectedAddProduct).build());
+                .thenReturn(Event.<ProductAdded>builder().streamId(expectedProductUuid).payload(productAdded).build());
 
         // when
         addReceipt(dto -> dto.items(
@@ -75,9 +77,9 @@ public class AddReceiptWithItemsTest extends AddReceiptWithDependenciesBaseTest 
         ));
 
         // then
-        final List<AddReceiptItem> receiptItems = receipt().getItems();
+        final List<AddReceiptItemData> receiptItems = receipt().getItems();
         assertThat(receiptItems)
-                .extracting(AddReceiptItem::getProduct)
+                .extracting(AddReceiptItemData::getProduct)
                 .extracting(AddReceiptItemProduct::getUuid)
                 .containsExactly(expectedProductUuid);
     }

@@ -8,7 +8,7 @@ import java.util.Map;
 
 @Data
 @Builder
-public class Event<T> {
+public class Event {
 
     /**
      * System wide unique event sequence id.
@@ -40,9 +40,9 @@ public class Event<T> {
      *
      * Will be serialized to event specific format, eg. JSON.
      */
-    private T payload;
+    private EventPayload payload;
 
-    public <R> R castPayload(final Class<R> clazz) {
+    public <R extends EventPayload> R castPayload(final Class<R> clazz) {
         return clazz.cast(this.payload);
     }
 

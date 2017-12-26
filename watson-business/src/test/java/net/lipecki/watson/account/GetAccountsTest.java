@@ -19,7 +19,7 @@ public class GetAccountsTest {
     @Before
     public void setUp() {
         this.eventStore = new InMemoryEventStore();
-        this.uut = new GetAccountsQuery(new AccountStore(TestAggregateCombinerWithCacheFactory.of(eventStore)));
+        this.uut = new GetAccountsQuery(new AccountStore(TestAggregateCombinerWithCacheFactory.of(eventStore), new AccountAddedEventHandler()));
     }
 
     @Test
@@ -29,7 +29,8 @@ public class GetAccountsTest {
         // given
         eventStore.storeEvent(
                 Account.ACCOUNT_STREAM,
-                AddAccount.builder()
+                AccountAdded
+                        .builder()
                         .name(expectedAccountName)
                         .build()
         );

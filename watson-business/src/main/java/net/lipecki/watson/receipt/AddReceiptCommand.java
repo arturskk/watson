@@ -5,6 +5,8 @@ import net.lipecki.watson.event.Event;
 import net.lipecki.watson.event.EventStore;
 import org.springframework.stereotype.Service;
 
+import java.util.stream.Collectors;
+
 @Slf4j
 @Service
 public class AddReceiptCommand {
@@ -15,8 +17,32 @@ public class AddReceiptCommand {
         this.eventStore = eventStore;
     }
 
-    public Event<AddReceipt> addReceipt(final AddReceipt addReceipt) {
-        return eventStore.storeEvent(Receipt.RECEIPT_STREAM, addReceipt);
+    public Event addReceipt(final AddReceiptData data) {
+        return eventStore.storeEvent(Receipt.RECEIPT_STREAM, asEventPayload(data));
+    }
+
+    private ReceiptAdded asEventPayload(final AddReceiptData data) {
+        return ReceiptAdded
+                .builder()
+                .accountUuid(data.getAccountUuid())
+                .shopUuid(data.getShopUuid())
+                .categoryUuid(data.getCategoryUuid())
+                .date(data.getDate())
+                .description(data.getDescription())
+                .tags(data.getTags())
+                .items(data.getItems().stream().map(this::asReceiptItemAdded).collect(Collectors.toList()))
+                .build();
+    }
+
+    private ReceiptItemAdded asReceiptItemAdded(final AddReceiptItemData data) {
+        // TODO: move ExpanseCost.of from handler?
+        return ReceiptItemAdded
+                .builder()
+                .productUuid(data.getProductUuid())
+                .amount(data.getAmount())
+                .cost(data.getCost())
+                .tags(data.getTags())
+                .build();
     }
 
 }

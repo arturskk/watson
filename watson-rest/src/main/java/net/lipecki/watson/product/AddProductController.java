@@ -21,10 +21,10 @@ public class AddProductController {
     }
 
     @PostMapping("/product")
-    public Event<AddProduct> addProduct(@Validated @RequestBody AddProductDto dto) {
+    public Event addProduct(@Validated @RequestBody AddProductDto dto) {
         log.info("Request to add product [dto={}]", dto);
         return addProductCommand.addProduct(
-                AddProduct.builder()
+                AddProductData.builder()
                         .name(dto.getName())
                         .categoryUuid(dto.getCategoryUuid())
                         .build()

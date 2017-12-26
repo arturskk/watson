@@ -11,19 +11,22 @@ import java.util.Map;
 
 @Slf4j
 @Service
-public class AddProductEventHandler implements AggregateCombinerHandler<Product> {
+public class ProductAddedEventHandler implements AggregateCombinerHandler<Product, ProductAdded> {
 
     private final GetCategoryQuery categoryQuery;
 
-    public AddProductEventHandler(final GetCategoryQuery categoryQuery) {
+    public ProductAddedEventHandler(final GetCategoryQuery categoryQuery) {
         this.categoryQuery = categoryQuery;
     }
 
     @Override
-    public void accept(final Map<String, Product> collection, final Event<?> event) {
-        final AddProduct addProduct = event.castPayload(AddProduct.class);
+    public Class<ProductAdded> getPayloadClass() {
+        return ProductAdded.class;
+    }
 
-        final Category category = addProduct
+    @Override
+    public void accept(final Map<String, Product> collection, final Event event, final ProductAdded payload) {
+        final Category category = payload
                 .getCategoryUuidOptional()
                 .flatMap(categoryQuery::getCategory)
                 .orElseGet(categoryQuery::getRootCategory);
@@ -32,7 +35,7 @@ public class AddProductEventHandler implements AggregateCombinerHandler<Product>
                 event.getStreamId(),
                 Product.builder()
                         .uuid(event.getStreamId())
-                        .name(addProduct.getName())
+                        .name(payload.getName())
                         .category(category)
                         .build()
         );

@@ -19,7 +19,7 @@ public class GetCategoriesTest {
     @Before
     public void setUp() {
         this.eventStore = new InMemoryEventStore();
-        this.uut = new GetCategoriesQuery(new CategoryStore(TestAggregateCombinerWithCacheFactory.of(eventStore), new AddCategoryEventHandler(), new ModifyCategoryEventHandler()));
+        this.uut = new GetCategoriesQuery(new CategoryStore(TestAggregateCombinerWithCacheFactory.of(eventStore), new CategoryAddedEventHandler(), new CategoryModifiedEventHandler()));
     }
 
     @Test
@@ -38,7 +38,7 @@ public class GetCategoriesTest {
         // given
         eventStore.storeEvent(
                 Category.CATEGORY_STREAM,
-                AddCategory.builder().type(CATEGORY_TYPE).name(expectedCategoryName).build()
+                CategoryAdded.builder().type(CATEGORY_TYPE).name(expectedCategoryName).build()
         );
 
         // when
@@ -57,7 +57,7 @@ public class GetCategoriesTest {
         // given
         eventStore.storeEvent(
                 Category.CATEGORY_STREAM,
-                AddCategory.builder().type(CATEGORY_TYPE).name(expectedCategoryName).build()
+                CategoryAdded.builder().type(CATEGORY_TYPE).name(expectedCategoryName).build()
         );
 
         // when

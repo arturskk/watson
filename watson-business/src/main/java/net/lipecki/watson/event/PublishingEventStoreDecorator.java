@@ -17,26 +17,26 @@ public class PublishingEventStoreDecorator implements EventStore {
     }
 
     @Override
-    public <T> Event<T> storeEvent(final String stream, final T payload) {
-        final Event<T> event = eventStore.storeEvent(stream, payload);
+    public Event storeEvent(final String stream, final EventPayload payload) {
+        final Event event = eventStore.storeEvent(stream, payload);
         this.eventPublisher.publishEvent(event);
         return event;
     }
 
     @Override
-    public <T> Event<T> storeEvent(final String stream, final UUID streamId, final T payload) {
-        final Event<T> event = eventStore.storeEvent(stream, streamId, payload);
+    public Event storeEvent(final String stream, final UUID streamId, final EventPayload payload) {
+        final Event event = eventStore.storeEvent(stream, streamId, payload);
         this.eventPublisher.publishEvent(event);
         return event;
     }
 
     @Override
-    public Stream<Event<?>> getEventsByStream(final List<String> streams) {
+    public Stream<Event> getEventsByStream(final List<String> streams) {
         return eventStore.getEventsByStream(streams);
     }
 
     @Override
-    public Stream<Event<?>> getEvents() {
+    public Stream<Event> getEvents() {
         return eventStore.getEvents();
     }
 

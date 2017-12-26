@@ -29,15 +29,17 @@ public class AddCategoryTest {
         final String categoryName = "Sample category";
 
         // given
-        final AddCategory expectedAddCategory = AddCategory.builder().type(CATEGORY_TYPE).name(categoryName).build();
+        final CategoryAdded expectedAddCategory = CategoryAdded.builder().type(CATEGORY_TYPE).name(categoryName).build();
         when(
                 eventStore.storeEvent(Category.CATEGORY_STREAM, expectedAddCategory)
         ).thenReturn(
-                Event.<AddCategory> builder().streamId(expectedCategoryUuid).build()
+                Event.<CategoryAdded> builder().streamId(expectedCategoryUuid).build()
         );
 
         // when
-        final Event<AddCategory> storedEvent = uut.addCategory(expectedAddCategory);
+        final Event storedEvent = uut.addCategory(
+                AddCategoryData.builder().type(CATEGORY_TYPE).name(categoryName).build()
+        );
 
         // then
         assertThat(storedEvent.getStreamId()).isEqualTo(expectedCategoryUuid);

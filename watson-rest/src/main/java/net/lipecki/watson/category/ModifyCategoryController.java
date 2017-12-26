@@ -22,12 +22,12 @@ public class ModifyCategoryController {
     }
 
     @PutMapping("/category/{uuid}")
-    public Event<ModifyCategory> modifyProduct(
+    public Event modifyProduct(
             @PathVariable final String uuid,
             @Validated @RequestBody final ModifyCategoryDto dto) {
         log.info("Request to modify category [uuid={}, dto={}]", uuid, dto);
         return modifyCategoryCommand.modifyCategory(
-                ModifyCategory
+                ModifyCategoryData
                         .builder()
                         .uuid(uuid)
                         .name(dto.getName())

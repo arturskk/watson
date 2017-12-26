@@ -1,8 +1,10 @@
 package net.lipecki.watson.receipt;
 
-import net.lipecki.watson.category.AddCategory;
+import net.lipecki.watson.category.AddCategoryData;
+import net.lipecki.watson.category.CategoryAdded;
 import net.lipecki.watson.event.Event;
-import net.lipecki.watson.product.AddProduct;
+import net.lipecki.watson.product.AddProductData;
+import net.lipecki.watson.product.ProductAdded;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -28,15 +30,16 @@ public class AddSameProductCategoryOnceTest extends AddReceiptWithDependenciesBa
         receiptItems.add(item(item -> item.product(AddReceiptProductDto.builder().category(addCategoryDto).name(PRODUCT_NAME + "_1").build())));
         receiptItems.add(item(item -> item.product(AddReceiptProductDto.builder().category(addCategoryDto).name(PRODUCT_NAME + "_2").build())));
 
-        when(addProductCommand.addProduct(any(AddProduct.class))).thenReturn(
-                Event.<AddProduct>builder().streamId(PRODUCT_UUID).payload(AddProduct.builder().name(PRODUCT_NAME).categoryUuid(CATEGORY_UUID_1).build()).build()
+        when(addProductCommand.addProduct(any(AddProductData.class))).thenReturn(
+                Event.<ProductAdded>builder().streamId(PRODUCT_UUID).payload(ProductAdded.builder().name(PRODUCT_NAME).categoryUuid(CATEGORY_UUID_1).build()).build()
         );
 
-        final AddCategory expectedAddCategory = AddCategory.builder().type(ReceiptItem.CATEGORY_TYPE).name(CATEGORY_NAME).build();
+        final AddCategoryData expectedAddCategory = AddCategoryData.builder().type(ReceiptItem.CATEGORY_TYPE).name(CATEGORY_NAME).build();
+        final CategoryAdded categoryAdded = CategoryAdded.builder().type(ReceiptItem.CATEGORY_TYPE).name(CATEGORY_NAME).build();
         //noinspection unchecked
         when(addCategoryCommand.addCategory(expectedAddCategory)).thenReturn(
-                Event.<AddCategory>builder().streamId(CATEGORY_UUID_1).payload(expectedAddCategory).build(),
-                Event.<AddCategory>builder().streamId(CATEGORY_UUID_2).payload(expectedAddCategory).build()
+                Event.<CategoryAdded>builder().streamId(CATEGORY_UUID_1).payload(categoryAdded).build(),
+                Event.<CategoryAdded>builder().streamId(CATEGORY_UUID_2).payload(categoryAdded).build()
         );
 
         // when
@@ -44,7 +47,7 @@ public class AddSameProductCategoryOnceTest extends AddReceiptWithDependenciesBa
 
         // then
         assertThat(receipt().getItems())
-                .extracting(AddReceiptItem::getProduct)
+                .extracting(AddReceiptItemData::getProduct)
                 .extracting(AddReceiptItemProduct::getCategoryUuid)
                 .containsExactly(CATEGORY_UUID_1, CATEGORY_UUID_1);
     }

@@ -16,14 +16,14 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-public class AddReceiptHandler implements AggregateCombinerHandler<Receipt> {
+public class ReceiptAddedEventHandler implements AggregateCombinerHandler<Receipt, ReceiptAdded> {
 
     private final GetShopQuery shopQuery;
     private final GetAccountQuery accountQuery;
     private final GetProductQuery productsQuery;
     private final GetCategoryQuery categoryQuery;
 
-    public AddReceiptHandler(
+    public ReceiptAddedEventHandler(
             final GetShopQuery shopQuery,
             final GetAccountQuery accountQuery,
             final GetProductQuery productsQuery,
@@ -35,17 +35,20 @@ public class AddReceiptHandler implements AggregateCombinerHandler<Receipt> {
     }
 
     @Override
-    public void accept(final Map<String, Receipt> collection, final Event<?> event) {
-        final AddReceipt addReceipt = event.castPayload(AddReceipt.class);
+    public Class<ReceiptAdded> getPayloadClass() {
+        return ReceiptAdded.class;
+    }
 
+    @Override
+    public void accept(final Map<String, Receipt> collection, final Event event, final ReceiptAdded payload) {
         final Receipt.ReceiptBuilder receipt = Receipt.builder();
 
         receipt.uuid(event.getStreamId());
-        receipt.date(LocalDate.parse(addReceipt.getDate()));
-        shopQuery.getShop(addReceipt.getShopUuid()).ifPresent(receipt::shop);
-        accountQuery.getAccount(addReceipt.getAccountUuid()).ifPresent(receipt::account);
-        categoryQuery.getCategory(addReceipt.getCategoryUuid()).ifPresent(receipt::category);
-        receipt.items(addReceipt.getItems().stream().map(this::asReceiptItem).collect(Collectors.toList()));
+        receipt.date(LocalDate.parse(payload.getDate()));
+        shopQuery.getShop(payload.getShopUuid()).ifPresent(receipt::shop);
+        accountQuery.getAccount(payload.getAccountUuid()).ifPresent(receipt::account);
+        categoryQuery.getCategory(payload.getCategoryUuid()).ifPresent(receipt::category);
+        receipt.items(payload.getItems().stream().map(this::asReceiptItem).collect(Collectors.toList()));
 
         collection.put(
                 event.getStreamId(),
@@ -53,18 +56,18 @@ public class AddReceiptHandler implements AggregateCombinerHandler<Receipt> {
         );
     }
 
-    private ReceiptItem asReceiptItem(final AddReceiptItem dto) {
+    private ReceiptItem asReceiptItem(final ReceiptItemAdded data) {
         final ReceiptItem.ReceiptItemBuilder item = ReceiptItem.builder();
 
-        item.cost(ExpanseCost.of(dto.getCost()));
+        item.cost(ExpanseCost.of(data.getCost()));
         item.amount(
                 ReceiptItemAmount
                         .builder()
-                        .count(dto.getAmount().getCount())
-                        .unit(AmountUnit.getByAlias(dto.getAmount().getUnit()).orElse(AmountUnit.UNKNOWN))
+                        .count(data.getAmount().getCount())
+                        .unit(AmountUnit.getByAlias(data.getAmount().getUnit()).orElse(AmountUnit.UNKNOWN))
                         .build()
         );
-        productsQuery.getProduct(dto.getProduct().getUuid()).ifPresent(item::product);
+        productsQuery.getProduct(data.getProductUuid()).ifPresent(item::product);
 
         return item.build();
     }

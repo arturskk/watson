@@ -28,16 +28,18 @@ public class AddAccountTest {
         final String expectedAccountUuid = UUID.randomUUID().toString();
 
         // given
-        final AddAccount expectedAddAccount = AddAccount.builder().name(ACCOUNT_NAME).build();
         when(
-                eventStore.storeEvent(Account.ACCOUNT_STREAM, expectedAddAccount)
+                eventStore.storeEvent(
+                        Account.ACCOUNT_STREAM,
+                        AccountAdded.builder().name(ACCOUNT_NAME).build()
+                )
         ).thenReturn(
-                Event.<AddAccount> builder().streamId(expectedAccountUuid).build()
+                Event.<AccountAdded> builder().streamId(expectedAccountUuid).build()
         );
 
         // when
-        final Event<AddAccount> result = uut.addAccount(
-                expectedAddAccount
+        final Event result = uut.addAccount(
+                AddAccountData.builder().name(ACCOUNT_NAME).build()
         );
 
         // then

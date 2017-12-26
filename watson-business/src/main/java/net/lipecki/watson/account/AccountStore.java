@@ -15,18 +15,9 @@ class AccountStore {
 
     private final AggregateCombiner<Account> combiner;
 
-    public AccountStore(final AggregateCombinerFactory aggregateCombinerFactory) {
+    public AccountStore(final AggregateCombinerFactory aggregateCombinerFactory, final AccountAddedEventHandler accountAddedEventHandler) {
         this.combiner = aggregateCombinerFactory.getAggregateCombiner(Collections.singletonList(Account.ACCOUNT_STREAM));
-        combiner.addHandler(
-                AddAccount.class,
-                (collection, event) -> collection.put(
-                        event.getStreamId(),
-                        Account.builder()
-                                .uuid(event.getStreamId())
-                                .name(event.castPayload(AddAccount.class).getName())
-                                .build()
-                )
-        );
+        combiner.addHandler(accountAddedEventHandler);
     }
 
     public List<Account> getAccounts() {

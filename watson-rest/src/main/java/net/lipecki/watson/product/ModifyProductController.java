@@ -22,7 +22,7 @@ public class ModifyProductController {
     }
 
     @PutMapping("/product/{uuid}")
-    public Event<ModifyProduct> modifyProduct(
+    public Event modifyProduct(
             @PathVariable final String uuid,
             @Validated @RequestBody final ModifyProductDto dto) {
         log.info("Request to modify product [uuid={}, dto={}]", uuid, dto);

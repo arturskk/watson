@@ -8,7 +8,7 @@
     <parent>
         <artifactId>watson</artifactId>
         <groupId>net.lipecki.watson</groupId>
-        <version>0.2.1-SNAPSHOT</version>
+        <version>0.2.1</version>
     </parent>
 
     <artifactId>watson-rest</artifactId>
@@ -27,7 +27,6 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
             <optional>true</optional>
         </dependency>
         <dependency>

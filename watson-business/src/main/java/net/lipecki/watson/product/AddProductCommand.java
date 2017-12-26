@@ -15,8 +15,16 @@ public class AddProductCommand {
         this.eventStore = eventStore;
     }
 
-    public Event<AddProduct> addProduct(final AddProduct addProduct) {
-        return this.eventStore.storeEvent(Product.PRODUCT_STREAM, addProduct);
+    public Event addProduct(final AddProductData data) {
+        return this.eventStore.storeEvent(Product.PRODUCT_STREAM, asEventPayload(data));
+    }
+
+    private ProductAdded asEventPayload(final AddProductData data) {
+        return ProductAdded
+                .builder()
+                .name(data.getName())
+                .categoryUuid(data.getCategoryUuid())
+                .build();
     }
 
 }

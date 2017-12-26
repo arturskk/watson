@@ -21,10 +21,11 @@ public class AddAccountController {
     }
 
     @PostMapping("/account")
-    public Event<AddAccount> addAccount(@Validated @RequestBody AddAccountDto dto) {
+    public Event addAccount(@Validated @RequestBody AddAccountDto dto) {
         log.info("Request to add account [dto={}]", dto);
         return addAccountCommand.addAccount(
-                AddAccount.builder()
+                AddAccountData
+                        .builder()
                         .name(dto.getName())
                         .build()
         );

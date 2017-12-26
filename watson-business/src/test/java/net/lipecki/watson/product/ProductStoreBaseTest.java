@@ -19,8 +19,8 @@ public abstract class ProductStoreBaseTest {
         eventStore = new InMemoryEventStore();
         productStore = new ProductStore(
                 TestAggregateCombinerWithCacheFactory.of(eventStore),
-                new AddProductEventHandler(categoryQuery),
-                new ModifyProductEventHandler(categoryQuery)
+                new ProductAddedEventHandler(categoryQuery),
+                new ProductModifiedEventHandler(categoryQuery)
         );
     }
 

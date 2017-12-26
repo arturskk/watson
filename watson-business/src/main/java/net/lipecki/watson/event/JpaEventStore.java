@@ -21,12 +21,12 @@ public class JpaEventStore implements EventStore {
     }
 
     @Override
-    public <T> Event<T> storeEvent(final String stream, final T payload) {
+    public Event storeEvent(final String stream, final EventPayload payload) {
         return storeEvent(stream, UUID.randomUUID(), payload);
     }
 
     @Override
-    public <T> Event<T> storeEvent(final String stream, final UUID streamId, final T payload) {
+    public Event storeEvent(final String stream, final UUID streamId, final EventPayload payload) {
         try {
             final EventEntity entity = EventEntity.builder()
                     .payload(objectMapper.writeValueAsString(payload))
@@ -46,7 +46,7 @@ public class JpaEventStore implements EventStore {
     }
 
     @Override
-    public Stream<Event<?>> getEventsByStream(final List<String> streams) {
+    public Stream<Event> getEventsByStream(final List<String> streams) {
         return this.eventRepository
                 .findByStreamIn(streams)
                 .stream()
@@ -54,14 +54,14 @@ public class JpaEventStore implements EventStore {
     }
 
     @Override
-    public Stream<Event<?>> getEvents() {
+    public Stream<Event> getEvents() {
         return this.eventRepository
                 .findAll()
                 .stream()
                 .map(this::asEvent);
     }
 
-    private <T> Event<T> asEvent(final EventEntity entity) {
+    private <T extends EventPayload> Event asEvent(final EventEntity entity) {
         try {
             final Class<T> payloadClass = (Class<T>) Class.forName(entity.getPayloadClass());
             final T payload = objectMapper.readValue(

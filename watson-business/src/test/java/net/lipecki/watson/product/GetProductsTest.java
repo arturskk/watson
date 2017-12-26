@@ -24,7 +24,8 @@ public class GetProductsTest extends ProductStoreBaseTest {
         // given
         eventStore.storeEvent(
                 Product.PRODUCT_STREAM,
-                AddProduct.builder()
+                ProductAdded
+                        .builder()
                         .name(expectedProductName)
                         .build()
         );

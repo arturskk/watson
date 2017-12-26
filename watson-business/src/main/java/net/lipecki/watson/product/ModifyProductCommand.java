@@ -15,8 +15,17 @@ public class ModifyProductCommand {
         this.eventStore = eventStore;
     }
 
-    public Event<ModifyProduct> modifyProduct(final ModifyProduct modifyProduct) {
-        return this.eventStore.storeEvent(Product.PRODUCT_STREAM, modifyProduct);
+    public Event modifyProduct(final ModifyProduct data) {
+        return this.eventStore.storeEvent(Product.PRODUCT_STREAM, asEventPayload(data));
+    }
+
+    private ProductModified asEventPayload(final ModifyProduct data) {
+        return ProductModified
+                .builder()
+                .uuid(data.getUuid())
+                .name(data.getName())
+                .categoryUuid(data.getCategoryUuid())
+                .build();
     }
 
 }

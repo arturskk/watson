@@ -1,10 +1,13 @@
 package net.lipecki.watson.receipt;
 
 import net.lipecki.watson.WatsonException;
-import net.lipecki.watson.account.AddAccount;
-import net.lipecki.watson.category.AddCategory;
-import net.lipecki.watson.shop.AddShop;
+import net.lipecki.watson.account.AccountAdded;
+import net.lipecki.watson.account.AddAccountData;
+import net.lipecki.watson.category.AddCategoryData;
+import net.lipecki.watson.category.CategoryAdded;
 import net.lipecki.watson.event.Event;
+import net.lipecki.watson.shop.AddShopData;
+import net.lipecki.watson.shop.ShopAdded;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -42,13 +45,13 @@ public class AddReceiptWithOptionalDataTest extends AddReceiptWithDependenciesBa
         // given
         when(
                 addCategoryCommand.addCategory(
-                        AddCategory.builder()
+                        AddCategoryData.builder()
                                 .type(Receipt.CATEGORY_TYPE)
                                 .name(CATEGORY_NAME)
                                 .build()
                 )
         ).thenReturn(
-                Event.<AddCategory> builder().streamId(CATEGORY_UUID).build()
+                Event.<CategoryAdded> builder().streamId(CATEGORY_UUID).build()
         );
 
         // when
@@ -76,9 +79,9 @@ public class AddReceiptWithOptionalDataTest extends AddReceiptWithDependenciesBa
     public void shouldAddReceiptAccountOnTheFly() {
         // given
         when(
-                addAccountCommand.addAccount(AddAccount.builder().name(ACCOUNT_NAME).build())
+                addAccountCommand.addAccount(AddAccountData.builder().name(ACCOUNT_NAME).build())
         ).thenReturn(
-                Event.<AddAccount> builder().streamId(ACCOUNT_UUID).build()
+                Event.<AccountAdded> builder().streamId(ACCOUNT_UUID).build()
         );
 
         // when
@@ -106,9 +109,9 @@ public class AddReceiptWithOptionalDataTest extends AddReceiptWithDependenciesBa
     public void shouldAddReceiptShopOnTheFly() {
         // given
         when(
-                addShopCommand.addShop(AddShop.builder().name(SHOP_NAME).build())
+                addShopCommand.addShop(AddShopData.builder().name(SHOP_NAME).build())
         ).thenReturn(
-                Event.<AddShop> builder().streamId(SHOP_UUID).build()
+                Event.<ShopAdded> builder().streamId(SHOP_UUID).build()
         );
 
         // when
