@@ -2,7 +2,6 @@ package net.lipecki.watson.tools;
 
 import ch.qos.logback.classic.Level;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -18,8 +17,9 @@ public class EventsTableMigrationTool {
 
     public EventsTableMigrationTool(final String[] args) {
         log.info("EventsTableMigrationTool [args={}]", args);
-        this.handlers.add(new ChangeEventTypeNameHandler());
-        this.handlers.add(new ChangePayloadClassHandler());
+//        this.handlers.add(new ChangeEventTypeNameHandler());
+//        this.handlers.add(new ChangePayloadClassHandler());
+//        this.handlers.add(new UpdateAddReceiptProductUuidFromProduct());
     }
 
     public static void main(String[] args) {
