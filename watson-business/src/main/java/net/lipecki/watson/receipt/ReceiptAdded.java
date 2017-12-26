@@ -2,12 +2,13 @@ package net.lipecki.watson.receipt;
 
 import lombok.Builder;
 import lombok.Data;
+import net.lipecki.watson.event.EventPayload;
 
 import java.util.List;
 
 @Data
 @Builder
-public class AddReceipt {
+public class ReceiptAdded implements EventPayload {
 
     private String description;
     private String date;
@@ -15,6 +16,6 @@ public class AddReceipt {
     private String shopUuid;
     private String categoryUuid;
     private List<String> tags;
-    private List<AddReceiptItem> items;
+    private List<ReceiptItemAdded> items;
     
 }

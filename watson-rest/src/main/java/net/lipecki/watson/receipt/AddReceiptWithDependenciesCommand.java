@@ -2,15 +2,15 @@ package net.lipecki.watson.receipt;
 
 import net.lipecki.watson.WatsonException;
 import net.lipecki.watson.WatsonExceptionCode;
-import net.lipecki.watson.account.AddAccount;
 import net.lipecki.watson.account.AddAccountCommand;
-import net.lipecki.watson.category.AddCategory;
+import net.lipecki.watson.account.AddAccountData;
 import net.lipecki.watson.category.AddCategoryCommand;
+import net.lipecki.watson.category.AddCategoryData;
 import net.lipecki.watson.event.Event;
-import net.lipecki.watson.product.AddProduct;
 import net.lipecki.watson.product.AddProductCommand;
-import net.lipecki.watson.shop.AddShop;
+import net.lipecki.watson.product.AddProductData;
 import net.lipecki.watson.shop.AddShopCommand;
+import net.lipecki.watson.shop.AddShopData;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -43,10 +43,10 @@ public class AddReceiptWithDependenciesCommand {
         this.addProductCommand = addProductCommand;
     }
 
-    public Event<AddReceipt> addReceipt(final AddReceiptDto dto) {
+    public Event addReceipt(final AddReceiptDto dto) {
         return addReceiptCommand
                 .addReceipt(
-                        AddReceipt
+                        AddReceiptData
                                 .builder()
                                 .tags(dto.getTags())
                                 .date(dto.getDate())
@@ -59,13 +59,13 @@ public class AddReceiptWithDependenciesCommand {
                 );
     }
 
-    private List<AddReceiptItem> asReceiptItems(final AddReceiptDto dto) {
+    private List<AddReceiptItemData> asReceiptItems(final AddReceiptDto dto) {
         final Map<String, String> addedProductCategories = new HashMap<>();
         final Map<String, AddReceiptItemProduct> addedProducts = new HashMap<>();
         return dto.getItems()
                 .stream()
                 .map(
-                        itemDto -> AddReceiptItem.builder()
+                        itemDto -> AddReceiptItemData.builder()
                                 .cost(itemDto.getCost())
                                 .tags(itemDto.getTags())
                                 .product(getExistingOrCreateProductUuid(addedProducts, addedProductCategories, itemDto))
@@ -111,7 +111,7 @@ public class AddReceiptWithDependenciesCommand {
                             .getCategory()
                             .map(category -> createProductCategoryUuid(addedProductCategories, category))
                             .orElse(null);
-                    final Event<AddProduct> addProductEvent = addProductCommand.addProduct(
+                    final Event addProductEvent = addProductCommand.addProduct(
                             asAddProduct(productName, categoryUuid)
                     );
                     return AddReceiptItemProduct
@@ -134,8 +134,8 @@ public class AddReceiptWithDependenciesCommand {
                 );
     }
 
-    private AddProduct asAddProduct(final String key, final String categoryUuid) {
-        return AddProduct.builder()
+    private AddProductData asAddProduct(final String key, final String categoryUuid) {
+        return AddProductData.builder()
                 .name(key)
                 .categoryUuid(categoryUuid)
                 .build();
@@ -150,8 +150,8 @@ public class AddReceiptWithDependenciesCommand {
         );
     }
 
-    private Function<AddReceiptCategoryDto, Optional<AddCategory>> asAddCategory(final String categoryType) {
-        return dto -> dto.getName().map(name -> AddCategory.builder().type(categoryType).name(name).build());
+    private Function<AddReceiptCategoryDto, Optional<AddCategoryData>> asAddCategory(final String categoryType) {
+        return dto -> dto.getName().map(name -> AddCategoryData.builder().type(categoryType).name(name).build());
     }
 
     private String getAccountUuid(final AddReceiptAccountDto dto) {
@@ -163,8 +163,8 @@ public class AddReceiptWithDependenciesCommand {
         );
     }
 
-    private Optional<AddAccount> asAddAccount(final AddReceiptAccountDto dto) {
-        return dto.getName().map(name -> AddAccount.builder().name(name).build());
+    private Optional<AddAccountData> asAddAccount(final AddReceiptAccountDto dto) {
+        return dto.getName().map(name -> AddAccountData.builder().name(name).build());
     }
 
     private String getShopUuid(final AddReceiptShopDto dto) {
@@ -176,15 +176,15 @@ public class AddReceiptWithDependenciesCommand {
         );
     }
 
-    private Optional<AddShop> asAddShop(final AddReceiptShopDto dto) {
-        return dto.getName().map(name -> AddShop.builder().name(name).build());
+    private Optional<AddShopData> asAddShop(final AddReceiptShopDto dto) {
+        return dto.getName().map(name -> AddShopData.builder().name(name).build());
     }
 
     private <T, M> String getUuidOrCreateObject(
             final T dto,
             final Function<T, Optional<String>> uuidExtractor,
             final Function<T, Optional<M>> objectMapper,
-            final Function<M, Event<M>> uuidGenerator) {
+            final Function<M, Event> uuidGenerator) {
         final Optional<String> existingUuid = uuidExtractor.apply(dto);
         if (existingUuid.isPresent()) {
             return existingUuid.get();

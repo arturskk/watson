@@ -29,16 +29,16 @@ public class AddShopTest {
         final String expectedShopUuid = UUID.randomUUID().toString();
 
         // given
-        final AddShop expectedAddShop = AddShop.builder().name(SHOP_NAME).build();
+        final ShopAdded expectedAddShop = ShopAdded.builder().name(SHOP_NAME).build();
         when(
                 eventStore.storeEvent(Shop.SHOP_STREAM, expectedAddShop)
         ).thenReturn(
-                Event.<AddShop> builder().streamId(expectedShopUuid).build()
+                Event.<ShopAdded> builder().streamId(expectedShopUuid).build()
         );
 
         // when
-        final Event<AddShop> result = uut.addShop(
-                expectedAddShop
+        final Event result = uut.addShop(
+                AddShopData.builder().name(SHOP_NAME).build()
         );
 
         // then

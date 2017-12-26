@@ -21,10 +21,10 @@ public class AddCategoryController {
     }
 
     @PostMapping("/category")
-    public Event<AddCategory> addCategory(@Validated @RequestBody AddCategoryDto dto) {
+    public Event addCategory(@Validated @RequestBody AddCategoryDto dto) {
         log.info("Request to add category [dto={}]", dto);
         return addCategoryCommand.addCategory(
-                AddCategory.builder()
+                AddCategoryData.builder()
                         .type(dto.getType())
                         .name(dto.getName())
                         .parentUuid(dto.getParentUuid())

@@ -15,8 +15,17 @@ public class ModifyCategoryCommand {
         this.eventStore = eventStore;
     }
 
-    public Event<ModifyCategory> modifyCategory(final ModifyCategory modifyCategory) {
-        return this.eventStore.storeEvent(Category.CATEGORY_STREAM, modifyCategory);
+    public Event modifyCategory(final ModifyCategoryData data) {
+        return this.eventStore.storeEvent(Category.CATEGORY_STREAM, asEventPayload(data));
+    }
+
+    private CategoryModified asEventPayload(final ModifyCategoryData data) {
+        return CategoryModified
+                .builder()
+                .uuid(data.getUuid())
+                .parentUuid(data.getParentUuid())
+                .name(data.getName())
+                .build();
     }
 
 }

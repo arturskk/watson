@@ -21,10 +21,11 @@ public class AddShopController {
     }
 
     @PostMapping("/shop")
-    public Event<AddShop> addShop(@Validated @RequestBody AddShopDto dto) {
+    public Event addShop(@Validated @RequestBody AddShopDto dto) {
         log.info("Request to add shop [dto={}]", dto);
         return addShopCommand.addShop(
-                AddShop.builder()
+                AddShopData
+                        .builder()
                         .name(dto.getName())
                         .build()
         );

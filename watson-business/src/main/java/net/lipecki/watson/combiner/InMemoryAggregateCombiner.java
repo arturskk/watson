@@ -3,6 +3,7 @@ package net.lipecki.watson.combiner;
 import lombok.extern.slf4j.Slf4j;
 import net.lipecki.watson.WatsonException;
 import net.lipecki.watson.event.Event;
+import net.lipecki.watson.event.EventPayload;
 import net.lipecki.watson.event.EventStore;
 
 import java.util.Comparator;
@@ -25,8 +26,7 @@ public class InMemoryAggregateCombiner<T> implements AggregateCombiner<T> {
     private final EventStore eventStore;
     private final List<String> streams;
     private final Supplier<Map<String, T>> stateInitializer;
-    private final Map<String, AggregateCombinerHandler<T>> handlerMapping = new HashMap<>();
-    private boolean ignoreMissingEventTypes = false;
+    private final Map<String, AggregateCombinerHandler<T, ? extends EventPayload>> handlerMapping = new HashMap<>();
 
     InMemoryAggregateCombiner(final EventStore eventStore, final List<String> streams) {
         this(eventStore, streams, HashMap::new);
@@ -39,23 +39,18 @@ public class InMemoryAggregateCombiner<T> implements AggregateCombiner<T> {
     }
 
     @Override
-    public void addHandler(final Class<?> eventClass, final AggregateCombinerHandler<T> handler) {
+    public void addHandler(final AggregateCombinerHandler<T, ? extends EventPayload> handler) {
         this.handlerMapping.put(
-                eventClass.getTypeName(),
+                handler.getPayloadClass().getTypeName(),
                 handler
         );
-    }
-
-    @Override
-    public void setIgnoreMissingEventTypes(final boolean ignoreMissingEventTypes) {
-        this.ignoreMissingEventTypes = ignoreMissingEventTypes;
     }
 
     @Override
     public Map<String, T> get() {
         log.debug("Combining streams [streams={}]", this.streams);
 
-        final List<Event<?>> events = this.eventStore
+        final List<Event> events = this.eventStore
                 .getEventsByStream(this.streams)
                 .sorted(Comparator.comparing(Event::getSequenceId))
                 .collect(Collectors.toList());
@@ -63,20 +58,26 @@ public class InMemoryAggregateCombiner<T> implements AggregateCombiner<T> {
 
         final Map<String, T> result = this.stateInitializer.get();
 
-        for (final Event<?> event : events) {
+        for (final Event event : events) {
             final String eventType = event.getType();
-            if (this.handlerMapping.containsKey(eventType)) {
-                final AggregateCombinerHandler<T> eventHandler = this.handlerMapping.get(eventType);
-                try {
-                    eventHandler.accept(result, event);
-                } catch (final Exception ex) {
-                    log.warn("Event processing skipped due to handler exception [event={}]", event, ex);
-                }
-            } else if (!this.ignoreMissingEventTypes) {
+            final AggregateCombinerHandler<T, ? extends EventPayload> eventHandler = this.handlerMapping.get(eventType);
+            if (eventHandler == null) {
                 throw WatsonException
                         .of("Missing event handler for streams combiner")
                         .with("streams", this.streams)
                         .with("missingEventType", eventType);
+            } else if (!eventHandler.canHandle(event)) {
+                throw WatsonException
+                        .of("Incompatible missing handle for event type!")
+                        .with("streams", this.streams)
+                        .with("missingEventType", eventType)
+                        .with("event", event);
+            } else {
+                try {
+                    eventHandler.acceptWithCheck(result, event);
+                } catch (final Exception ex) {
+                    log.warn("Event processing skipped due to handler exception [event={}]", event, ex);
+                }
             }
         }
 

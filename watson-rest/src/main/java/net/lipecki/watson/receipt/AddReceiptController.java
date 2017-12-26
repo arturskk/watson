@@ -22,9 +22,8 @@ public class AddReceiptController {
     }
 
     @PostMapping("/receipt")
-    public Event<AddReceipt> addReceipt(@Valid @RequestBody final AddReceiptDto addReceipt) {
+    public Event addReceipt(@Valid @RequestBody final AddReceiptDto addReceipt) {
         log.info("Request to add new receipt [addReceipt={}]", addReceipt);
-
         return this.addReceiptWithDependenciesCommand.addReceipt(addReceipt);
     }
 

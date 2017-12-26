@@ -15,18 +15,9 @@ class ShopStore {
 
     private final AggregateCombiner<Shop> combiner;
 
-    public ShopStore(final AggregateCombinerFactory aggregateCombinerFactory) {
+    public ShopStore(final AggregateCombinerFactory aggregateCombinerFactory, final ShopAddedEventHandler shopAddedEventHandler) {
         this.combiner = aggregateCombinerFactory.getAggregateCombiner(Collections.singletonList(Shop.SHOP_STREAM));
-        this.combiner.addHandler(
-                AddShop.class,
-                (collection, event) -> collection.put(
-                        event.getStreamId(),
-                        Shop.builder()
-                                .uuid(event.getStreamId())
-                                .name(event.castPayload(AddShop.class).getName())
-                                .build()
-                )
-        );
+        this.combiner.addHandler(shopAddedEventHandler);
     }
 
     public List<Shop> getShops() {

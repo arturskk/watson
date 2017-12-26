@@ -19,11 +19,11 @@ class CategoryStore {
 
     public CategoryStore(
             final AggregateCombinerFactory aggregateCombinerFactory,
-            final AddCategoryEventHandler addCategoryEventHandler,
-            final ModifyCategoryEventHandler modifyCategoryEventHandler) {
+            final CategoryAddedEventHandler categoryAddedEventHandler,
+            final CategoryModifiedEventHandler categoryModifiedEventHandler) {
         this.combiner = aggregateCombinerFactory.getAggregateCombiner(Collections.singletonList(Category.CATEGORY_STREAM), CategoryStore::rootCategoryInitializer);
-        this.combiner.addHandler(AddCategory.class, addCategoryEventHandler);
-        this.combiner.addHandler(ModifyCategory.class, modifyCategoryEventHandler);
+        this.combiner.addHandler(categoryAddedEventHandler);
+        this.combiner.addHandler(categoryModifiedEventHandler);
     }
 
     public List<Category> getCategories() {

@@ -42,7 +42,7 @@ public abstract class AddReceiptWithDependenciesBaseTest {
     AddProductCommand addProductCommand;
 
     private AddReceiptWithDependenciesCommand uut;
-    private ArgumentCaptor<AddReceipt> addReceiptCaptor;
+    private ArgumentCaptor<AddReceiptData> addReceiptCaptor;
 
     @Before
     public void setUp() {
@@ -51,11 +51,11 @@ public abstract class AddReceiptWithDependenciesBaseTest {
         this.addAccountCommand = mock(AddAccountCommand.class);
         this.addCategoryCommand = mock(AddCategoryCommand.class);
         this.addProductCommand = mock(AddProductCommand.class);
-        this.addReceiptCaptor = ArgumentCaptor.forClass(AddReceipt.class);
+        this.addReceiptCaptor = ArgumentCaptor.forClass(AddReceiptData.class);
         when(
                 this.addReceiptCommand.addReceipt(this.addReceiptCaptor.capture())
         ).thenReturn(
-                Event.<AddReceipt>builder().streamId(RECEIPT_UUID).build()
+                Event.<ReceiptAdded>builder().streamId(RECEIPT_UUID).build()
         );
 
         this.uut = new AddReceiptWithDependenciesCommand(
@@ -75,7 +75,7 @@ public abstract class AddReceiptWithDependenciesBaseTest {
      * @param consumer - used to extend attributes of minimal receipt dto
      * @return created event for add receipt dto
      */
-    Event<AddReceipt> addReceipt(final Consumer<AddReceiptDto.AddReceiptDtoBuilder> consumer) {
+    Event addReceipt(final Consumer<AddReceiptDto.AddReceiptDtoBuilder> consumer) {
         final AddReceiptDto.AddReceiptDtoBuilder dtoBuilder = AddReceiptDto.builder();
 
         dtoBuilder.description(StringUtils.EMPTY);
@@ -89,7 +89,7 @@ public abstract class AddReceiptWithDependenciesBaseTest {
         return uut.addReceipt(dtoBuilder.build());
     }
 
-    AddReceipt receipt() {
+    AddReceiptData receipt() {
         return addReceiptCaptor.getValue();
     }
 

@@ -13,8 +13,17 @@ public class AddCategoryCommand {
         this.eventStore = eventStore;
     }
 
-    public Event<AddCategory> addCategory(final AddCategory addCategory) {
-        return eventStore.storeEvent(Category.CATEGORY_STREAM, addCategory);
+    public Event addCategory(final AddCategoryData data) {
+        return eventStore.storeEvent(Category.CATEGORY_STREAM, asEventPayload(data));
+    }
+
+    private CategoryAdded asEventPayload(final AddCategoryData data) {
+        return CategoryAdded
+                .builder()
+                .name(data.getName())
+                .type(data.getType())
+                .parentUuid(data.getParentUuid())
+                .build();
     }
 
 }

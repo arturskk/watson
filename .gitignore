@@ -4,4 +4,5 @@ node_modules/
 *.iml
 .idea/
 *.mv.db
+*.trace.db
 events.log

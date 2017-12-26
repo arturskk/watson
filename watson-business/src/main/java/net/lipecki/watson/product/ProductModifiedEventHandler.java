@@ -10,23 +10,26 @@ import java.util.Map;
 
 @Slf4j
 @Service
-public class ModifyProductEventHandler implements AggregateCombinerHandler<Product> {
+public class ProductModifiedEventHandler implements AggregateCombinerHandler<Product, ProductModified> {
 
     private final GetCategoryQuery categoryQuery;
 
-    public ModifyProductEventHandler(final GetCategoryQuery categoryQuery) {
+    public ProductModifiedEventHandler(final GetCategoryQuery categoryQuery) {
         this.categoryQuery = categoryQuery;
     }
 
     @Override
-    public void accept(final Map<String, Product> collection, final Event<?> event) {
-        final ModifyProduct modifyProduct = event.castPayload(ModifyProduct.class);
+    public Class<ProductModified> getPayloadClass() {
+        return ProductModified.class;
+    }
 
-        final Product product = collection.get(modifyProduct.getUuid());
-        modifyProduct
+    @Override
+    public void accept(final Map<String, Product> collection, final Event event, final ProductModified payload) {
+        final Product product = collection.get(payload.getUuid());
+        payload
                 .getNameOptional()
                 .ifPresent(product::setName);
-        modifyProduct
+        payload
                 .getCategoryUuidOptional()
                 .flatMap(categoryQuery::getCategory)
                 .ifPresent(product::setCategory);

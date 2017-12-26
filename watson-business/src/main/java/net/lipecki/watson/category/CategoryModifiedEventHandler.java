@@ -9,16 +9,20 @@ import java.util.Map;
 
 @Slf4j
 @Service
-public class ModifyCategoryEventHandler implements AggregateCombinerHandler<Category> {
+public class CategoryModifiedEventHandler implements AggregateCombinerHandler<Category, CategoryModified> {
 
     @Override
-    public void accept(Map<String, Category> collection, Event<?> event) {
-        final ModifyCategory modifyCategory = event.castPayload(ModifyCategory.class);
-        final Category category = collection.get(modifyCategory.getUuid());
-        modifyCategory
+    public Class<CategoryModified> getPayloadClass() {
+        return CategoryModified.class;
+    }
+
+    @Override
+    public void accept(final Map<String, Category> collection, final Event event, final CategoryModified payload) {
+        final Category category = collection.get(payload.getUuid());
+        payload
                 .getNameOptional()
                 .ifPresent(category::setName);
-        modifyCategory
+        payload
                 .getParentUuidOptional()
                 .map(collection::get)
                 .ifPresent(Category.linkToParent(category));

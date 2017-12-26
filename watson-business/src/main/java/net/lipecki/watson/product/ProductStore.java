@@ -17,11 +17,11 @@ class ProductStore {
 
     public ProductStore(
             final AggregateCombinerFactory aggregateCombinerFactory,
-            final AddProductEventHandler addProductEventHandler,
-            final ModifyProductEventHandler modifyProductEventHandler) {
+            final ProductAddedEventHandler productAddedEventHandler,
+            final ProductModifiedEventHandler productModifiedEventHandler) {
         this.combiner = aggregateCombinerFactory.getAggregateCombiner(Collections.singletonList(Product.PRODUCT_STREAM));
-        this.combiner.addHandler(AddProduct.class, addProductEventHandler);
-        this.combiner.addHandler(ModifyProduct.class, modifyProductEventHandler);
+        this.combiner.addHandler(productAddedEventHandler);
+        this.combiner.addHandler(productModifiedEventHandler);
     }
 
     public List<Product> getProducts() {

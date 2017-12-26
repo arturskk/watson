@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 @Builder
-public class AddReceiptItem {
+public class AddReceiptItemData {
 
     private AddReceiptItemProduct product;
     private String productUuid;
@@ -22,7 +22,7 @@ public class AddReceiptItem {
         } else if (product != null) {
             return this.product.getUuid();
         } else {
-            throw WatsonException.of("AddReceiptItem without any product uuid!");
+            throw WatsonException.of("AddReceiptItemData without any product uuid!");
         }
     }
 

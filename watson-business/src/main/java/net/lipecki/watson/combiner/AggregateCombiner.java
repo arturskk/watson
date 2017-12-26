@@ -1,5 +1,7 @@
 package net.lipecki.watson.combiner;
 
+import net.lipecki.watson.event.EventPayload;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -12,8 +14,6 @@ public interface AggregateCombiner<T> {
 
     Map<String, T> get();
 
-    void addHandler(final Class<?> eventClass, final AggregateCombinerHandler<T> handler);
-
-    void setIgnoreMissingEventTypes(final boolean ignoreMissingEventTypes);
+    void addHandler(final AggregateCombinerHandler<T, ? extends EventPayload> handler);
 
 }

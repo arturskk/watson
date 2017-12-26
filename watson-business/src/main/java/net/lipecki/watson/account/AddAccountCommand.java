@@ -13,8 +13,15 @@ public class AddAccountCommand {
         this.eventStore = eventStore;
     }
 
-    public Event<AddAccount> addAccount(final AddAccount addAccount) {
-        return this.eventStore.storeEvent(Account.ACCOUNT_STREAM, addAccount);
+    public Event addAccount(final AddAccountData data) {
+        return this.eventStore.storeEvent(Account.ACCOUNT_STREAM, asEventPayload(data));
+    }
+
+    private AccountAdded asEventPayload(final AddAccountData data) {
+        return AccountAdded
+                .builder()
+                .name(data.getName())
+                .build();
     }
 
 }

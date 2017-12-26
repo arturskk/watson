@@ -13,8 +13,15 @@ public class AddShopCommand {
         this.eventStore = eventStore;
     }
 
-    public Event<AddShop> addShop(final AddShop addShop) {
-        return this.eventStore.storeEvent(Shop.SHOP_STREAM, addShop);
+    public Event addShop(final AddShopData data) {
+        return this.eventStore.storeEvent(Shop.SHOP_STREAM, asEventPayload(data));
+    }
+
+    private ShopAdded asEventPayload(final AddShopData data) {
+        return ShopAdded
+                .builder()
+                .name(data.getName())
+                .build();
     }
 
 }

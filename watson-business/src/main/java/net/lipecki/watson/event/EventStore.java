@@ -6,12 +6,12 @@ import java.util.stream.Stream;
 
 public interface EventStore {
 
-    <T> Event<T> storeEvent(final String stream, final T payload);
+    Event storeEvent(final String stream, final EventPayload payload);
 
-    <T> Event<T> storeEvent(final String stream, final UUID streamId, final T payload);
+    Event storeEvent(final String stream, final UUID streamId, final EventPayload payload);
 
-    Stream<Event<?>> getEventsByStream(final List<String> streams);
+    Stream<Event> getEventsByStream(final List<String> streams);
 
-    Stream<Event<?>> getEvents();
+    Stream<Event> getEvents();
 
 }

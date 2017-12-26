@@ -1,5 +1,6 @@
 package net.lipecki.watson.combiner;
 
+import net.lipecki.watson.event.EventPayload;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 
@@ -31,13 +32,8 @@ public class AggregateCombinerCacheDecorator<T> implements AggregateCombiner<T> 
     }
 
     @Override
-    public void addHandler(final Class<?> eventType, final AggregateCombinerHandler<T> handler) {
-        delegate.addHandler(eventType, handler);
-    }
-
-    @Override
-    public void setIgnoreMissingEventTypes(final boolean ignoreMissingEventTypes) {
-        delegate.setIgnoreMissingEventTypes(ignoreMissingEventTypes);
+    public void addHandler(final AggregateCombinerHandler<T, ? extends EventPayload> handler) {
+        delegate.addHandler(handler);
     }
 
     private String getCacheKey() {

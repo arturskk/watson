@@ -2,12 +2,13 @@ package net.lipecki.watson.category;
 
 import lombok.Builder;
 import lombok.Data;
+import net.lipecki.watson.event.EventPayload;
 
 import java.util.Optional;
 
 @Data
 @Builder
-public class ModifyCategory {
+public class CategoryModified implements EventPayload {
 
     private String type;
     private String uuid;

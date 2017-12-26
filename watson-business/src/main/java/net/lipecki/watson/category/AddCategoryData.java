@@ -7,14 +7,10 @@ import java.util.Optional;
 
 @Data
 @Builder
-public class AddCategory {
+public class AddCategoryData {
 
     private String type;
     private String name;
     private String parentUuid;
-
-    public Optional<String> getParentUuidOptional() {
-        return Optional.ofNullable(parentUuid);
-    }
 
 }

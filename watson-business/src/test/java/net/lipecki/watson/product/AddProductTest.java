@@ -30,16 +30,16 @@ public class AddProductTest {
         final String expectedProductUuid = UUID.randomUUID().toString();
 
         // given
-        final AddProduct expectedAddProduct = AddProduct.builder().name(PRODUCT_NAME).build();
+        final ProductAdded expectedAddProduct = ProductAdded.builder().name(PRODUCT_NAME).build();
         when(
                 eventStore.storeEvent(Product.PRODUCT_STREAM, expectedAddProduct)
         ).thenReturn(
-                Event.<AddProduct> builder().streamId(expectedProductUuid).build()
+                Event.<ProductAdded> builder().streamId(expectedProductUuid).build()
         );
 
         // when
-        final Event<AddProduct> result = uut.addProduct(
-                expectedAddProduct
+        final Event result = uut.addProduct(
+                AddProductData.builder().name(PRODUCT_NAME).build()
         );
 
         // then
