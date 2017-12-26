@@ -60,6 +60,7 @@ public class AddReceiptWithDependenciesCommand {
     }
 
     private List<AddReceiptItem> asReceiptItems(final AddReceiptDto dto) {
+        final Map<String, String> addedProductCategories = new HashMap<>();
         final Map<String, AddReceiptItemProduct> addedProducts = new HashMap<>();
         return dto.getItems()
                 .stream()
@@ -67,7 +68,7 @@ public class AddReceiptWithDependenciesCommand {
                         itemDto -> AddReceiptItem.builder()
                                 .cost(itemDto.getCost())
                                 .tags(itemDto.getTags())
-                                .product(getExistingOrCreateProductUuid(addedProducts, itemDto))
+                                .product(getExistingOrCreateProductUuid(addedProducts, addedProductCategories, itemDto))
                                 .amount(
                                         AddReceiptItemAmount.builder()
                                                 .count(itemDto.getAmount().getCount())
@@ -88,26 +89,27 @@ public class AddReceiptWithDependenciesCommand {
      * - product uuid used to create product within same receipt
      * </p>
      *
-     * @param addedProducts - products added within single add receipt request
-     * @param itemDto       - add receipt item dto
+     * @param addedProducts          - products added within single add receipt request
+     * @param addedProductCategories - product categories added within single add receipt request
+     * @param itemDto                - add receipt item dto
      * @return product for receipt item
      */
-    private AddReceiptItemProduct getExistingOrCreateProductUuid(final Map<String, AddReceiptItemProduct> addedProducts, final AddReceiptItemDto itemDto) {
+    private AddReceiptItemProduct getExistingOrCreateProductUuid(final Map<String, AddReceiptItemProduct> addedProducts, final Map<String, String> addedProductCategories, final AddReceiptItemDto itemDto) {
         final AddReceiptProductDto product = itemDto.getProduct();
         return product
                 .getUuid()
                 .map(uuid -> AddReceiptItemProduct.builder().uuid(uuid).build())
-                .orElseGet(createProduct(addedProducts, product));
+                .orElseGet(createProduct(addedProducts, addedProductCategories, product));
 
     }
 
-    private Supplier<AddReceiptItemProduct> createProduct(final Map<String, AddReceiptItemProduct> addedProducts, final AddReceiptProductDto product) {
+    private Supplier<AddReceiptItemProduct> createProduct(final Map<String, AddReceiptItemProduct> addedProducts, final Map<String, String> addedProductCategories, final AddReceiptProductDto product) {
         return () -> addedProducts.computeIfAbsent(
                 product.getName().orElseThrow(WatsonException.supplier("Can't create receipt item product when name is missing")),
                 productName -> {
                     final String categoryUuid = product
                             .getCategory()
-                            .map(category -> getCategoryUuid(ReceiptItem.CATEGORY_TYPE, category))
+                            .map(category -> createProductCategoryUuid(addedProductCategories, category))
                             .orElse(null);
                     final Event<AddProduct> addProductEvent = addProductCommand.addProduct(
                             asAddProduct(productName, categoryUuid)
@@ -119,6 +121,17 @@ public class AddReceiptWithDependenciesCommand {
                             .build();
                 }
         );
+    }
+
+    private String createProductCategoryUuid(final Map<String, String> addedProductCategories, final AddReceiptCategoryDto category) {
+        return category
+                .getUuid()
+                .orElseGet(
+                        () -> addedProductCategories.computeIfAbsent(
+                                category.getName().orElseThrow(WatsonException.supplier("Can't create category without neither uuid, nor name")),
+                                categoryName -> getCategoryUuid(ReceiptItem.CATEGORY_TYPE, category)
+                        )
+                );
     }
 
     private AddProduct asAddProduct(final String key, final String categoryUuid) {
