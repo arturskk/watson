@@ -8,7 +8,7 @@
     <parent>
         <artifactId>watson</artifactId>
         <groupId>net.lipecki.watson</groupId>
-        <version>0.1.14-SNAPSHOT</version>
+        <version>0.2.0</version>
     </parent>
 
     <artifactId>watson-business</artifactId>
