@@ -6,4 +6,8 @@ ws-report-category-item {
   .description {
     cursor: pointer;
   }
+  .category-summary {
+    font-style: italic;
+    color: lighten($font-color, 40);
+  }
 }

@@ -17,6 +17,8 @@ import {ReceiptService} from './receipt/receipt.service';
 import {ReceiptAddComponent} from './receipt/add/receipt-add.component';
 import {ReportCategoryComponent} from './report/category/report-category.component';
 import {ReportCategoryItemComponent} from './report/category/report-category-item.component';
+import { ButtonComponent } from './widgets/button/button.component';
+import { ButtonFlatComponent } from './widgets/button-flat/button-flat.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,9 @@ import {ReportCategoryItemComponent} from './report/category/report-category-ite
     ReportCategoryItemComponent,
     NavbarComponent,
     AppComponent,
-    PanelComponent
+    PanelComponent,
+    ButtonComponent,
+    ButtonFlatComponent
   ],
   imports: [
     BrowserModule,

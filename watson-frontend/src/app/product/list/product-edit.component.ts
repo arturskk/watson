@@ -6,20 +6,25 @@ import {ObjectsUtil} from '../../util/objects-util';
 @Component({
   selector: 'ws-product-edit',
   template: `
-    <input [(ngModel)]="value.name" placeholder="Nazwa"/>
-    <ws-select
-      [(ngModel)]="value.category"
-      [data]="categories"
-      [displayField]="'name'"
-      [allowNewValues]="false"
-      [placeholder]="'Kategoria'">
-      <ng-template let-item let-markSearchText="markSearchText" let-newItem="newItem" #listItem>
-        <span [innerHTML]="markSearchText.call(undefined, item.name)"></span>
-      </ng-template>
-    </ws-select>
-    <a (click)="resetClicked()" *ngIf="resettable">(wyczyść)</a>
-    <a (click)="cancelClicked()" *ngIf="cancelable">(anuluj)</a>
-    <a (click)="saveClicked()">(zapisz)</a>
+    <div class="edit">
+      <input class="product-name" [(ngModel)]="value.name" placeholder="Nazwa"/>
+      <ws-select
+        class="product-category"
+        [(ngModel)]="value.category"
+        [data]="categories"
+        [displayField]="'name'"
+        [allowNewValues]="false"
+        [placeholder]="'Kategoria'">
+        <ng-template let-item let-markSearchText="markSearchText" let-newItem="newItem" #listItem>
+          <span [innerHTML]="markSearchText.call(undefined, item.name)"></span>
+        </ng-template>
+      </ws-select>
+    </div>
+    <div class="actions">
+      <ws-button-flat (click)="resetClicked()" *ngIf="resettable">wyczyść</ws-button-flat>
+      <ws-button-flat (click)="cancelClicked()" *ngIf="cancelable">anuluj</ws-button-flat>
+      <ws-button-flat (click)="saveClicked()">zapisz</ws-button-flat>
+    </div>
   `
 })
 export class ProductEditComponent {

@@ -6,19 +6,21 @@ import {ModifyEvent} from '../modify-event';
 @Component({
   selector: 'ws-product-list-item',
   template: `
-    <div *ngIf="state == ItemState.SUMMARY">
-      {{product.name}} ({{product.category.path}})
-      <a (click)="editClicked()">(edytuj)</a>
-      <!--<a (click)="deleteClicked()">(usuń)</a>-->
-    </div>
-    <div *ngIf="state == ItemState.EDIT">
+    <ng-container *ngIf="state == ItemState.SUMMARY">
+      <div class="item-summary">{{product.name}} ({{product.category.path}})</div>
+      <div class="item-actions">
+        <ws-button-flat (click)="editClicked()">edytuj</ws-button-flat>
+        <!--<ws-button-flat (click)="deleteClicked()">usuń</ws-button-flat>-->
+      </div>
+    </ng-container>
+    <ng-container *ngIf="state == ItemState.EDIT">
       <ws-product-edit
         [categories]="categories"
         [product]="product"
         (onCancel)="cancelClicked()"
         (onSave)="saveClicked($event)">
       </ws-product-edit>
-    </div>
+    </ng-container>
   `
 })
 export class ProductListItemComponent {

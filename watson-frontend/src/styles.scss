@@ -1,8 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 
+// libs
+
 // theme
 @import 'theme/palette';
 @import 'theme/variables';
+@import 'theme/mixins';
 @import 'theme/reboot';
 @import 'theme/links';
 @import 'theme/typography';
@@ -14,6 +17,8 @@ html, body {
 // widgets
 @import 'app/widgets/panel/panel.component';
 @import 'app/widgets/select/select.component';
+@import 'app/widgets/button/button.component';
+@import 'app/widgets/button-flat/button-flat.component';
 
 // components
 @import 'app/app.component';
@@ -23,3 +28,4 @@ html, body {
 @import 'app/report/category/report-category.component';
 @import 'app/report/category/report-category-item.component';
 @import 'app/product/list/product-edit.component';
+@import 'app/product/list/product-list-item.component';

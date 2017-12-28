@@ -1,0 +1,9 @@
+ws-button-flat {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  cursor: pointer;
+  padding: 0 8px;
+  @include link-color-with-hover();
+}

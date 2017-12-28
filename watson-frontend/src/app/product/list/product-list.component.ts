@@ -23,13 +23,12 @@ import {DiffsUtil} from '../../util/diffs-util';
     <ws-panel>
       <h2>Lista produktów</h2>
       <div>
-        <div *ngFor="let product of products">
-          <ws-product-list-item
-            (onSave)="onItemChange($event)"
-            [categories]="categories"
-            [product]="product">
-          </ws-product-list-item>
-        </div>
+        <ws-product-list-item
+          *ngFor="let product of products"
+          (onSave)="onItemChange($event)"
+          [categories]="categories"
+          [product]="product">
+        </ws-product-list-item>
       </div>
     </ws-panel>
   `

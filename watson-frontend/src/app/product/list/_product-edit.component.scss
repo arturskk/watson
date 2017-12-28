@@ -1,3 +1,19 @@
 ws-product-edit {
   display: flex;
+  flex-direction: row;
+  .edit {
+    display: flex;
+    flex: 1;
+    .product-name {
+      flex: 1;
+    }
+    .product-category {
+      flex: 1;
+    }
+  }
+  .actions {
+    display: flex;
+    min-width: 150px;
+    justify-content: flex-end;
+  }
 }
