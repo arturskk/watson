@@ -32,8 +32,7 @@ import {DiffsUtil} from '../../util/diffs-util';
         </div>
       </div>
     </ws-panel>
-  `,
-  styles: []
+  `
 })
 export class ProductListComponent implements OnInit {
 

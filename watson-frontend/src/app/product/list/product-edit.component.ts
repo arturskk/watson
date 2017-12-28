@@ -20,14 +20,7 @@ import {ObjectsUtil} from '../../util/objects-util';
     <a (click)="resetClicked()" *ngIf="resettable">(wyczyść)</a>
     <a (click)="cancelClicked()" *ngIf="cancelable">(anuluj)</a>
     <a (click)="saveClicked()">(zapisz)</a>
-  `,
-  styles: [
-      `
-      :host {
-        display: flex;
-      }
-    `
-  ]
+  `
 })
 export class ProductEditComponent {
 

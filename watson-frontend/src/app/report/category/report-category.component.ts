@@ -18,14 +18,7 @@ import {Component, OnInit} from '@angular/core';
       <ws-report-category-item [category]="report.rootCategory">
       </ws-report-category-item>
     </ws-panel>
-  `,
-  styles: [
-      `
-      :host {
-        display: block
-      }
-    `
-  ]
+  `
 })
 export class ReportCategoryComponent implements OnInit {
 

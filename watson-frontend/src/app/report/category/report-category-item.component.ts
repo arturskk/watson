@@ -15,22 +15,7 @@ import {CategoryReportItem} from './category-report-item';
         </ws-report-category-item>
       </div>
     </div>
-  `,
-  styles: [
-      `
-      :host {
-        display: block;
-      }
-
-      .subcategories {
-        padding-left: 25px;
-      }
-
-      .description {
-        cursor: pointer;
-      }
-    `
-  ]
+  `
 })
 export class ReportCategoryItemComponent {
 

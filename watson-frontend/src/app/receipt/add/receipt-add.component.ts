@@ -115,33 +115,7 @@ import {ArraysUtil} from '../../util/arrays-util';
       </div>
     </ws-panel>
     <button (click)="save()">zapisz</button>
-  `,
-  styles: [
-      `
-      .receipt-main, .receipt-items {
-        margin-bottom: 15px;
-      }
-
-      .receipt-item {
-        display: flex;
-        flex-direction: row;
-      }
-
-      .select-item-description, .dynamic-select-item {
-        font-style: italic;
-        font-size: 0.9em;
-        color: darkgray;
-      }
-
-      .dynamic-select-item {
-        color: darkred;
-      }
-
-      .select-product-cell {
-        display: flex;
-      }
-    `
-  ]
+  `
 })
 export class ReceiptAddComponent implements OnInit {
 
