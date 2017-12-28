@@ -1,4 +1,4 @@
-import {ExpanseCost} from './ExpanseCost';
+import {ExpanseCost} from './expanse-cost';
 
 export interface CategoryReportItem {
 

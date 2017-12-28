@@ -1,8 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
 
+// theme
 @import 'theme/variables';
 @import 'theme/reboot/reboot';
 @import 'theme/reboot/links';
-@import 'theme/component/watson-app';
-@import 'theme/component/add-receipt-component';
-@import 'theme/component/select-component';
+
+html, body {
+  height: 100%;
+}
+
+// widgets
+@import 'app/widgets/panel/panel.component';
+@import 'app/widgets/select/select.component';
+
+// components
+@import 'app/app.component';
+@import 'app/navbar/navbar.component';
+@import 'app/receipt/add/receipt-add.component';
+@import 'app/category/list/category-list.component';

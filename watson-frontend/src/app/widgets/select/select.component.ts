@@ -12,7 +12,7 @@ import {
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 @Component({
-  selector: 'select-component',
+  selector: 'ws-select',
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

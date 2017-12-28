@@ -1,26 +1,23 @@
-import {Component} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'watson-app',
+  selector: 'watson-navbar',
   template: `
     <nav>
+      <div>Watson!</div>
       <div><a routerLink="/receipt/add">Dodaj rachunek</a></div>
-      <div>&nbsp;|&nbsp;</div>
       <div><a routerLink="/report/category">Raport wydatków - kategorie</a></div>
-      <div>&nbsp;|&nbsp;</div>
       <div><a routerLink="/product/list">Produkty</a></div>
-      <div>&nbsp;|&nbsp;</div>
       <div><a routerLink="/category/receipt_item/list">Kategorie produktów</a></div>
-      <div>&nbsp;|&nbsp;</div>
       <div><a routerLink="/category/receipt/list">Kategorie rachunków</a></div>
     </nav>
-    <main>
-      <router-outlet></router-outlet>
-    </main>
-    <footer>
-      Watson footer
-    </footer>
   `
 })
-export class WatsonAppComponent {
+export class NavbarComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+
 }

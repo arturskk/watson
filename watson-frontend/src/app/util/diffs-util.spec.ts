@@ -1,7 +1,7 @@
-import {DiffUtil} from './DiffUtil';
-import {ObjectUtil} from './ObjectUtil';
+import {DiffsUtil} from './diffs-util';
+import {ObjectsUtil} from './objects-util';
 
-describe('DiffUtil', () => {
+describe('DiffsUtil', () => {
 
   it('should generate diff using description', () => {
     // given
@@ -23,17 +23,17 @@ describe('DiffUtil', () => {
     };
 
     // when
-    const diffBuilder = DiffUtil.diffBuilder(objA, objB);
-    const standardDiff = DiffUtil.skipIfWithoutChange({
+    const diffBuilder = DiffsUtil.diffBuilder(objA, objB);
+    const standardDiff = DiffsUtil.skipIfWithoutChange({
       prop1: diffBuilder('prop1'),
       prop2: diffBuilder('prop2'),
-      prop3: DiffUtil.skipIfWithoutChange({
+      prop3: DiffsUtil.skipIfWithoutChange({
         prop4: diffBuilder('prop3.prop4'),
         prop5: diffBuilder('prop3.prop5')
       }),
       complex: diffBuilder('prop3.prop4')
     });
-    const descDiff = DiffUtil.diff(objA, objB, {
+    const descDiff = DiffsUtil.diff(objA, objB, {
       prop1: null,
       prop2: null,
       prop3: {
@@ -45,7 +45,7 @@ describe('DiffUtil', () => {
 
     // then
     // noinspection JSIgnoredPromiseFromCall
-    expect(ObjectUtil.deepEquals(standardDiff, descDiff)).toBeTruthy();
+    expect(ObjectsUtil.deepEquals(standardDiff, descDiff)).toBeTruthy();
   });
 
 });

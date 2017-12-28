@@ -1,33 +1,37 @@
 import {HttpClient} from '@angular/common/http';
 import {Component, OnInit} from '@angular/core';
-import {ProductSummary} from '../ProductSummary';
-import {CategorySummary} from '../../category/CategorySummary';
-import {DiffUtil} from '../../util/DiffUtil';
-import {ModifyEvent} from '../ModifyEvent';
+import {ProductSummary} from '../product-summary';
+import {CategorySummary} from '../../category/category-summary';
+import {ModifyEvent} from '../modify-event';
+import {DiffsUtil} from '../../util/diffs-util';
 
 @Component({
-  selector: 'product-list-component',
+  selector: 'ws-product-list',
   template: `
     <h1>Produkty</h1>
-    <h2>Dodaj produkt</h2>
-    <div *ngIf="categories">
-      <edit-product-component
-        [cancelable]="false"
-        [resettable]="true"
-        (onSave)="onAddItem($event)"
-        [categories]="categories">
-      </edit-product-component>
-    </div>
-    <h2>Lista produktów</h2>
-    <div>
-      <div *ngFor="let product of products">
-        <product-list-item-component
-          (onSave)="onItemChange($event)"
-          [categories]="categories"
-          [product]="product">
-        </product-list-item-component>
+    <ws-panel>
+      <h2>Dodaj produkt</h2>
+      <div *ngIf="categories">
+        <ws-product-edit
+          [cancelable]="false"
+          [resettable]="true"
+          (onSave)="onAddItem($event)"
+          [categories]="categories">
+        </ws-product-edit>
       </div>
-    </div>
+    </ws-panel>
+    <ws-panel>
+      <h2>Lista produktów</h2>
+      <div>
+        <div *ngFor="let product of products">
+          <ws-product-list-item
+            (onSave)="onItemChange($event)"
+            [categories]="categories"
+            [product]="product">
+          </ws-product-list-item>
+        </div>
+      </div>
+    </ws-panel>
   `,
   styles: []
 })
@@ -60,7 +64,7 @@ export class ProductListComponent implements OnInit {
   }
 
   onItemChange(change: ModifyEvent<ProductSummary>) {
-    const diff = DiffUtil.diff(change.newValue, change.oldValue, {
+    const diff = DiffsUtil.diff(change.newValue, change.oldValue, {
       name: 'name',
       categoryUuid: 'category.uuid'
     });

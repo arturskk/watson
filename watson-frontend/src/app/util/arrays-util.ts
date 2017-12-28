@@ -1,11 +1,11 @@
-import {ObjectUtil} from './ObjectUtil';
+import {ObjectsUtil} from './objects-util';
 
-export class ArrayUtil {
+export class ArraysUtil {
 
   static fillWithCopies<T>(times: number, prototype: T): T[] {
     const result = [];
     for (let idx = 0; idx < times; ++idx) {
-      result.push(ObjectUtil.deepCopy(prototype));
+      result.push(ObjectsUtil.deepCopy(prototype));
     }
     return result;
   }

@@ -1,12 +1,12 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {ObjectUtil} from '../../util/ObjectUtil';
-import {CategorySummary} from '../../category/CategorySummary';
+import {CategorySummary} from '../category-summary';
+import {ObjectsUtil} from '../../util/objects-util';
 
 @Component({
-  selector: 'edit-category-component',
+  selector: 'ws-category-edit',
   template: `
     <input [(ngModel)]="value.name" placeholder="Nazwa"/>
-    <select-component
+    <ws-select
       *ngIf="value.uuid !== 'root'"
       [(ngModel)]="parentCategory"
       [data]="filteredCategories || categories"
@@ -16,7 +16,7 @@ import {CategorySummary} from '../../category/CategorySummary';
       <ng-template let-item let-markSearchText="markSearchText" let-newItem="newItem" #listItem>
         <span [innerHTML]="markSearchText.call(undefined, item.name)"></span>
       </ng-template>
-    </select-component>
+    </ws-select>
     <a (click)="resetClicked()" *ngIf="resettable">(wyczyść)</a>
     <a (click)="cancelClicked()" *ngIf="cancelable">(anuluj)</a>
     <a (click)="saveClicked()">(zapisz)</a>
@@ -29,7 +29,7 @@ import {CategorySummary} from '../../category/CategorySummary';
     `
   ]
 })
-export class EditCategoryComponent {
+export class CategoryEditComponent {
 
   @Input() cancelable = true;
   @Input() resettable = false;
@@ -62,7 +62,7 @@ export class EditCategoryComponent {
   }
 
   private reset(source: Partial<CategorySummary>) {
-    this.value = ObjectUtil.deepCopy(source);
+    this.value = ObjectsUtil.deepCopy(source);
     this.filteredCategories = this.categories.filter(category => category.uuid || category.uuid !== source.uuid);
     if (source.parentUuid) {
       this.parentCategory = this.categories.find(category => category.uuid === source.parentUuid);

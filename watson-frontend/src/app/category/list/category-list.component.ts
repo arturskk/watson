@@ -1,33 +1,37 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
-import {CategorySummary} from '../CategorySummary';
-import {ModifyEvent} from '../../product/ModifyEvent';
-import {DiffUtil} from '../../util/DiffUtil';
+import {CategorySummary} from '../category-summary';
+import {ModifyEvent} from '../../product/modify-event';
+import {DiffsUtil} from '../../util/diffs-util';
 
 @Component({
-  selector: 'category-list-component',
+  selector: 'ws-category-list',
   template: `
     <h1>Kategorie</h1>
-    <h2>Dodaj kategorię</h2>
-    <div>
-      <edit-category-component
-        [cancelable]="false"
-        [resettable]="true"
-        (onSave)="onAddItem($event)"
-        [categories]="categories">
-      </edit-category-component>
-    </div>
-    <h2>Lista kategorii</h2>
-    <div>
-      <div *ngFor="let category of categories">
-        <category-list-item-component
-          (onSave)="onItemChange($event)"
-          [categories]="categories"
-          [category]="category">
-        </category-list-item-component>
+    <ws-panel>
+        <h2>Dodaj kategorię</h2>
+        <div>
+          <ws-category-edit
+            [cancelable]="false"
+            [resettable]="true"
+            (onSave)="onAddItem($event)"
+            [categories]="categories">
+          </ws-category-edit>
+        </div>
+    </ws-panel>
+    <ws-panel>
+      <h2>Lista kategorii</h2>
+      <div>
+        <div *ngFor="let category of categories">
+          <ws-category-list-item
+            (onSave)="onItemChange($event)"
+            [categories]="categories"
+            [category]="category">
+          </ws-category-list-item>
+        </div>
       </div>
-    </div>
+    </ws-panel>
   `
 })
 export class CategoryListComponent implements OnInit {
@@ -63,7 +67,7 @@ export class CategoryListComponent implements OnInit {
   }
 
   onItemChange(change: ModifyEvent<CategorySummary>) {
-    const diff = DiffUtil.diff(change.newValue, change.oldValue, {
+    const diff = DiffsUtil.diff(change.newValue, change.oldValue, {
       name: 'name',
       parentUuid: 'parentUuid'
     });

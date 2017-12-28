@@ -1,4 +1,4 @@
-export class ObjectUtil {
+export class ObjectsUtil {
 
   /**
    * Returns deep copy of passed object.

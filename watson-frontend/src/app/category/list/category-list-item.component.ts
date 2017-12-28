@@ -1,9 +1,9 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {CategorySummary} from '../../category/CategorySummary';
-import {ModifyEvent} from '../../product/ModifyEvent';
+import {CategorySummary} from '../category-summary';
+import {ModifyEvent} from '../../product/modify-event';
 
 @Component({
-  selector: 'category-list-item-component',
+  selector: 'ws-category-list-item',
   template: `
     <div *ngIf="state == ItemState.SUMMARY">
       {{category.name}} ({{category.path}})
@@ -11,12 +11,12 @@ import {ModifyEvent} from '../../product/ModifyEvent';
       <!--<a (click)="deleteClicked()">(usuń)</a>-->
     </div>
     <div *ngIf="state == ItemState.EDIT">
-      <edit-category-component
+      <ws-category-edit
         [categories]="categories"
         [category]="category"
         (onCancel)="cancelClicked()"
         (onSave)="saveClicked($event)">
-      </edit-category-component>
+      </ws-category-edit>
     </div>
   `
 })

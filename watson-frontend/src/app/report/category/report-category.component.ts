@@ -2,21 +2,22 @@ import {HttpClient} from '@angular/common/http';
 import {Component, OnInit} from '@angular/core';
 
 @Component({
-  selector: 'report-category-component',
+  selector: 'ws-report-category',
   template: `
     <h1>Raport wydatków - kategorie</h1>
-    <div>
-      Od:
-      <input [(ngModel)]="dateFrom"/>
-      Do:
-      <input [(ngModel)]="dateTo"/>
-      <button (click)="refreshReport()">Pobierz</button>
-    </div>
-    <hr/>
-    <div *ngIf="report">
-      <report-category-item [category]="report.rootCategory">
-      </report-category-item>
-    </div>
+    <ws-panel>
+      <div>
+        Od:
+        <input [(ngModel)]="dateFrom"/>
+        Do:
+        <input [(ngModel)]="dateTo"/>
+        <button (click)="refreshReport()">Pobierz</button>
+      </div>
+    </ws-panel>
+    <ws-panel *ngIf="report">
+      <ws-report-category-item [category]="report.rootCategory">
+      </ws-report-category-item>
+    </ws-panel>
   `,
   styles: [
       `

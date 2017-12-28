@@ -1,4 +1,4 @@
-export class DiffUtil {
+export class DiffsUtil {
 
   static skipIfWithoutChange(obj: any) {
     for (const key of Object.keys(obj)) {
@@ -29,18 +29,18 @@ export class DiffUtil {
 
   static diff(a: any, b: any, desc: {[key: string]: any}): any {
     const result = {};
-    const diffBuilder = DiffUtil.diffBuilder(a, b);
+    const diffBuilder = DiffsUtil.diffBuilder(a, b);
     for (const key of Object.keys(desc)) {
       const mapping = desc[key];
       if (typeof mapping === 'object' && mapping) {
-        result[key] = DiffUtil.diff(a[key], b[key], desc[key]);
+        result[key] = DiffsUtil.diff(a[key], b[key], desc[key]);
       } else if (typeof mapping === 'string') {
         result[key] = diffBuilder(mapping);
       } else {
         result[key] = diffBuilder(key);
       }
     }
-    return DiffUtil.skipIfWithoutChange(result);
+    return DiffsUtil.skipIfWithoutChange(result);
   }
 
 }

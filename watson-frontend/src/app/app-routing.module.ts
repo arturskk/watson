@@ -1,12 +1,12 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {CategoryListComponent} from './category/list/CategoryListComponent';
-import {ProductListComponent} from './product/list/ProductListComponent';
-import {AddReceiptComponent} from './receipt/add/AddReceiptComponent';
-import {ReportCategoryComponent} from './report/category/ReportCategoryComponent';
+import {CategoryListComponent} from './category/list/category-list.component';
+import {ProductListComponent} from './product/list/product-list.component';
+import {ReceiptAddComponent} from './receipt/add/receipt-add.component';
+import {ReportCategoryComponent} from './report/category/report-category.component';
 
 const routes: Routes = [
-  {path: 'receipt/add', component: AddReceiptComponent},
+  {path: 'receipt/add', component: ReceiptAddComponent},
   {path: 'category/:type/list', component: CategoryListComponent},
   {path: 'product/list', component: ProductListComponent},
   {path: 'report/category', component: ReportCategoryComponent},

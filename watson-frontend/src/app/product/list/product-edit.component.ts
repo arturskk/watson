@@ -1,13 +1,13 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {ObjectUtil} from '../../util/ObjectUtil';
-import {CategorySummary} from '../../category/CategorySummary';
-import {ProductSummary} from '../ProductSummary';
+import {CategorySummary} from '../../category/category-summary';
+import {ProductSummary} from '../product-summary';
+import {ObjectsUtil} from '../../util/objects-util';
 
 @Component({
-  selector: 'edit-product-component',
+  selector: 'ws-product-edit',
   template: `
     <input [(ngModel)]="value.name" placeholder="Nazwa"/>
-    <select-component
+    <ws-select
       [(ngModel)]="value.category"
       [data]="categories"
       [displayField]="'name'"
@@ -16,7 +16,7 @@ import {ProductSummary} from '../ProductSummary';
       <ng-template let-item let-markSearchText="markSearchText" let-newItem="newItem" #listItem>
         <span [innerHTML]="markSearchText.call(undefined, item.name)"></span>
       </ng-template>
-    </select-component>
+    </ws-select>
     <a (click)="resetClicked()" *ngIf="resettable">(wyczyść)</a>
     <a (click)="cancelClicked()" *ngIf="cancelable">(anuluj)</a>
     <a (click)="saveClicked()">(zapisz)</a>
@@ -29,7 +29,7 @@ import {ProductSummary} from '../ProductSummary';
     `
   ]
 })
-export class EditProductComponent {
+export class ProductEditComponent {
 
   @Input() cancelable = true;
   @Input() resettable = false;
@@ -57,7 +57,7 @@ export class EditProductComponent {
   }
 
   private reset(source: Partial<ProductSummary>) {
-    this.value = ObjectUtil.deepCopy(source);
+    this.value = ObjectsUtil.deepCopy(source);
   }
 
 }
