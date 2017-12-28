@@ -1,7 +1,7 @@
 @mixin link-color-with-hover() {
-  color: $primary-color;
+  color: #0277bd;
   transition: color 400ms;
   &:hover {
-    color: $primary-color-light;
+    color: #81d4fa;
   }
 }

@@ -1,5 +1,6 @@
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  //font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-family: Roboto;
   font-size: $font-size;
   font-weight: $font-weight-normal;
   line-height: 1.5;
@@ -7,6 +8,6 @@ body {
 }
 h1, h2, h3, h4, h5, h6 {
   font-size: $font-size;
-  color: lighten($font-color, 40);
+  color: $font-header-color;
   font-weight: $font-weight-bold;
 }

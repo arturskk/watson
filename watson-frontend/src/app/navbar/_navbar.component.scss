@@ -9,17 +9,19 @@ watson-navbar {
   left: 0;
   right: 0;
   box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
-  background-color: $primary-color;
-  color: #fff;
+  background-color: $color-white;
+  height: $navbar-height;
   nav {
-    height: $navbar-height;
+    height: 100%;
     display: flex;
     align-items: center;
   }
   nav > div {
     padding: 0px 10px;
   }
-  nav a {
-    color: color('white');
+  .brand-name {
+    color: $color-light-blue-900;
+    font-weight: 600;
+    font-size: 24px;
   }
 }

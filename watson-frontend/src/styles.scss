@@ -4,15 +4,14 @@
 
 // theme
 @import 'theme/palette';
+@import 'theme/colors';
 @import 'theme/variables';
+@import 'theme/fonts/roboto/roboto';
 @import 'theme/mixins';
 @import 'theme/reboot';
 @import 'theme/links';
 @import 'theme/typography';
-
-html, body {
-  height: 100%;
-}
+@import 'theme/body-layout';
 
 // widgets
 @import 'app/widgets/panel/panel.component';

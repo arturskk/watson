@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
   selector: 'watson-navbar',
   template: `
     <nav>
-      <div>Watson!</div>
+      <div class="brand-name">Watson!</div>
       <div><a routerLink="/receipt/add">Dodaj rachunek</a></div>
       <div><a routerLink="/report/category">Raport wydatków - kategorie</a></div>
       <div><a routerLink="/product/list">Produkty</a></div>

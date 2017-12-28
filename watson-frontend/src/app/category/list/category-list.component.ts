@@ -10,15 +10,15 @@ import {DiffsUtil} from '../../util/diffs-util';
   template: `
     <h1>Kategorie</h1>
     <ws-panel>
-        <h2>Dodaj kategorię</h2>
-        <div>
-          <ws-category-edit
-            [cancelable]="false"
-            [resettable]="true"
-            (onSave)="onAddItem($event)"
-            [categories]="categories">
-          </ws-category-edit>
-        </div>
+      <h2>Dodaj kategorię</h2>
+      <div>
+        <ws-category-edit
+          [cancelable]="false"
+          [resettable]="true"
+          (onSave)="onAddItem($event)"
+          [categories]="categories">
+        </ws-category-edit>
+      </div>
     </ws-panel>
     <ws-panel>
       <h2>Lista kategorii</h2>
