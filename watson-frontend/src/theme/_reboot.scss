@@ -59,13 +59,8 @@ article, aside, dialog, figcaption, figure, footer, header, hgroup, main, nav, s
 
 body {
   margin: 0; // 1
-  font-family: $font-family-base;
-  font-size: $font-size-base;
-  font-weight: $font-weight-base;
-  line-height: $line-height-base;
-  color: $body-color;
+  background-color: $body-background-color; // 2
   text-align: left; // 3
-  background-color: $body-bg; // 2
 }
 
 // Suppress the focus outline on elements that cannot be accessed via keyboard.
@@ -76,7 +71,6 @@ body {
 [tabindex="-1"]:focus {
   outline: none !important;
 }
-
 
 // Content grouping
 //
@@ -89,7 +83,6 @@ hr {
   overflow: visible; // 2
 }
 
-
 //
 // Typography
 //
@@ -101,7 +94,6 @@ hr {
 // stylelint-disable selector-list-comma-newline-after
 h1, h2, h3, h4, h5, h6 {
   margin-top: 0;
-  margin-bottom: $headings-margin-bottom;
 }
 // stylelint-enable selector-list-comma-newline-after
 
@@ -111,7 +103,6 @@ h1, h2, h3, h4, h5, h6 {
 // bottom margin to use `rem` units instead of `em`.
 p {
   margin-top: 0;
-  margin-bottom: $paragraph-margin-bottom;
 }
 
 // Abbreviations
@@ -149,23 +140,6 @@ ul ol {
   margin-bottom: 0;
 }
 
-dt {
-  font-weight: $dt-font-weight;
-}
-
-dd {
-  margin-bottom: .5rem;
-  margin-left: 0; // Undo browser default
-}
-
-blockquote {
-  margin: 0 0 1rem;
-}
-
-dfn {
-  font-style: italic; // Add the correct font style in Android 4.3-
-}
-
 // stylelint-disable font-weight-notation
 b,
 strong {
@@ -193,7 +167,6 @@ sup {
 sub { bottom: -.25em; }
 sup { top: -.5em; }
 
-
 //
 // Code
 //
@@ -219,17 +192,6 @@ pre {
   // we force a non-overlapping, non-auto-hiding scrollbar to counteract.
   -ms-overflow-style: scrollbar;
 }
-
-
-//
-// Figures
-//
-
-figure {
-  // Apply a consistent margin strategy (matches our type styles).
-  margin: 0 0 1rem;
-}
-
 
 //
 // Images and content
@@ -277,9 +239,6 @@ table {
 }
 
 caption {
-  padding-top: $table-cell-padding;
-  padding-bottom: $table-cell-padding;
-  color: $text-muted;
   text-align: left;
   caption-side: bottom;
 }
@@ -298,7 +257,6 @@ th {
 label {
   // Allow labels to use `margin` for spacing.
   display: inline-block;
-  margin-bottom: .5rem;
 }
 
 // Remove the default `border-radius` that macOS Chrome adds.
@@ -402,8 +360,6 @@ legend {
   width: 100%;
   max-width: 100%; // 1
   padding: 0;
-  margin-bottom: .5rem;
-  font-size: 1.5rem;
   line-height: inherit;
   color: inherit; // 2
   white-space: normal; // 1

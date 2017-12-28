@@ -1,7 +1,6 @@
 watson-app {
   display: flex;
   flex-direction: column;
-  background-color: #f2f2f2;
   min-height: 100%;
   main {
     width: 100%;
@@ -11,6 +10,7 @@ watson-app {
     padding-left: 15px;
     padding-right: 15px;
     flex: 1;
+    padding-top: 25px;
   }
   aside {
     display: none;

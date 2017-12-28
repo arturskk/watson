@@ -1,9 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 
 // theme
+@import 'theme/palette';
 @import 'theme/variables';
-@import 'theme/reboot/reboot';
-@import 'theme/reboot/links';
+@import 'theme/reboot';
+@import 'theme/links';
+@import 'theme/typography';
 
 html, body {
   height: 100%;
