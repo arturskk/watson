@@ -1,0 +1,16 @@
+ws-crud-item-component {
+  display: block;
+  .item {
+    display: flex;
+  }
+  .item-summary {
+    display: flex;
+    flex: 1;
+  }
+  .item-actions {
+    display: flex;
+    min-width: 150px;
+    justify-content: flex-end;
+    align-items: flex-start;
+  }
+}

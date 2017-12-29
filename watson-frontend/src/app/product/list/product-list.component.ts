@@ -2,8 +2,8 @@ import {HttpClient} from '@angular/common/http';
 import {Component, OnInit} from '@angular/core';
 import {ProductSummary} from '../product-summary';
 import {CategorySummary} from '../../category/category-summary';
-import {ModifyEvent} from '../modify-event';
 import {DiffsUtil} from '../../util/diffs-util';
+import {CrudItemSave} from '../../widgets/crud-list/crud-item-save';
 
 @Component({
   selector: 'ws-product-list',
@@ -22,14 +22,25 @@ import {DiffsUtil} from '../../util/diffs-util';
     </ws-panel>
     <ws-panel>
       <h2>Lista produktów</h2>
-      <div>
-        <ws-product-list-item
-          *ngFor="let product of products"
-          (onSave)="onItemChange($event)"
-          [categories]="categories"
-          [product]="product">
-        </ws-product-list-item>
-      </div>
+      <ws-crud-list-component [data]="products" (itemSave)="productSave($event)">
+        <ng-template let-product #itemSummary>
+          {{product.name}} ({{product.category.path}})
+        </ng-template>
+        <ng-template let-product #itemEdit>
+          <input class="product-name" [(ngModel)]="product.name" placeholder="Nazwa"/>
+          <ws-select
+            class="product-category"
+            [(ngModel)]="product.category"
+            [data]="categories"
+            [displayField]="'name'"
+            [allowNewValues]="false"
+            [placeholder]="'Kategoria'">
+            <ng-template let-item let-markSearchText="markSearchText" let-newItem="newItem" #listItem>
+              <span [innerHTML]="markSearchText.call(undefined, item.name)"></span>
+            </ng-template>
+          </ws-select>
+        </ng-template>
+      </ws-crud-list-component>
     </ws-panel>
   `
 })
@@ -61,16 +72,16 @@ export class ProductListComponent implements OnInit {
       });
   }
 
-  onItemChange(change: ModifyEvent<ProductSummary>) {
-    const diff = DiffsUtil.diff(change.newValue, change.oldValue, {
-      name: 'name',
-      categoryUuid: 'category.uuid'
-    });
+  productSave(crudItemSave: CrudItemSave<ProductSummary>) {
     this.httpClient
-      .put(`/api/v1/product/${change.oldValue.uuid}`, diff)
-      .subscribe(() => {
-        window.location.reload();
-      });
+      .put(
+        `/api/v1/product/${crudItemSave.item.uuid}`,
+        DiffsUtil.diff(crudItemSave.changed, crudItemSave.item, {
+          name: 'name',
+          categoryUuid: 'category.uuid'
+        })
+      )
+      .subscribe(crudItemSave.commit);
   }
 
 }

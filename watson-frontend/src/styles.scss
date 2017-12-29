@@ -18,6 +18,8 @@
 @import 'app/widgets/select/select.component';
 @import 'app/widgets/button/button.component';
 @import 'app/widgets/button-flat/button-flat.component';
+@import 'app/widgets/crud-list/crud-list.component';
+@import 'app/widgets/crud-list/crud-item.component';
 
 // components
 @import 'app/app.component';
@@ -27,4 +29,4 @@
 @import 'app/report/category/report-category.component';
 @import 'app/report/category/report-category-item.component';
 @import 'app/product/list/product-edit.component';
-@import 'app/product/list/product-list-item.component';
+@import 'app/product/list/product-list.component';

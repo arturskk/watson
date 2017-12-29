@@ -10,7 +10,7 @@ export class ButtonFlatComponent {
 
   @HostBinding('class')
   get buttonClasses() {
-    return 'waves-effect waves-classic';
+    return '';
   }
 
 }
