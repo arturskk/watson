@@ -13,6 +13,6 @@ export interface CrudItemSaveRollbackConfig<T> {
 export interface CrudItemSave<T> {
   item: Partial<T>;
   changed: Partial<T>;
-  rollback(config: CrudItemSaveRollbackConfig<T>);
-  commit(config: CrudItemSaveCommitConfig<T>);
+  rollback(config?: CrudItemSaveRollbackConfig<T>);
+  commit(config?: CrudItemSaveCommitConfig<T>);
 }

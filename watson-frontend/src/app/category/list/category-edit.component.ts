@@ -1,15 +1,15 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {CategorySummary} from '../category-summary';
-import {ObjectsUtil} from '../../util/objects-util';
 
 @Component({
   selector: 'ws-category-edit',
   template: `
-    <input [(ngModel)]="value.name" placeholder="Nazwa"/>
+    <input [(ngModel)]="_category.name" placeholder="Nazwa"/>
     <ws-select
-      *ngIf="value.uuid !== 'root'"
+      *ngIf="_category.uuid !== 'root'"
       [(ngModel)]="parentCategory"
-      [data]="filteredCategories || categories"
+      (onChange)="onParentCategoryChange($event)"
+      [data]="filteredCategories || _categories"
       [displayField]="'name'"
       [allowNewValues]="false"
       [placeholder]="'Kategoria nadrzędna'">
@@ -17,58 +17,40 @@ import {ObjectsUtil} from '../../util/objects-util';
         <span [innerHTML]="markSearchText.call(undefined, item.name)"></span>
       </ng-template>
     </ws-select>
-    <a (click)="resetClicked()" *ngIf="resettable">(wyczyść)</a>
-    <a (click)="cancelClicked()" *ngIf="cancelable">(anuluj)</a>
-    <a (click)="saveClicked()">(zapisz)</a>
-  `,
-  styles: [
-      `
-      :host {
-        display: flex;
-      }
-    `
-  ]
+  `
 })
 export class CategoryEditComponent {
 
-  @Input() cancelable = true;
-  @Input() resettable = false;
-  @Input() categories: CategorySummary[] = [];
-  @Output() onSave = new EventEmitter<any>();
-  @Output() onCancel = new EventEmitter<void>();
-  value: Partial<CategorySummary> = {};
-  original: Partial<CategorySummary> = {};
-  parentCategory: Partial<CategorySummary>;
-  filteredCategories: CategorySummary[];
+  _categories: CategorySummary[] = [];
+  _category: Partial<CategorySummary> = {};
+  filteredCategories: CategorySummary[] = null;
+  parentCategory: Partial<CategorySummary> = null;
 
   @Input() set category(category: CategorySummary) {
-    this.original = category;
-    this.reset(this.original);
-  }
-
-  saveClicked() {
-    if (this.parentCategory) {
-      this.value.parentUuid = this.parentCategory.uuid;
+    this._category = category;
+    if (this._categories && this._categories.length > 0) {
+      this.afterCategoryAndCategories();
     }
-    this.onSave.next(this.value);
   }
 
-  cancelClicked() {
-    this.onCancel.next();
+  @Input() set categories(categories: CategorySummary[]) {
+    this._categories = categories;
+    if (this._category) {
+      this.afterCategoryAndCategories();
+    }
   }
 
-  resetClicked() {
-    this.reset(this.original);
-  }
-
-  private reset(source: Partial<CategorySummary>) {
-    this.value = ObjectsUtil.deepCopy(source);
-    this.filteredCategories = this.categories.filter(category => category.uuid || category.uuid !== source.uuid);
-    if (source.parentUuid) {
-      this.parentCategory = this.categories.find(category => category.uuid === source.parentUuid);
+  private afterCategoryAndCategories() {
+    this.filteredCategories = this._categories.filter(category => category.uuid !== this._category.uuid);
+    if (this._category.parentUuid) {
+      this.parentCategory = this._categories.find(category => category.uuid === this._category.parentUuid);
     } else {
       this.parentCategory = null;
     }
+  }
+
+  onParentCategoryChange(parentCategory: CategorySummary) {
+    this._category.parentUuid = parentCategory.uuid;
   }
 
 }

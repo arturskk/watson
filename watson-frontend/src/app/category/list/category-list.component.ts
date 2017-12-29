@@ -4,49 +4,41 @@ import {HttpClient} from '@angular/common/http';
 import {CategorySummary} from '../category-summary';
 import {DiffsUtil} from '../../util/diffs-util';
 import {CrudItemSave} from '../../widgets/crud-list/crud-item-save';
+import {CrudItemState} from '../../widgets/crud-list/crut-item-state';
 
 @Component({
   selector: 'ws-category-list',
   template: `
     <h1>Kategorie</h1>
-    <ws-panel>
-      <h2>Dodaj kategorię</h2>
-      <div>
-        <ws-category-edit
-          [cancelable]="false"
-          [resettable]="true"
-          (onSave)="onAddItem($event)"
-          [categories]="categories">
-        </ws-category-edit>
-      </div>
-    </ws-panel>
-    <ws-panel>
-      <h2>Lista kategorii</h2>
-      <ws-crud-list-component [data]="categories" (itemSave)="categorySave($event)">
-        <ng-template let-category #itemSummary>
-          {{category.name}} ({{category.path}})
-        </ng-template>
-        <ng-template let-category #itemEdit>
-          <input [(ngModel)]="category.name" placeholder="Nazwa"/>
-          <!--<ws-select-->
-            <!--*ngIf="category.uuid !== 'root'"-->
-            <!--[(ngModel)]="parentCategory"-->
-            <!--[data]="filteredCategories || categories"-->
-            <!--[displayField]="'name'"-->
-            <!--[allowNewValues]="false"-->
-            <!--[placeholder]="'Kategoria nadrzędna'">-->
-            <!--<ng-template let-item let-markSearchText="markSearchText" let-newItem="newItem" #listItem>-->
-              <!--<span [innerHTML]="markSearchText.call(undefined, item.name)"></span>-->
-            <!--</ng-template>-->
-          <!--</ws-select>-->
-        </ng-template>
-      </ws-crud-list-component>
-    </ws-panel>
+    <ng-container *ngIf="categories">
+      <ws-panel>
+        <h2>Dodaj kategorię</h2>
+        <div>
+          <ws-crud-item-component [state]="State.EDIT" [cancelable]="false" (itemSave)="newCategorySave($event)">
+            <ng-template let-category #itemEdit>
+              <ws-category-edit [category]="category" [categories]="categories"></ws-category-edit>
+            </ng-template>
+          </ws-crud-item-component>
+        </div>
+      </ws-panel>
+      <ws-panel>
+        <h2>Lista kategorii</h2>
+        <ws-crud-list-component [data]="categories" (itemSave)="editCategorySave($event)">
+          <ng-template let-category #itemSummary>
+            {{category.name}} ({{category.path}})
+          </ng-template>
+          <ng-template let-category #itemEdit>
+            <ws-category-edit [category]="category" [categories]="categories"></ws-category-edit>
+          </ng-template>
+        </ws-crud-list-component>
+      </ws-panel>
+    </ng-container>
   `
 })
 export class CategoryListComponent implements OnInit {
 
   categories: CategorySummary[];
+  State = CrudItemState;
   private type: string;
 
   constructor(private httpClient: HttpClient, private route: ActivatedRoute) {
@@ -60,23 +52,32 @@ export class CategoryListComponent implements OnInit {
     this.route
       .paramMap
       .map(map => map.get('type'))
-      .mergeMap(type => this.httpClient.get<CategorySummary[]>(`/api/v1/category/_category_${type}`))
-      .subscribe(data => this.categories = data);
+      .map(type => `_category_${type}`)
+      .subscribe(this.fetchCategories.bind(this));
   }
 
-  onAddItem(category: CategorySummary) {
+  newCategorySave(crudItemSave: CrudItemSave<CategorySummary>) {
     this.httpClient
       .post(`/api/v1/category`, {
         type: this.type,
-        name: category.name,
-        parentUuid: category.parentUuid
+        name: crudItemSave.changed.name,
+        parentUuid: crudItemSave.changed.parentUuid
       })
-      .subscribe(() => {
-        window.location.reload();
-      });
+      .subscribe(
+        () => {
+          crudItemSave.commit({
+            value: {},
+            state: CrudItemState.EDIT
+          });
+          this.fetchCategories(this.type);
+        },
+        response => crudItemSave.rollback({
+          message: response.error.message
+        })
+      );
   }
 
-  categorySave(crudItemSave: CrudItemSave<CategorySummary>) {
+  editCategorySave(crudItemSave: CrudItemSave<CategorySummary>) {
     this.httpClient
       .put(
         `/api/v1/category/${crudItemSave.item.uuid}`, {
@@ -87,7 +88,21 @@ export class CategoryListComponent implements OnInit {
           })
         }
       )
-      .subscribe(crudItemSave.commit);
+      .subscribe(
+        () => {
+          crudItemSave.commit();
+          this.fetchCategories(this.type);
+        },
+        response => crudItemSave.rollback({
+          message: response.error.message
+        })
+      );
+  }
+
+  private fetchCategories(type) {
+    this.httpClient
+      .get<CategorySummary[]>(`/api/v1/category/${type}`)
+      .subscribe(data => this.categories = data);
   }
 
 }

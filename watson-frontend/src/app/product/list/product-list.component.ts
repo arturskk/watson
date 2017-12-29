@@ -84,7 +84,6 @@ export class ProductListComponent implements OnInit {
           message: response.error.message
         })
       );
-
   }
 
   private fetchProducts() {
