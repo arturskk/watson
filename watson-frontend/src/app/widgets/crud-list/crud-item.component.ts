@@ -1,25 +1,22 @@
-import {Component, EventEmitter, Input, Output, TemplateRef} from '@angular/core';
+import {Component, ContentChild, EventEmitter, Input, Output, TemplateRef} from '@angular/core';
 import {ObjectsUtil} from '../../util/objects-util';
 import {CrudItemCanceled} from './crud-item-canceled';
 import {CrudItemSave} from './crud-item-save';
-
-enum State {
-  SUMMARY, EDIT, SAVING
-}
+import {CrudItemState} from './crut-item-state';
 
 @Component({
   selector: 'ws-crud-item-component',
   template: `
     <div class="item">
-      <div class="item-summary">
+      <div class="item-renderer">
         <ng-template
           *ngIf="state === State.SUMMARY"
-          [ngTemplateOutlet]="itemSummaryTemplate"
+          [ngTemplateOutlet]="itemSummaryTemplate || itemSummaryChildTemplate"
           [ngTemplateOutletContext]="{$implicit: summaryValue}">
         </ng-template>
         <ng-template
           *ngIf="state === State.EDIT"
-          [ngTemplateOutlet]="itemEditTemplate"
+          [ngTemplateOutlet]="itemEditTemplate || itemEditChildTemplate"
           [ngTemplateOutletContext]="{$implicit: editValue}">
         </ng-template>
         <ng-container *ngIf="state === State.SAVING">
@@ -33,7 +30,7 @@ enum State {
         </ng-container>
         <ng-container *ngIf="state === State.EDIT">
           <ws-button-flat (click)="onSaveClicked()">zapisz</ws-button-flat>
-          <ws-button-flat (click)="onCancelClicked()">anuluj</ws-button-flat>
+          <ws-button-flat (click)="onCancelClicked()" *ngIf="cancelable">anuluj</ws-button-flat>
         </ng-container>
       </div>
     </div>
@@ -44,16 +41,19 @@ enum State {
 })
 export class CrudItemComponent<T> {
 
-  summaryValue: T;
-  editValue: T;
+  summaryValue: Partial<T> = {};
+  editValue: Partial<T> = {};
   actionMessage: string = null;
+  @Input() cancelable = true;
   @Input() itemSummaryTemplate: TemplateRef<any>;
+  @ContentChild('itemSummary') itemSummaryChildTemplate: TemplateRef<any>;
   @Input() itemEditTemplate: TemplateRef<any>;
+  @ContentChild('itemEdit') itemEditChildTemplate: TemplateRef<any>;
   @Output() itemCanceled: EventEmitter<CrudItemCanceled<T>> = new EventEmitter<CrudItemCanceled<T>>();
   @Output() itemSave: EventEmitter<CrudItemSave<T>> = new EventEmitter<CrudItemSave<T>>();
-  state: State = State.SUMMARY;
+  @Input() state: CrudItemState = CrudItemState.SUMMARY;
   // noinspection JSUnusedGlobalSymbols - used in template
-  State = State;
+  State = CrudItemState;
 
   @Input() set item(item: any) {
     this.summaryValue = item;
@@ -61,12 +61,12 @@ export class CrudItemComponent<T> {
   }
 
   onEditClicked() {
-    this.setState(State.EDIT);
+    this.setState(CrudItemState.EDIT);
     this.resetEditValue(this.summaryValue);
   }
 
   onCancelClicked() {
-    this.setState(State.SUMMARY);
+    this.setState(CrudItemState.SUMMARY);
     this.itemCanceled.next({
       item: this.summaryValue,
       changed: this.editValue
@@ -74,22 +74,37 @@ export class CrudItemComponent<T> {
   }
 
   onSaveClicked() {
-    this.setState(State.SAVING);
+    this.setState(CrudItemState.SAVING);
     this.itemSave.next({
       item: this.summaryValue,
       changed: this.editValue,
-      commit: () => {
-        this.item = this.editValue;
-        this.setState(State.SUMMARY);
+      commit: (config = {}) => {
+        ObjectsUtil.ifProvided(
+          config.value,
+          value => this.item = value,
+          () => this.item = this.editValue
+        );
+        ObjectsUtil.ifProvided(
+          config.state,
+          this.setState.bind(this),
+          () => this.state = CrudItemState.SUMMARY
+        );
       },
-      rollback: (message: string) => {
-        this.setState(State.EDIT);
-        this.actionMessage = message;
+      rollback: (config = {}) => {
+        ObjectsUtil.ifProvided(
+          config.state,
+          this.setState.bind(this),
+          () => this.state = CrudItemState.EDIT
+        );
+        ObjectsUtil.ifProvided(
+          config.message,
+          message => this.actionMessage = message
+        );
       }
     });
   }
 
-  private setState(state: State, config: {clearActionMessages?: boolean} = {}) {
+  private setState(state: CrudItemState, config: { clearActionMessages?: boolean } = {}) {
     this.state = state;
     if (config.clearActionMessages === undefined || config.clearActionMessages) {
       this.actionMessage = null;

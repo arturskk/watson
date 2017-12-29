@@ -4,6 +4,7 @@ import {ProductSummary} from '../product-summary';
 import {CategorySummary} from '../../category/category-summary';
 import {DiffsUtil} from '../../util/diffs-util';
 import {CrudItemSave} from '../../widgets/crud-list/crud-item-save';
+import {CrudItemState} from '../../widgets/crud-list/crut-item-state';
 
 @Component({
   selector: 'ws-product-list',
@@ -12,33 +13,21 @@ import {CrudItemSave} from '../../widgets/crud-list/crud-item-save';
     <ws-panel>
       <h2>Dodaj produkt</h2>
       <div *ngIf="categories">
-        <ws-product-edit
-          [cancelable]="false"
-          [resettable]="true"
-          (onSave)="onAddItem($event)"
-          [categories]="categories">
-        </ws-product-edit>
+        <ws-crud-item-component [state]="State.EDIT" [cancelable]="false" (itemSave)="newProductSave($event)">
+          <ng-template let-product #itemEdit>
+            <ws-product-edit [product]="product" [categories]="categories"></ws-product-edit>
+          </ng-template>
+        </ws-crud-item-component>
       </div>
     </ws-panel>
     <ws-panel>
       <h2>Lista produktów</h2>
-      <ws-crud-list-component [data]="products" (itemSave)="productSave($event)">
+      <ws-crud-list-component [data]="products" (itemSave)="editProductSave($event)">
         <ng-template let-product #itemSummary>
           {{product.name}} ({{product.category.path}})
         </ng-template>
         <ng-template let-product #itemEdit>
-          <input class="product-name" [(ngModel)]="product.name" placeholder="Nazwa"/>
-          <ws-select
-            class="product-category"
-            [(ngModel)]="product.category"
-            [data]="categories"
-            [displayField]="'name'"
-            [allowNewValues]="false"
-            [placeholder]="'Kategoria'">
-            <ng-template let-item let-markSearchText="markSearchText" let-newItem="newItem" #listItem>
-              <span [innerHTML]="markSearchText.call(undefined, item.name)"></span>
-            </ng-template>
-          </ws-select>
+          <ws-product-edit [product]="product" [categories]="categories"></ws-product-edit>
         </ng-template>
       </ws-crud-list-component>
     </ws-panel>
@@ -48,6 +37,7 @@ export class ProductListComponent implements OnInit {
 
   products: ProductSummary[];
   categories: CategorySummary[];
+  State = CrudItemState;
 
   constructor(private httpClient: HttpClient) {
   }
@@ -56,23 +46,30 @@ export class ProductListComponent implements OnInit {
     this.httpClient
       .get<CategorySummary[]>('/api/v1/category/_category_receipt_item')
       .subscribe(data => this.categories = data);
-    this.httpClient
-      .get<ProductSummary[]>('/api/v1/product')
-      .subscribe(data => this.products = data);
+    this.fetchProducts();
   }
 
-  onAddItem(product: ProductSummary) {
+  newProductSave(crudItemSave: CrudItemSave<ProductSummary>) {
     this.httpClient
       .post(`/api/v1/product`, {
-        name: product.name,
-        categoryUuid: product.category ? product.category.uuid : undefined
+        name: crudItemSave.changed.name,
+        categoryUuid: crudItemSave.changed.category ? crudItemSave.changed.category.uuid : undefined
       })
-      .subscribe(() => {
-        window.location.reload();
-      });
+      .subscribe(
+        () => {
+          crudItemSave.commit({
+            value: {},
+            state: CrudItemState.EDIT
+          });
+          this.fetchProducts();
+        },
+        response => crudItemSave.rollback({
+          message: response.error.message
+        })
+      );
   }
 
-  productSave(crudItemSave: CrudItemSave<ProductSummary>) {
+  editProductSave(crudItemSave: CrudItemSave<ProductSummary>) {
     this.httpClient
       .put(
         `/api/v1/product/${crudItemSave.item.uuid}`,
@@ -81,7 +78,19 @@ export class ProductListComponent implements OnInit {
           categoryUuid: 'category.uuid'
         })
       )
-      .subscribe(crudItemSave.commit);
+      .subscribe(
+        crudItemSave.commit,
+        response => crudItemSave.rollback({
+          message: response.error.message
+        })
+      );
+
+  }
+
+  private fetchProducts() {
+    return this.httpClient
+      .get<ProductSummary[]>('/api/v1/product')
+      .subscribe(data => this.products = data);
   }
 
 }

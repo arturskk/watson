@@ -25,4 +25,20 @@ export class ObjectsUtil {
     return JSON.stringify(a) === JSON.stringify(b);
   }
 
+  /**
+   * Calls callback method only when value is provided.
+   * <p>
+   *     Used to create conditional consumers.
+   * </p>
+   * @param {T} value
+   * @param {(T) => void} callback
+   */
+  static ifProvided<T>(value: T, consumer: (T) => void, elseCallback = () => {}) {
+    if (value !== undefined) {
+      consumer(value);
+    } else {
+      elseCallback();
+    }
+  }
+
 }

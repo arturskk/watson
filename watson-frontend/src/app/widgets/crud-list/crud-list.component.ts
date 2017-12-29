@@ -10,8 +10,8 @@ import {CrudItemSave} from './crud-item-save';
         [item]="item"
         (itemCanceled)="itemCanceled.next($event)"
         (itemSave)="itemSave.next($event)"
-        [itemSummaryTemplate]="itemSummaryTemplate"
-        [itemEditTemplate]="itemEditTemplate">
+        [itemSummaryTemplate]="itemSummaryChildTemplate"
+        [itemEditTemplate]="itemEditChildTemplate">
       </ws-crud-item-component>
     </div>
   `
@@ -21,7 +21,7 @@ export class CrudListComponent<T> {
   @Input() data: T[];
   @Output() itemCanceled: EventEmitter<CrudItemCanceled<T>> = new EventEmitter<CrudItemCanceled<T>>();
   @Output() itemSave: EventEmitter<CrudItemSave<T>> = new EventEmitter<CrudItemSave<T>>();
-  @ContentChild('itemSummary') itemSummaryTemplate: TemplateRef<any>;
-  @ContentChild('itemEdit') itemEditTemplate: TemplateRef<any>;
+  @ContentChild('itemSummary') itemSummaryChildTemplate: TemplateRef<any>;
+  @ContentChild('itemEdit') itemEditChildTemplate: TemplateRef<any>;
 
 }

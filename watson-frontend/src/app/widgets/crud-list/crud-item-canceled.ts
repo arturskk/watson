@@ -1,4 +1,4 @@
 export interface CrudItemCanceled<T> {
-  item: T;
-  changed: T;
+  item: Partial<T>;
+  changed: Partial<T>;
 }

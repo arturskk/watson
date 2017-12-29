@@ -10,7 +10,7 @@ import {CategoryEditComponent} from './category/list/category-edit.component';
 import {CategoryListComponent} from './category/list/category-list.component';
 import {AppRoutingModule} from './app-routing.module';
 import {ProductListComponent} from './product/list/product-list.component';
-import {ProductEditComponent} from './product/list/product-edit.component';
+import {ProductEditComponent} from './product/edit/product-edit.component';
 import {ReceiptService} from './receipt/receipt.service';
 import {ReceiptAddComponent} from './receipt/add/receipt-add.component';
 import {ReportCategoryComponent} from './report/category/report-category.component';
