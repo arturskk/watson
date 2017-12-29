@@ -64,7 +64,7 @@ export class ProductListComponent implements OnInit {
           this.fetchProducts();
         },
         response => crudItemSave.rollback({
-          message: response.error.message
+          message: response.error.errors.map(error => `${error.field} ${error.defaultMessage}`)
         })
       );
   }

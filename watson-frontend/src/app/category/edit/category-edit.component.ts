@@ -4,7 +4,7 @@ import {CategorySummary} from '../category-summary';
 @Component({
   selector: 'ws-category-edit',
   template: `
-    <input [(ngModel)]="_category.name" placeholder="Nazwa"/>
+    <input [(ngModel)]="_category.name" placeholder="Nazwa" class="category-name"/>
     <ws-select
       *ngIf="_category.uuid !== 'root'"
       [(ngModel)]="parentCategory"
@@ -12,7 +12,8 @@ import {CategorySummary} from '../category-summary';
       [data]="filteredCategories || _categories"
       [displayField]="'name'"
       [allowNewValues]="false"
-      [placeholder]="'Kategoria nadrzędna'">
+      [placeholder]="'Kategoria nadrzędna'"
+      class="category-parent-category">
       <ng-template let-item let-markSearchText="markSearchText" let-newItem="newItem" #listItem>
         <span [innerHTML]="markSearchText.call(undefined, item.name)"></span>
       </ng-template>

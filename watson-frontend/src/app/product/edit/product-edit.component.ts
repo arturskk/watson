@@ -5,20 +5,18 @@ import {ProductSummary} from '../product-summary';
 @Component({
   selector: 'ws-product-edit',
   template: `
-    <div class="edit">
-      <input class="product-name" [(ngModel)]="product.name" placeholder="Nazwa"/>
-      <ws-select
-        class="product-category"
-        [(ngModel)]="product.category"
-        [data]="categories"
-        [displayField]="'name'"
-        [allowNewValues]="false"
-        [placeholder]="'Kategoria'">
-        <ng-template let-item let-markSearchText="markSearchText" let-newItem="newItem" #listItem>
-          <span [innerHTML]="markSearchText.call(undefined, item.name)"></span>
-        </ng-template>
-      </ws-select>
-    </div>
+    <input class="product-name" [(ngModel)]="product.name" placeholder="Nazwa"/>
+    <ws-select
+      class="product-category"
+      [(ngModel)]="product.category"
+      [data]="categories"
+      [displayField]="'name'"
+      [allowNewValues]="false"
+      [placeholder]="'Kategoria'">
+      <ng-template let-item let-markSearchText="markSearchText" let-newItem="newItem" #listItem>
+        <span [innerHTML]="markSearchText.call(undefined, item.name)"></span>
+      </ng-template>
+    </ws-select>
   `
 })
 export class ProductEditComponent {

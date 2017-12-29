@@ -1,3 +1,9 @@
 ws-category-edit {
   display: flex;
+  .category-name {
+    flex: 1;
+  }
+  .category-parent-category {
+    flex: 1;
+  }
 }
