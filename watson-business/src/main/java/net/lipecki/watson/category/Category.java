@@ -45,6 +45,7 @@ public class Category {
     public static final String ROOT_UUID = "root";
     public static final String ROOT_NAME = "Root";
     public static final String ROOT_TYPE = "root";
+    // TODO: remove, change path to list instead of string
     public static final String PATH_SEPARATOR = " > ";
 
     private String uuid;

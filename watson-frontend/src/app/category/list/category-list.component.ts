@@ -5,6 +5,7 @@ import {CategorySummary} from '../category-summary';
 import {DiffsUtil} from '../../util/diffs-util';
 import {CrudItemSave} from '../../widgets/crud-list/crud-item-save';
 import {CrudItemState} from '../../widgets/crud-list/crut-item-state';
+import {CategoryTreeDto, CategoryTreeDtoData} from './category-tree-dto';
 
 @Component({
   selector: 'ws-category-list',
@@ -25,7 +26,9 @@ import {CrudItemState} from '../../widgets/crud-list/crut-item-state';
         <h2>Lista kategorii</h2>
         <ws-crud-list-component [data]="categories" (itemSave)="editCategorySave($event)">
           <ng-template let-category #itemSummary>
-            {{category.name}} ({{category.path}})
+            <span *ngFor="let divider of category.path" class="depth-divider"></span>
+            {{category.name}}
+            <span class="category-path" *ngIf="category.path.length > 0">&nbsp;({{category.path | joinArray:' > '}})</span>
           </ng-template>
           <ng-template let-category #itemEdit>
             <ws-category-edit [category]="category" [categories]="categories"></ws-category-edit>
@@ -101,8 +104,13 @@ export class CategoryListComponent implements OnInit {
 
   private fetchCategories(type) {
     this.httpClient
-      .get<CategorySummary[]>(`/api/v1/category/${type}`)
-      .subscribe(data => this.categories = data);
+      .get<CategoryTreeDtoData>(`/api/v1/category/tree/${type}`)
+      .map(tree => new CategoryTreeDto(tree))
+      .subscribe(tree => {
+        const categories = [];
+        tree.accept(element => categories.push(element));
+        this.categories = categories;
+      });
   }
 
 }

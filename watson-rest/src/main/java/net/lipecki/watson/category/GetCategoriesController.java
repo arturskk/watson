@@ -15,30 +15,28 @@ import java.util.stream.Collectors;
 @RequestMapping(Api.V1)
 public class GetCategoriesController {
 
-    private GetCategoriesQuery query;
+    private GetCategoriesQuery getCategoriesQuery;
 
-    public GetCategoriesController(GetCategoriesQuery query) {
-        this.query = query;
+    private GetCategoryQuery getCategoryQuery;
+
+    public GetCategoriesController(final GetCategoriesQuery getCategoriesQuery, final GetCategoryQuery getCategoryQuery) {
+        this.getCategoriesQuery = getCategoriesQuery;
+        this.getCategoryQuery = getCategoryQuery;
     }
 
     @GetMapping("/category/{categoryType}")
     public List<ListCategoryDto> getAllCategories(@PathVariable final String categoryType) {
-        return this.query
+        return this.getCategoriesQuery
                 .getCategories(categoryType)
                 .stream()
-                .map(GetCategoriesController::asListCategoryDto)
+                .map(ListCategoryDto::from)
                 .collect(Collectors.toList());
     }
 
-    private static ListCategoryDto asListCategoryDto(final Category category) {
-        return ListCategoryDto
-                .builder()
-                .parentUuid(category.getParent().map(Category::getUuid).orElse(null))
-                .type(category.getType())
-                .uuid(category.getUuid())
-                .name(category.getName())
-                .path(category.getCategoryPath())
-                .build();
+    @GetMapping("/category/tree/{categoryType}")
+    public CategoryTreeDto getCategoriesTree(@PathVariable final String categoryType) {
+        final Category rootCategory = this.getCategoryQuery.getRootCategory();
+        return CategoryTreeDto.from(rootCategory);
     }
 
 }

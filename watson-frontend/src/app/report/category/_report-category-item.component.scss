@@ -8,6 +8,6 @@ ws-report-category-item {
   }
   .category-summary {
     font-style: italic;
-    color: lighten($font-color, 40);
+    color: $font-disabled-color;
   }
 }

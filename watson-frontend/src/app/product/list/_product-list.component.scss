@@ -3,4 +3,8 @@ ws-product-list {
   ws-product-edit {
     width: 100%;
   }
+  .category {
+    font-style: italic;
+    color: $font-disabled-color;
+  }
 }

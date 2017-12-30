@@ -1,9 +1,10 @@
 export interface CategorySummary {
 
+  depth?: number;
+  type: string;
   uuid: string;
   name: string;
-  type: string;
   parentUuid: string;
-  path: string;
+  pathString: string;
 
 }

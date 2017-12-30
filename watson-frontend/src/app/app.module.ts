@@ -19,6 +19,7 @@ import {ButtonComponent} from './widgets/button/button.component';
 import {ButtonFlatComponent} from './widgets/button-flat/button-flat.component';
 import {CrudListComponent} from './widgets/crud-list/crud-list.component';
 import {CrudItemComponent} from './widgets/crud-list/crud-item.component';
+import { JoinArrayPipe } from './widgets/join-array.pipe';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import {CrudItemComponent} from './widgets/crud-list/crud-item.component';
     ButtonComponent,
     ButtonFlatComponent,
     CrudListComponent,
-    CrudItemComponent
+    CrudItemComponent,
+    JoinArrayPipe
   ],
   imports: [
     BrowserModule,

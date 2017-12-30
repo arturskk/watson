@@ -3,4 +3,11 @@ ws-category-list {
   ws-category-edit {
     width: 100%;
   }
+  .category-path {
+    font-style: italic;
+    color: $font-disabled-color;
+  }
+  .depth-divider {
+    width: 15px;
+  }
 }
