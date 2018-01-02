@@ -147,7 +147,7 @@ export class SelectComponent implements ControlValueAccessor {
       this.dropdown = true;
     }
     this.currentSearchText = this.searchBox.nativeElement.value;
-    this.filtered = [];
+    this.filtered = this.rawData.filter(item => this.filter(item, this.currentSearchText));
     if (this.allowNewValues) {
       if (this.currentSearchText) {
         this.filtered.push(this.newValuePlaceholder);
@@ -156,7 +156,6 @@ export class SelectComponent implements ControlValueAccessor {
         this.newValuePlaceholder[this.displayField] = null;
       }
     }
-    this.filtered.push(...this.rawData.filter(item => this.filter(item, this.currentSearchText)));
   }
 
   getValueAsDisplayField() {
