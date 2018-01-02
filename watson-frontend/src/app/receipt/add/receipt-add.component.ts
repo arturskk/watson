@@ -103,9 +103,9 @@ import {ArraysUtil} from '../../util/arrays-util';
           <div><input placeholder="Ilość" [(ngModel)]="item.amount.count"/></div>
           <div>
             <select [(ngModel)]="item.amount.unit">
+              <option>szt</option>
               <option>kg</option>
               <option>l</option>
-              <option>szt</option>
             </select>
           </div>
           <div><input placeholder="Kwota" [(ngModel)]="item.cost"/></div>
