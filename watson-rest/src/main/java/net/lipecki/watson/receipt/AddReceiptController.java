@@ -1,8 +1,9 @@
 package net.lipecki.watson.receipt;
 
 import lombok.extern.slf4j.Slf4j;
-import net.lipecki.watson.rest.Api;
 import net.lipecki.watson.event.Event;
+import net.lipecki.watson.rest.Api;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,7 @@ public class AddReceiptController {
     }
 
     @PostMapping("/receipt")
+    @Transactional
     public Event addReceipt(@Valid @RequestBody final AddReceiptDto addReceipt) {
         log.info("Request to add new receipt [addReceipt={}]", addReceipt);
         return this.addReceiptWithDependenciesCommand.addReceipt(addReceipt);

@@ -3,6 +3,7 @@ package net.lipecki.watson.product;
 import lombok.extern.slf4j.Slf4j;
 import net.lipecki.watson.event.Event;
 import net.lipecki.watson.rest.Api;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -22,6 +23,7 @@ public class ModifyProductController {
     }
 
     @PutMapping("/product/{uuid}")
+    @Transactional
     public Event modifyProduct(
             @PathVariable final String uuid,
             @Validated @RequestBody final ModifyProductDto dto) {

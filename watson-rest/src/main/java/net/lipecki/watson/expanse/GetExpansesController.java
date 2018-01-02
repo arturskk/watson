@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.lipecki.watson.category.Category;
 import net.lipecki.watson.rest.Api;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,6 +28,7 @@ public class GetExpansesController {
     }
 
     @GetMapping("/expanse")
+    @Transactional
     public List<ExpanseDto> getExpanses(@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final LocalDate from,
                                         @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final LocalDate to) {
         log.debug("Request for expanses [from={}, to={}]", from, to);

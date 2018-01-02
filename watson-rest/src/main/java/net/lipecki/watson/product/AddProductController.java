@@ -3,6 +3,7 @@ package net.lipecki.watson.product;
 import lombok.extern.slf4j.Slf4j;
 import net.lipecki.watson.event.Event;
 import net.lipecki.watson.rest.Api;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +22,7 @@ public class AddProductController {
     }
 
     @PostMapping("/product")
+    @Transactional
     public Event addProduct(@Validated @RequestBody AddProductDto dto) {
         log.info("Request to add product [dto={}]", dto);
         return addProductCommand.addProduct(

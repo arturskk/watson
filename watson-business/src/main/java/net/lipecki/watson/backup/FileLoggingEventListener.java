@@ -1,4 +1,4 @@
-package net.lipecki.watson.logging;
+package net.lipecki.watson.backup;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

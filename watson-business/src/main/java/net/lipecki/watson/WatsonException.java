@@ -20,15 +20,19 @@ public class WatsonException extends RuntimeException {
         return new WatsonException(WatsonExceptionCode.UNKNOWN, message);
     }
 
+    public static WatsonException of(final String message, final Throwable cause) {
+        return new WatsonException(WatsonExceptionCode.UNKNOWN, message, cause);
+    }
+
     public static WatsonException of(final WatsonExceptionCode code, final String message) {
         return new WatsonException(code, message);
     }
 
-    public static WatsonException of(final WatsonExceptionCode code, final String message, final Exception cause) {
+    public static WatsonException of(final WatsonExceptionCode code, final String message, final Throwable cause) {
         return new WatsonException(code, message, cause);
     }
 
-    public WatsonException(final WatsonExceptionCode code, final String message, final Exception cause) {
+    public WatsonException(final WatsonExceptionCode code, final String message, final Throwable cause) {
         super(message, cause);
         this.code = code;
     }

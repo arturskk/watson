@@ -56,8 +56,7 @@ public class JpaEventStore implements EventStore {
     @Override
     public Stream<Event> getEvents() {
         return this.eventRepository
-                .findAll()
-                .stream()
+                .findAllAndStream()
                 .map(this::asEvent);
     }
 

@@ -3,6 +3,7 @@ package net.lipecki.watson.account;
 import lombok.extern.slf4j.Slf4j;
 import net.lipecki.watson.event.Event;
 import net.lipecki.watson.rest.Api;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +22,7 @@ public class AddAccountController {
     }
 
     @PostMapping("/account")
+    @Transactional
     public Event addAccount(@Validated @RequestBody AddAccountDto dto) {
         log.info("Request to add account [dto={}]", dto);
         return addAccountCommand.addAccount(

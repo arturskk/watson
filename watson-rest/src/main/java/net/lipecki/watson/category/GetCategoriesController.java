@@ -2,6 +2,7 @@ package net.lipecki.watson.category;
 
 import lombok.extern.slf4j.Slf4j;
 import net.lipecki.watson.rest.Api;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,7 @@ public class GetCategoriesController {
     }
 
     @GetMapping("/category/{categoryType}")
+    @Transactional
     public List<ListCategoryDto> getAllCategories(@PathVariable final String categoryType) {
         return this.getCategoriesQuery
                 .getCategories(categoryType)
@@ -34,6 +36,7 @@ public class GetCategoriesController {
     }
 
     @GetMapping("/category/tree/{categoryType}")
+    @Transactional
     public CategoryTreeDto getCategoriesTree(@PathVariable final String categoryType) {
         final Category rootCategory = this.getCategoryQuery.getRootCategory();
         return CategoryTreeDto.from(rootCategory);
