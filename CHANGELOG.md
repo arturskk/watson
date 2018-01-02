@@ -1,0 +1,16 @@
+- 0.2.9
+  - Przygotowanie changelogu
+- 0.2.8
+  - Dynamiczne pozycje komponentu Combo prezentowane jako ostatnie
+  - Zmiana kolejności jednostek przy dodawaniu produktu do rachunku
+- 0.2.7
+  - Usługa eksportowania listy eventów
+  - Konfiguracja budowania Travis CI
+  - Lista kategorii prezentowana jako drzewo
+- 0.2.6
+  - Proste komunikaty walidacji przy dodawaniu rachunków
+- Starsze
+  - Lista produktów
+  - Lista kategorii
+  - Dodawanie rachunków
+  - Raport wydatków z podziałem na kategorie
