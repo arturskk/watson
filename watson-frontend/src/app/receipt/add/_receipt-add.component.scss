@@ -18,4 +18,19 @@ ws-receipt-add {
   .select-product-cell {
     display: flex;
   }
+  .receipt-summary {
+    display: flex;
+    flex-direction: row-reverse;
+    & > div:not(:first-child) {
+      margin-right: 15px;
+    }
+    .receipt-summary-cell {
+      color: $color-grey-500;
+      font-style: italic;
+      font-size: 0.9em;
+    }
+    .receipt-header {
+      flex: 1;
+    }
+  }
 }
