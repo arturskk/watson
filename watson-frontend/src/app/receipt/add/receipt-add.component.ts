@@ -56,7 +56,11 @@ import {ReceiptItem} from '../receipt-item';
         </div>
       </ws-panel>
       <ws-panel>
-        <h2>Produkty</h2>
+        <div class="receipt-summary">
+          <div class="receipt-summary-cell">Kwota: {{receiptSummaryCost()}}zł</div>
+          <div class="receipt-summary-cell">Pozycje: {{nonEmptyReceiptItemCount()}}</div>
+          <div class="receipt-header"><h2>Produkty</h2></div>
+        </div>
         <div class="receipt-items">
           <div class="receipt-item" *ngFor="let item of receipt.items">
             <div class="select-product-cell">
@@ -105,9 +109,9 @@ import {ReceiptItem} from '../receipt-item';
             <div><input placeholder="Ilość" [(ngModel)]="item.amount.count"/></div>
             <div>
               <select [(ngModel)]="item.amount.unit">
-                <option>szt</option>
                 <option>op</option>
-              <option>kg</option>
+                <option>szt</option>
+                <option>kg</option>
                 <option>l</option>
               </select>
             </div>
@@ -132,11 +136,15 @@ export class ReceiptAddComponent implements OnInit {
   shops;
   products;
   accounts;
+  filterByName = (item, searchText) => item.name.toLocaleLowerCase().indexOf(searchText.toLocaleLowerCase()) >= 0;
+
+  constructor(private httpClient: HttpClient) {
+  }
 
   static itemsBatch(): Partial<ReceiptItem>[] {
     const itemPrototype: Partial<ReceiptItem> = {
       amount: {
-        unit: 'szt'
+        unit: 'op'
       }
     };
     return ArraysUtil.fillWithCopies(5, itemPrototype);
@@ -148,11 +156,6 @@ export class ReceiptAddComponent implements OnInit {
       items: ReceiptAddComponent.itemsBatch(),
       category: category
     };
-  }
-
-  filterByName = (item, searchText) => item.name.toLocaleLowerCase().indexOf(searchText.toLocaleLowerCase()) >= 0;
-
-  constructor(private httpClient: HttpClient) {
   }
 
   ngOnInit(): void {
@@ -170,9 +173,7 @@ export class ReceiptAddComponent implements OnInit {
   }
 
   save() {
-    this.receipt.items = this.receipt.items.filter(
-      item => !!item['product']
-    );
+    this.receipt.items = this.getNonEmptyReceiptItems();
     this.httpClient
       .post('/api/v1/receipt', this.receipt)
       .subscribe(
@@ -209,6 +210,17 @@ export class ReceiptAddComponent implements OnInit {
     }
   }
 
+  nonEmptyReceiptItemCount(): number {
+    return this.getNonEmptyReceiptItems().length;
+  }
+
+  receiptSummaryCost(): number {
+    return this.getNonEmptyReceiptItems()
+      .map(item => item.cost)
+      .reduce((prev, current) => ((parseFloat(current) || 0) + (parseFloat(prev) || 0)), 0)
+      .toFixed(2);
+  }
+
   private fetchDependencies() {
     Observable.forkJoin(
       this.httpClient.get('/api/v1/account'),
@@ -232,6 +244,10 @@ export class ReceiptAddComponent implements OnInit {
         this.receipt = ReceiptAddComponent.newReceipt(this.categoriesReceipt.find(category => category.uuid === 'root'));
       }
     );
+  }
+
+  private getNonEmptyReceiptItems() {
+    return this.receipt.items.filter(item => !!item['product']);
   }
 
 }
