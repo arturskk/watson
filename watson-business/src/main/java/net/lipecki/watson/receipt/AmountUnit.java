@@ -1,12 +1,16 @@
 package net.lipecki.watson.receipt;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 public enum AmountUnit {
 
     KG("kg", Arrays.asList("kg", "KG")),
     L("l", Arrays.asList("l", "L")),
     UNIT("szt", Arrays.asList("szt", "SZT")),
+    PACKAGE("op", Arrays.asList("op", "OP")),
     UNKNOWN("", Collections.emptyList());
 
     public static Optional<AmountUnit> getByAlias(final String alias) {
