@@ -104,6 +104,7 @@ import {ReceiptItem} from '../receipt-item';
           <div>
             <select [(ngModel)]="item.amount.unit">
               <option>szt</option>
+              <option>op</option>
               <option>kg</option>
               <option>l</option>
             </select>
