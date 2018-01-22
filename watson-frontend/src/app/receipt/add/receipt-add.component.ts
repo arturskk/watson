@@ -156,28 +156,7 @@ export class ReceiptAddComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    Observable.forkJoin(
-      this.httpClient.get('/api/v1/account'),
-      this.httpClient.get('/api/v1/product'),
-      this.httpClient.get('/api/v1/shop'),
-      this.httpClient.get('/api/v1/category/_category_receipt'),
-      this.httpClient.get('/api/v1/category/_category_receipt_item')
-    ).subscribe(
-      result => {
-        this.accounts = result[0];
-        this.products = result[1];
-        this.shops = result[2];
-        this.categoriesReceipt = this.categoriesReceipt = (result[3] as any[]).map(category => ({
-          name: category.name,
-          uuid: category.uuid
-        }));
-        this.categoriesItem = this.categoriesReceipt = (result[4] as any[]).map(category => ({
-          name: category.name,
-          uuid: category.uuid
-        }));
-        this.receipt = ReceiptAddComponent.newReceipt(this.categoriesReceipt.find(category => category.uuid === 'root'));
-      }
-    );
+    this.fetchDependencies();
   }
 
   addItem() {
@@ -198,8 +177,9 @@ export class ReceiptAddComponent implements OnInit {
       .post('/api/v1/receipt', this.receipt)
       .subscribe(
         () => {
-          this.receipt = ReceiptAddComponent.newReceipt(this.categoriesReceipt.find(category => category.uuid === 'root'));
+          this.receipt = undefined;
           alert('Dodane');
+          this.fetchDependencies();
         },
         (err) => {
           console.log(err.error);
@@ -227,6 +207,31 @@ export class ReceiptAddComponent implements OnInit {
         createdWithinReceipt: true
       });
     }
+  }
+
+  private fetchDependencies() {
+    Observable.forkJoin(
+      this.httpClient.get('/api/v1/account'),
+      this.httpClient.get('/api/v1/product'),
+      this.httpClient.get('/api/v1/shop'),
+      this.httpClient.get('/api/v1/category/_category_receipt'),
+      this.httpClient.get('/api/v1/category/_category_receipt_item')
+    ).subscribe(
+      result => {
+        this.accounts = result[0];
+        this.products = result[1];
+        this.shops = result[2];
+        this.categoriesReceipt = this.categoriesReceipt = (result[3] as any[]).map(category => ({
+          name: category.name,
+          uuid: category.uuid
+        }));
+        this.categoriesItem = this.categoriesReceipt = (result[4] as any[]).map(category => ({
+          name: category.name,
+          uuid: category.uuid
+        }));
+        this.receipt = ReceiptAddComponent.newReceipt(this.categoriesReceipt.find(category => category.uuid === 'root'));
+      }
+    );
   }
 
 }
