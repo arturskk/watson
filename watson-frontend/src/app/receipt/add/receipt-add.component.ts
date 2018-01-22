@@ -215,7 +215,10 @@ export class ReceiptAddComponent implements OnInit {
   }
 
   receiptSummaryCost(): number {
-    return this.getNonEmptyReceiptItems().map(item => item.cost).reduce((prev, current) => ((parseFloat(current) || 0) + (parseFloat(prev) || 0)), 0);
+    return this.getNonEmptyReceiptItems()
+      .map(item => item.cost)
+      .reduce((prev, current) => ((parseFloat(current) || 0) + (parseFloat(prev) || 0)), 0)
+      .toFixed(2);
   }
 
   private fetchDependencies() {
