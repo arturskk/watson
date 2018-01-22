@@ -1,7 +1,7 @@
 import {HttpClient} from '@angular/common/http';
 import {Component, OnInit} from '@angular/core';
-import {ReceiptItem} from '../receipt-item';
 import {ArraysUtil} from '../../util/arrays-util';
+import {ReceiptItem} from '../receipt-item';
 
 @Component({
   selector: 'ws-receipt-add',
@@ -127,7 +127,7 @@ export class ReceiptAddComponent implements OnInit {
   accounts;
 
   static itemsBatch(): Partial<ReceiptItem>[] {
-    const itemPrototype: Partial<ReceiptItem> = {amount: {unit: 'kg'}};
+    const itemPrototype: Partial<ReceiptItem> = {amount: {unit: 'szt'}};
     return ArraysUtil.fillWithCopies(5, itemPrototype);
   }
 
