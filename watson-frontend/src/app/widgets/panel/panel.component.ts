@@ -6,7 +6,10 @@ import {Component} from '@angular/core';
     <div>
       <ng-content></ng-content>
     </div>
-  `
+  `,
+  styleUrls: [
+    'panel.component.scss'
+  ]
 })
 export class PanelComponent {
 

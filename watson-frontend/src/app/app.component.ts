@@ -10,7 +10,10 @@ import {Component} from '@angular/core';
     <footer>
       Watson! v.0.2.0 (<a>#abc3few3</a>)
     </footer>
-  `
+  `,
+  styleUrls: [
+    'app.component.scss'
+  ]
 })
 export class AppComponent {
 }

@@ -36,7 +36,10 @@ import {CategoryTreeDto, CategoryTreeDtoData} from './category-tree-dto';
         </ws-crud-list-component>
       </ws-panel>
     </ng-container>
-  `
+  `,
+  styleUrls: [
+    'category-list.component.scss'
+  ]
 })
 export class CategoryListComponent implements OnInit {
 

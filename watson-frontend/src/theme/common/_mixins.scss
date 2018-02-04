@@ -1,0 +1,17 @@
+@mixin link-color-with-hover() {
+  color: #0277bd;
+  transition: color 400ms;
+  &:hover {
+    color: #81d4fa;
+  }
+}
+@mixin flex-grid($maxColumns: 10) {
+  .row {
+    display: flex;
+  }
+  @for $i from 1 through $maxColumns {
+    .column-#{$i} {
+      flex: $i;
+    }
+  }
+}

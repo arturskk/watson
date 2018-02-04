@@ -1,9 +1,7 @@
-ws-select {
+:host {
   display: block;
-  width: 172px;
   padding: 2px;
   border: 1px solid rgb(220, 220, 220);
-  margin: 0 1px;
 
   .dropdown {
     position: absolute;

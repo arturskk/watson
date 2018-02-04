@@ -1,4 +1,6 @@
-ws-crud-item-component {
+@import '../../../common';
+
+:host {
   display: block;
   .item {
     display: flex;

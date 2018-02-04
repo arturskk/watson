@@ -1,4 +1,6 @@
-ws-product-list {
+@import '../../../common';
+
+:host {
   display: block;
   ws-product-edit {
     width: 100%;

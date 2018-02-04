@@ -1,0 +1,17 @@
+@import '../../../../../common';
+
+:host {
+  display: block;
+  .new-product-category-row {
+    display: flex;
+    margin: 3px 0;
+    align-items: center;
+    ws-select {
+      flex: 1;
+      margin-left: 5px;
+    }
+  }
+  .dynamic-select-item {
+    color: $color-red-800;
+  }
+}

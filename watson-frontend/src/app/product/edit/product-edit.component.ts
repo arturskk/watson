@@ -17,7 +17,10 @@ import {ProductSummary} from '../product-summary';
         <span [innerHTML]="markSearchText.call(undefined, item.name)"></span>
       </ng-template>
     </ws-select>
-  `
+  `,
+  styleUrls: [
+    'product-edit.component.scss'
+  ]
 })
 export class ProductEditComponent {
 

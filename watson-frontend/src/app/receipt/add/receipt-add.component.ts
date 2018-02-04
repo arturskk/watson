@@ -1,5 +1,5 @@
 import {HttpClient} from '@angular/common/http';
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {ArraysUtil} from '../../util/arrays-util';
 import {ReceiptItem} from '../receipt-item';
@@ -10,123 +10,69 @@ import {ReceiptItem} from '../receipt-item';
     <ng-container *ngIf="receipt; else spinner">
       <h1>Dodaj rachunek</h1>
       <ws-panel>
-        <div class="receipt-main">
-          <div><input placeholder="Opis" [(ngModel)]="receipt.description"/></div>
-          <div><input placeholder="Data" [(ngModel)]="receipt.date"/></div>
-          <div>
-            <ws-select
-              [data]="accounts"
-              [displayField]="'name'"
-              [filter]="filterByName"
-              [placeholder]="'Konto'"
-              [(ngModel)]="receipt.account">
-              <ng-template let-item let-markSearchText="markSearchText" let-newItem="newItem" #listItem>
-                <span *ngIf="newItem">Dodaj: </span>
-                <span [innerHTML]="markSearchText.call(undefined, item.name)"></span>
-              </ng-template>
-            </ws-select>
-          </div>
-          <div>
-            <ws-select
-              [data]="shops"
-              [displayField]="'name'"
-              [filter]="filterByName"
-              [placeholder]="'Sklep'"
-              [(ngModel)]="receipt.shop">
-              <ng-template let-item let-markSearchText="markSearchText" let-newItem="newItem" #listItem>
-                <span *ngIf="newItem">Dodaj: </span>
-                <span [innerHTML]="markSearchText.call(undefined, item.name)"></span>
-              </ng-template>
-            </ws-select>
-          </div>
-          <div>
-            <ws-select
-              [data]="categoriesReceipt"
-              [displayField]="'name'"
-              [filter]="filterByName"
-              [placeholder]="'Kategoria'"
-              [(ngModel)]="receipt.category">
-              <ng-template let-item let-markSearchText="markSearchText" let-newItem="newItem" #listItem>
-                <span *ngIf="newItem">Dodaj: </span>
-                <span [innerHTML]="markSearchText.call(undefined, item.name)"></span>
-              </ng-template>
-            </ws-select>
-          </div>
-          <!--<div><input placeholder="Tagi" [(ngModel)]="receipt.tags"/></div>-->
-        </div>
+        <ws-add-receipt-details [accounts]="accounts"
+                                [shops]="shops"
+                                [categories]="categoriesReceipt"
+                                [receipt]="receipt"
+                                [description]="receipt.description"
+                                [date]="receipt.date"
+                                [account]="receipt.account"
+                                [shop]="receipt.shop"
+                                [category]="receipt.category"
+                                (descriptionChange)="receipt.description = $event"
+                                (dateChange)="receipt.date = $event"
+                                (accountChange)="receipt.account = $event"
+                                (shopChange)="receipt.shop = $event"
+                                (categoryChange)="receipt.category = $event">
+        </ws-add-receipt-details>
       </ws-panel>
       <ws-panel>
-        <div class="receipt-summary">
-          <div class="receipt-summary-cell">Kwota: {{receiptSummaryCost()}}zł</div>
-          <div class="receipt-summary-cell">Pozycje: {{nonEmptyReceiptItemCount()}}</div>
-          <div class="receipt-header"><h2>Produkty</h2></div>
+        <div class="receipt-body-header">
+          <ws-add-receipt-items-summary [items]="getNonEmptyReceiptItems()"></ws-add-receipt-items-summary>
         </div>
-        <div class="receipt-items">
-          <div class="receipt-item" *ngFor="let item of receipt.items">
-            <div class="select-product-cell">
-              <ws-select
-                [data]="products"
-                [displayField]="'name'"
-                [filter]="filterByName"
-                [placeholder]="'Produkt'"
-                (onChange)="onProductSelected(item, $event)"
-                [(ngModel)]="item.product">
-                <ng-template let-item let-markSearchText="markSearchText" let-newItem="newItem" #listItem>
-                  <div>
-                    <span *ngIf="newItem">Dodaj: </span>
-                    <span [innerHTML]="markSearchText.call(undefined, item.name)"></span>
-                  </div>
-                  <div *ngIf="item.createdWithinReceipt" class="dynamic-select-item">
-                    Nowo utworzony produkt
-                  </div>
-                  <div *ngIf="item.categoryPath" class="select-item-description">
-                    {{item.categoryPath}}
-                  </div>
-                </ng-template>
-              </ws-select>
-              <ws-select
-                *ngIf="item.product && item.product.newValue && !item.product.createdWithinReceipt"
-                [data]="categoriesItem"
-                [displayField]="'name'"
-                [filter]="filterByName"
-                (onChange)="onProductCategorySelected($event)"
-                [placeholder]="'Kategoria nowego produktu'"
-                [(ngModel)]="item.product.category">
-                <ng-template let-item let-markSearchText="markSearchText" let-newItem="newItem" #listItem>
-                  <div>
-                    <span *ngIf="newItem">Dodaj: </span>
-                    <span [innerHTML]="markSearchText.call(undefined, item.name)"></span>
-                  </div>
-                  <div *ngIf="item.createdWithinReceipt" class="dynamic-select-item">
-                    Nowo utworzona kategoria produktu
-                  </div>
-                  <div *ngIf="item.categoryPath" class="select-item-description">
-                    {{item.categoryPath}}
-                  </div>
-                </ng-template>
-              </ws-select>
-            </div>
-            <div><input placeholder="Ilość" [(ngModel)]="item.amount.count"/></div>
-            <div>
-              <select [(ngModel)]="item.amount.unit">
-                <option>op</option>
-                <option>szt</option>
-                <option>kg</option>
-                <option>l</option>
-              </select>
-            </div>
-            <div><input placeholder="Kwota" [(ngModel)]="item.cost"/></div>
-            <div><a (click)="removeItem(item)">(-)</a></div>
+        <div class="row header">
+          <div *ngFor="let column of columns" [class]="'column column-' + column.span">
+            {{column.textKey}}
           </div>
-          <a (click)="addItem()">(+) dodaj produkt</a>
+          <div class="actions-column">
+          </div>
         </div>
+        <div class="items">
+          <div *ngFor="let item of receipt.items" class="row">
+            <div *ngFor="let column of columns" [class]="'column column-' + column.span">
+              <ws-add-receipt-item-product *ngIf="column.type === 'product'"
+                                           [products]="products"
+                                           [categories]="categoriesItem"
+                                           (productChange)="onProductSelected(item, $event)" 
+                                           (productCategoryChange)="onProductCategorySelected($event)">
+              </ws-add-receipt-item-product>
+              <ws-add-receipt-item-amount *ngIf="column.type === 'amount'" 
+                                          [amount]="item.amount" 
+                                          (amountChange)="item.amount = $event">
+              </ws-add-receipt-item-amount>
+              <ws-add-receipt-item-cost *ngIf="column.type === 'cost'" 
+                                        [cost]="item.cost" 
+                                        (costChange)="item.cost = $event">
+              </ws-add-receipt-item-cost>
+            </div>
+            <div class="actions-column">
+              <ws-button-flat (clicked)="removeItem(item)">(-)</ws-button-flat>
+            </div>
+          </div>
+        </div>
+        <div>
+          <ws-button-flat (clicked)="addItems()">dodaj kolejne</ws-button-flat>
+        </div>
+        <ws-button (clicked)="save()">Zapisz</ws-button>
       </ws-panel>
-      <button (click)="save()">zapisz</button>
     </ng-container>
     <ng-template #spinner>
-      Ładowanie...
+      <ws-spinner></ws-spinner>
     </ng-template>
-  `
+  `,
+  styleUrls: [
+    'receipt-add.component.scss'
+  ]
 })
 export class ReceiptAddComponent implements OnInit {
 
@@ -136,18 +82,33 @@ export class ReceiptAddComponent implements OnInit {
   shops;
   products;
   accounts;
-  filterByName = (item, searchText) => item.name.toLocaleLowerCase().indexOf(searchText.toLocaleLowerCase()) >= 0;
+  columns = [
+    {
+      type: 'product',
+      textKey: 'Produkt',
+      span: 4
+    },
+    {
+      type: 'amount',
+      textKey: 'Ilość',
+      span: 1
+    },
+    {
+      type: 'cost',
+      textKey: 'Koszt',
+      span: 1
+    },
+  ];
 
   constructor(private httpClient: HttpClient) {
   }
 
   static itemsBatch(): Partial<ReceiptItem>[] {
-    const itemPrototype: Partial<ReceiptItem> = {
+    return ArraysUtil.fillWithCopies(5, {
       amount: {
         unit: 'op'
       }
-    };
-    return ArraysUtil.fillWithCopies(5, itemPrototype);
+    });
   }
 
   static newReceipt(category): Receipt {
@@ -162,7 +123,7 @@ export class ReceiptAddComponent implements OnInit {
     this.fetchDependencies();
   }
 
-  addItem() {
+  addItems() {
     this.receipt.items.push(
       ...ReceiptAddComponent.itemsBatch()
     );
@@ -200,6 +161,7 @@ export class ReceiptAddComponent implements OnInit {
   }
 
   onProductSelected(item, product) {
+    item.product = product;
     if (product.newValue && !product.createdWithinReceipt) {
       product.category = this.categoriesItem.find(category => category.uuid === 'root');
       console.log('Adding newly created product as available product [product=%o]', product);
@@ -210,15 +172,8 @@ export class ReceiptAddComponent implements OnInit {
     }
   }
 
-  nonEmptyReceiptItemCount(): number {
-    return this.getNonEmptyReceiptItems().length;
-  }
-
-  receiptSummaryCost(): number {
-    return this.getNonEmptyReceiptItems()
-      .map(item => item.cost)
-      .reduce((prev, current) => ((parseFloat(current) || 0) + (parseFloat(prev) || 0)), 0)
-      .toFixed(2);
+  getNonEmptyReceiptItems() {
+    return this.receipt.items.filter(item => !!item['product']);
   }
 
   private fetchDependencies() {
@@ -244,10 +199,6 @@ export class ReceiptAddComponent implements OnInit {
         this.receipt = ReceiptAddComponent.newReceipt(this.categoriesReceipt.find(category => category.uuid === 'root'));
       }
     );
-  }
-
-  private getNonEmptyReceiptItems() {
-    return this.receipt.items.filter(item => !!item['product']);
   }
 
 }

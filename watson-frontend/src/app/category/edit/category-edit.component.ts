@@ -18,7 +18,10 @@ import {CategorySummary} from '../category-summary';
         <span [innerHTML]="markSearchText.call(undefined, item.name)"></span>
       </ng-template>
     </ws-select>
-  `
+  `,
+  styleUrls: [
+    'category-edit.component.scss'
+  ]
 })
 export class CategoryEditComponent {
 

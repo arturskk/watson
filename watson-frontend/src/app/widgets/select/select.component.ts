@@ -48,13 +48,15 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
         </div>
       </div>
     </div>
-  `
+  `,
+  styleUrls: [
+    'select.component.scss'
+  ]
 })
 export class SelectComponent implements ControlValueAccessor {
 
   static newValuePlaceholderTemplate = {newValue: true};
   dropdown = false;
-  value = null;
   filtered = [];
   currentIndex = -1;
   newValuePlaceholder: any = {...SelectComponent.newValuePlaceholderTemplate};
@@ -63,6 +65,7 @@ export class SelectComponent implements ControlValueAccessor {
 
   @Output() onChange = new EventEmitter();
   @Output() onTouch = new EventEmitter();
+  @Input() value = null;
   @Input() allowNewValues = true;
   @Input() disabled = false;
   @Input() placeholder = '';

@@ -37,7 +37,10 @@ import {CrudItemState} from './crut-item-state';
     <div class="action-message" *ngIf="actionMessage">
       {{actionMessage}}
     </div>
-  `
+  `,
+  styleUrls: [
+    'crud-item.component.scss'
+  ]
 })
 export class CrudItemComponent<T> {
 
