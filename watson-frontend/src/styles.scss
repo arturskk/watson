@@ -3,7 +3,8 @@
 // libs
 
 // theme
-@import '_common';
+//noinspection CssUnknownTarget
+@import 'common';
 @import 'theme/global/fonts/roboto/roboto';
 @import 'theme/global/reboot';
 @import 'theme/global/custom-reboot';
