@@ -83,7 +83,10 @@ export class ProductListComponent implements OnInit {
         })
       )
       .subscribe(
-        crudItemSave.commit,
+        () => {
+          crudItemSave.commit();
+          this.fetchProducts();
+        },
         response => crudItemSave.rollback({
           message: response.error.message
         })
