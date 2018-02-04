@@ -39,7 +39,7 @@ public class GetCategoriesController {
     @Transactional
     public CategoryTreeDto getCategoriesTree(@PathVariable final String categoryType) {
         final Category rootCategory = this.getCategoryQuery.getRootCategory();
-        return CategoryTreeDto.from(rootCategory);
+        return CategoryTreeDto.from(rootCategory, categoryType);
     }
 
 }
