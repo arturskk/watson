@@ -1,0 +1,29 @@
+$open-sans-dir: 'assets/fonts/open-sans';
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Open Sans Light'), url('#{$open-sans-dir}/OpenSans-Light.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans'), url('#{$open-sans-dir}/OpenSans-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 500;
+  src: local('Open Sans Medium'), url('#{$open-sans-dir}/OpenSans-SemiBold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Open Sans Bold'), url('#{$open-sans-dir}/OpenSans-Bold.ttf') format('truetype');
+}
