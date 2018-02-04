@@ -1,3 +1,6 @@
+//noinspection CssUnknownTarget
+@import 'common';
+
 :host {
   display: block;
   .report-parameters {
@@ -5,6 +8,17 @@
     align-items: center;
     input {
       margin: 0 10px;
+    }
+  }
+  .report-options {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    padding-top: 5px;
+    border-top: 1px solid $color-grey-300;
+    input {
+      width: auto;
+      margin-right: 5px;
     }
   }
 }

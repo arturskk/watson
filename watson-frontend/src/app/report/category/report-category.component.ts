@@ -13,9 +13,13 @@ import {Component, OnInit} from '@angular/core';
         <input [(ngModel)]="dateTo"/>
         <button (click)="refreshReport()">Pobierz</button>
       </div>
+      <div class="report-options">
+          <input type="checkbox" id="show-empty" [(ngModel)]="showEmptyCategories" />
+          <label for="show-empty">Pokaż puste kategorie</label>
+      </div>
     </ws-panel>
     <ws-panel *ngIf="report">
-      <ws-report-category-item [category]="report.rootCategory">
+      <ws-report-category-item [category]="report.rootCategory" [showEmpty]="showEmptyCategories">
       </ws-report-category-item>
     </ws-panel>
   `,
@@ -28,6 +32,7 @@ export class ReportCategoryComponent implements OnInit {
   dateFrom: string;
   dateTo: string;
   report: any;
+  showEmptyCategories = false;
 
   constructor(private httpClient: HttpClient) {
   }

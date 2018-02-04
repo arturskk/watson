@@ -14,8 +14,11 @@ import {CategoryReportItem} from './category-report-item';
       </div>
       <div class="subcategories" *ngIf="expanded">
         <span class="category-summary">({{category.name}} {{category.categoryCost.description}}zł)</span>
-        <ws-report-category-item [category]="subCategory" *ngFor="let subCategory of category.subCategories">
-        </ws-report-category-item>
+        <ng-container *ngFor="let subCategory of category.subCategories">
+          <ws-report-category-item *ngIf="showEmpty || subCategory.totalCost.amount > 0" 
+                                   [category]="subCategory">
+          </ws-report-category-item>
+        </ng-container>
       </div>
     </div>
   `,
@@ -26,6 +29,7 @@ import {CategoryReportItem} from './category-report-item';
 export class ReportCategoryItemComponent {
 
   @Input() category: CategoryReportItem;
+  @Input() showEmpty = false;
   expanded = false;
 
 }
