@@ -3,31 +3,10 @@
 // libs
 
 // theme
-@import 'theme/palette';
-@import 'theme/colors';
-@import 'theme/variables';
-@import 'theme/fonts/roboto/roboto';
-@import 'theme/mixins';
-@import 'theme/reboot';
-@import 'theme/links';
-@import 'theme/typography';
-@import 'theme/body-layout';
-
-// widgets
-@import 'app/widgets/panel/panel.component';
-@import 'app/widgets/select/select.component';
-@import 'app/widgets/button/button.component';
-@import 'app/widgets/button-flat/button-flat.component';
-@import 'app/widgets/crud-list/crud-list.component';
-@import 'app/widgets/crud-list/crud-item.component';
-
-// components
-@import 'app/app.component';
-@import 'app/navbar/navbar.component';
-@import 'app/receipt/add/receipt-add.component';
-@import 'app/category/list/category-list.component';
-@import 'app/category/edit/category-edit.component';
-@import 'app/report/category/report-category.component';
-@import 'app/report/category/report-category-item.component';
-@import 'app/product/edit/product-edit.component';
-@import 'app/product/list/product-list.component';
+@import '_common';
+@import 'theme/global/fonts/roboto/roboto';
+@import 'theme/global/reboot';
+@import 'theme/global/custom-reboot';
+@import 'theme/global/links';
+@import 'theme/global/typography';
+@import 'theme/global/body-layout';

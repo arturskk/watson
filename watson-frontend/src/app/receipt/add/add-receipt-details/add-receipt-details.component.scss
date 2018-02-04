@@ -1,0 +1,13 @@
+:host {
+  display: block;
+  .item {
+    display: flex;
+    &:not(:last-child) {
+      margin-bottom: 5px;
+    }
+  }
+  .label {
+    width: 100px;
+    margin-right: 5px;
+  }
+}

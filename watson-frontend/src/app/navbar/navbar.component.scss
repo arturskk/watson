@@ -1,8 +1,6 @@
-body {
-  padding-top: $navbar-height;
-}
+@import '../../common';
 
-watson-navbar {
+:host {
   display: block;
   position: fixed;
   top: 0;

@@ -1,7 +1,0 @@
-@mixin link-color-with-hover() {
-  color: #0277bd;
-  transition: color 400ms;
-  &:hover {
-    color: #81d4fa;
-  }
-}

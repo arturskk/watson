@@ -1,4 +1,6 @@
-ws-report-category-item {
+@import '../../../common';
+
+:host {
   display: block;
   .subcategories {
     padding-left: 25px;

@@ -14,7 +14,10 @@ import {CrudItemSave} from './crud-item-save';
         [itemEditTemplate]="itemEditChildTemplate">
       </ws-crud-item-component>
     </div>
-  `
+  `,
+  styleUrls: [
+    'crud-list.component.scss'
+  ]
 })
 export class CrudListComponent<T> {
 

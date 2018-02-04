@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'watson-navbar',
@@ -11,13 +11,11 @@ import { Component, OnInit } from '@angular/core';
       <div><a routerLink="/category/receipt_item/list">Kategorie produktów</a></div>
       <div><a routerLink="/category/receipt/list">Kategorie rachunków</a></div>
     </nav>
-  `
+  `,
+  styleUrls: [
+    'navbar.component.scss'
+  ]
 })
-export class NavbarComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
+export class NavbarComponent {
 
 }

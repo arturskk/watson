@@ -1,4 +1,6 @@
-ws-crud-list-component {
+@import '../../../common';
+
+:host {
   display: block;
   .list-item {
     padding-top: 4px;

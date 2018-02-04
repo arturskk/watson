@@ -18,7 +18,10 @@ import {CategoryReportItem} from './category-report-item';
         </ws-report-category-item>
       </div>
     </div>
-  `
+  `,
+  styleUrls: [
+    'report-category-item.component.scss'
+  ]
 })
 export class ReportCategoryItemComponent {
 

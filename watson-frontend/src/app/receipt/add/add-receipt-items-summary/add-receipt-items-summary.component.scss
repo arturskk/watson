@@ -1,0 +1,10 @@
+@import '../../../../common';
+
+:host {
+  display: flex;
+  color: $color-grey-500;
+  font-style: italic;
+  .receipt-summary-cell:not(:last-child) {
+    margin-right: 10px;
+  }
+}

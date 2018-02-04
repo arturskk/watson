@@ -32,7 +32,10 @@ import {CrudItemState} from '../../widgets/crud-list/crut-item-state';
         </ng-template>
       </ws-crud-list-component>
     </ws-panel>
-  `
+  `,
+  styleUrls: [
+    'product-list.component.scss'
+  ]
 })
 export class ProductListComponent implements OnInit {
 

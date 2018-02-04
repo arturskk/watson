@@ -18,7 +18,10 @@ import {Component, OnInit} from '@angular/core';
       <ws-report-category-item [category]="report.rootCategory">
       </ws-report-category-item>
     </ws-panel>
-  `
+  `,
+  styleUrls: [
+    'report-category.component.scss'
+  ]
 })
 export class ReportCategoryComponent implements OnInit {
 

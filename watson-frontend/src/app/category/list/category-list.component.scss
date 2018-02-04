@@ -1,4 +1,6 @@
-ws-category-list {
+@import '../../../common';
+
+:host {
   display: block;
   ws-category-edit {
     width: 100%;

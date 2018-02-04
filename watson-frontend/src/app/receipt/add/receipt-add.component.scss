@@ -1,0 +1,45 @@
+@import '../../../common';
+
+:host {
+  display: block;
+
+  @include flex-grid();
+
+  .receipt-body-header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+  }
+
+  .actions-column {
+    width: 30px;
+    text-align: center;
+  }
+
+  .items, .header {
+    .column {
+      &:not(:last-child) {
+        margin-right: 5px;
+      }
+      &:not(:first-child) {
+        margin-left: 5px;
+      }
+    }
+  }
+
+  .header {
+    font-style: italic;
+    border-bottom: 1px solid $color-grey-300;
+  }
+
+  .items {
+    .row {
+      margin: 5px 0;
+      &:not(:last-child) {
+        padding-bottom: 5px;
+        border-bottom: 1px solid $color-grey-300;
+      }
+    }
+  }
+
+}

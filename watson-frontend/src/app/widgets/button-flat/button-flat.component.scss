@@ -1,4 +1,6 @@
-ws-button-flat {
+@import '../../../common';
+
+:host {
   display: flex;
   justify-content: center;
   align-items: center;
