@@ -8,7 +8,7 @@ import {Component} from '@angular/core';
       <router-outlet></router-outlet>
     </main>
     <footer>
-      Watson! v.0.2.0 (<a>#abc3few3</a>)
+      <ws-app-version></ws-app-version>
     </footer>
   `,
   styleUrls: [
