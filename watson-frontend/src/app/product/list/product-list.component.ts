@@ -79,7 +79,8 @@ export class ProductListComponent implements OnInit {
         `/api/v1/product/${crudItemSave.item.uuid}`,
         DiffsUtil.diff(crudItemSave.changed, crudItemSave.item, {
           name: 'name',
-          categoryUuid: 'category.uuid'
+          categoryUuid: 'category.uuid',
+          defaultUnit: 'defaultUnit'
         })
       )
       .subscribe(

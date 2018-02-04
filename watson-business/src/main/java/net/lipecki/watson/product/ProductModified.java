@@ -13,6 +13,7 @@ public class ProductModified implements EventPayload {
     private String uuid;
     private String name;
     private String categoryUuid;
+    private String defaultUnit;
 
     public Optional<String> getCategoryUuidOptional() {
         return Optional.ofNullable(categoryUuid);
@@ -21,5 +22,7 @@ public class ProductModified implements EventPayload {
     public Optional<String> getNameOptional() {
         return Optional.ofNullable(name);
     }
+
+    public Optional<String> getDefaultUnitOptional() { return Optional.ofNullable(defaultUnit); }
 
 }

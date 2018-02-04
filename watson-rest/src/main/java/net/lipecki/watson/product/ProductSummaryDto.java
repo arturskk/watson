@@ -9,6 +9,7 @@ public class ProductSummaryDto {
 
     private String uuid;
     private String name;
+    private String defaultUnit;
     private ProductSummaryCategory category;
 
     @Data
