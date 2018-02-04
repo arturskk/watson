@@ -1,5 +1,5 @@
 import {HttpClient} from '@angular/common/http';
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {ArraysUtil} from '../../util/arrays-util';
 import {ReceiptItem} from '../receipt-item';
@@ -43,15 +43,15 @@ import {ReceiptItem} from '../receipt-item';
               <ws-add-receipt-item-product *ngIf="column.type === 'product'"
                                            [products]="products"
                                            [categories]="categoriesItem"
-                                           (productChange)="onProductSelected(item, $event)" 
+                                           (productChange)="onProductSelected(item, $event)"
                                            (productCategoryChange)="onProductCategorySelected($event)">
               </ws-add-receipt-item-product>
-              <ws-add-receipt-item-amount *ngIf="column.type === 'amount'" 
-                                          [amount]="item.amount" 
+              <ws-add-receipt-item-amount *ngIf="column.type === 'amount'"
+                                          [amount]="item.amount"
                                           (amountChange)="item.amount = $event">
               </ws-add-receipt-item-amount>
-              <ws-add-receipt-item-cost *ngIf="column.type === 'cost'" 
-                                        [cost]="item.cost" 
+              <ws-add-receipt-item-cost *ngIf="column.type === 'cost'"
+                                        [cost]="item.cost"
                                         (costChange)="item.cost = $event">
               </ws-add-receipt-item-cost>
             </div>
