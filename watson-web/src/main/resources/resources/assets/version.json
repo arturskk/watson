@@ -1,0 +1,36 @@
+{
+  "build": {
+    "version": "@git.build.version@",
+    "time": "@git.build.time@",
+    "host": "@git.build.host@",
+    "user": {
+      "name": "@git.build.user.name@",
+      "email": "@git.build.user.email@"
+    }
+  },
+  "git": {
+    "tags": "@git.tags@",
+    "branch": "@git.branch@",
+    "dirty": "@git.dirty@",
+    "remoteOriginUrl": "@git.remote.origin.url@",
+    "commit": {
+      "commitId": "@git.commit.id@",
+      "commitIdAbbrev": "@git.commit.id.abbrev@",
+      "describe": "@git.commit.id.describe@",
+      "describeShort": "@git.commit.id.describe-short@",
+      "time": "@git.commit.time@",
+      "user": {
+        "name": "@git.commit.user.name@",
+        "email": "@git.commit.user.email@"
+      },
+      "message": {
+        "full": "@git.commit.message.full@",
+        "short": "@git.commit.message.short@"
+      }
+    },
+    "closestTag": {
+      "name": "@git.closest.tag.name@",
+      "commitCount": "@git.closest.tag.commit.count@"
+    }
+  }
+}

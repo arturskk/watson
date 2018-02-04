@@ -1,0 +1,36 @@
+{
+  "build": {
+    "version": "devmode",
+    "time": "devmode",
+    "host": "devmode",
+    "user": {
+      "name": "devmode",
+      "email": "devmode"
+    }
+  },
+  "git": {
+    "tags": "devmode",
+    "branch": "devmode",
+    "dirty": "devmode",
+    "remoteOriginUrl": "devmode",
+    "commit": {
+      "commitId": "devmode",
+      "commitIdAbbrev": "devmode",
+      "describe": "devmode",
+      "describeShort": "devmode",
+      "time": "devmode",
+      "user": {
+        "name": "devmode",
+        "email": "devmode"
+      },
+      "message": {
+        "full": "devmode",
+        "short": "devmode"
+      }
+    },
+    "closestTag": {
+      "name": "devmode",
+      "commitCount": "devmode"
+    }
+  }
+}
