@@ -24,7 +24,6 @@
         "email": "@git.commit.user.email@"
       },
       "message": {
-        "full": "@git.commit.message.full@",
         "short": "@git.commit.message.short@"
       }
     },
