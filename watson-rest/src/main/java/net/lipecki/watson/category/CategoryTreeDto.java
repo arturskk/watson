@@ -19,11 +19,11 @@ public class CategoryTreeDto {
     private List<String> path;
     private List<CategoryTreeDto> children;
 
-    public static CategoryTreeDto from(final Category category) {
-        return from(category, 0, new ArrayList<>());
+    public static CategoryTreeDto from(final Category category, final String categoryType) {
+        return from(category, categoryType, 0, new ArrayList<>());
     }
 
-    private static CategoryTreeDto from(final Category category, int depth, List<String> path) {
+    private static CategoryTreeDto from(final Category category, final String categoryType, int depth, List<String> path) {
         return CategoryTreeDto
                 .builder()
                 .uuid(category.getUuid())
@@ -34,8 +34,9 @@ public class CategoryTreeDto {
                 .children(
                         category.getChildren()
                                 .stream()
+                                .filter(child -> child.getType().equals(categoryType))
                                 .sorted(Comparator.comparing(Category::getName))
-                                .map(child -> from(child, depth + 1, expandPath(path, category)))
+                                .map(child -> from(child, categoryType, depth + 1, expandPath(path, category)))
                                 .collect(Collectors.toList())
                 )
                 .build();
