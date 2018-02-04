@@ -6,10 +6,10 @@ import {Component, OnInit} from '@angular/core';
   template: `
     <h1>Raport wydatków - kategorie</h1>
     <ws-panel>
-      <div>
-        Od:
+      <div class="report-parameters">
+        Od
         <input [(ngModel)]="dateFrom"/>
-        Do:
+        Do
         <input [(ngModel)]="dateTo"/>
         <button (click)="refreshReport()">Pobierz</button>
       </div>
