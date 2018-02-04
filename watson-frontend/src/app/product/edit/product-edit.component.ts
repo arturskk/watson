@@ -17,6 +17,13 @@ import {ProductSummary} from '../product-summary';
         <span [innerHTML]="markSearchText.call(undefined, item.name)"></span>
       </ng-template>
     </ws-select>
+    <select [(ngModel)]="product.defaultUnit">
+      <option></option>
+      <option>op</option>
+      <option>szt</option>
+      <option>kg</option>
+      <option>l</option>
+    </select>
   `,
   styleUrls: [
     'product-edit.component.scss'

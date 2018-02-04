@@ -7,5 +7,6 @@ export interface ProductSummary {
     name: string;
     path: string;
   };
+  defaultUnit: string;
 
 }

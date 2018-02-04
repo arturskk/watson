@@ -12,5 +12,6 @@ public class AddProductDto {
     @NotNull
     private String name;
     private String categoryUuid;
+    private String defaultUnit;
 
 }

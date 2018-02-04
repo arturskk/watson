@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.lipecki.watson.category.GetCategoryQuery;
 import net.lipecki.watson.combiner.AggregateCombinerHandler;
 import net.lipecki.watson.event.Event;
+import net.lipecki.watson.receipt.AmountUnit;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -33,6 +34,10 @@ public class ProductModifiedEventHandler implements AggregateCombinerHandler<Pro
                 .getCategoryUuidOptional()
                 .flatMap(categoryQuery::getCategory)
                 .ifPresent(product::setCategory);
+        payload
+                .getDefaultUnitOptional()
+                .flatMap(AmountUnit::getByAlias)
+                .ifPresent(product::setDefaultUnit);
     }
 
 }
