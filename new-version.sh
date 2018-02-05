@@ -9,17 +9,17 @@ if [ "x$RV" = "x" ] || [ "x$SV" = "x" ]; then
     exit 1
 fi
 
-mvnw versions:set -DnewVersion="$RV"
-mvnw versions:commit
+./mvnw versions:set -DnewVersion="$RV"
+./mvnw versions:commit
 
-mvnw clean install
+./mvnw clean install
 
 git add .
 git commit -m "Release: $RV"
 git tag "v$RV"
 
-mvnw versions:set -DnewVersion="$SV"
-mvnw versions:commit
+./mvnw versions:set -DnewVersion="$SV"
+./mvnw versions:commit
 
 git add .
 git commit -m "Snapshot: $SV"
