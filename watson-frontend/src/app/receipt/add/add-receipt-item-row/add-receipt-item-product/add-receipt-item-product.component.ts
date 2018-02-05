@@ -16,7 +16,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
             Nowo utworzony produkt
           </div>
           <div *ngIf="item.category && item.category.path" class="select-item-description">
-            {{item?.category?.path}}
+            {{item.category.path}}
           </div>
         </ng-template>
       </ws-select>
