@@ -22,7 +22,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
       </ws-select>
     </div>
     <div *ngIf="product && product.newValue && !product.createdWithinReceipt" class="new-product-category-row">
-      <div>Kategoria nowego produktu</div>
+      <div>Kategoria nowego produktu:</div>
       <ws-select [data]="categories" 
                  [displayField]="'name'" 
                  (onChange)="productCategoryChange.next($event)"
