@@ -170,6 +170,9 @@ export class ReceiptAddComponent implements OnInit {
         createdWithinReceipt: true
       });
     }
+    if (product.defaultUnit) {
+      item.amount.unit = product.defaultUnit;
+    }
   }
 
   getNonEmptyReceiptItems() {

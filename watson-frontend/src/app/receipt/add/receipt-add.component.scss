@@ -31,14 +31,14 @@
   .header {
     font-style: italic;
     border-bottom: 1px solid $color-grey-300;
+    margin-bottom: 10px;
   }
 
   .items {
     .row {
       margin: 5px 0;
       &:not(:last-child) {
-        padding-bottom: 5px;
-        border-bottom: 1px solid $color-grey-300;
+        padding-bottom: 8px;
       }
     }
   }
