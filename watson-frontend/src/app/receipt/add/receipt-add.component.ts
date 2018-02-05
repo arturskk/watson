@@ -191,11 +191,11 @@ export class ReceiptAddComponent implements OnInit {
         this.accounts = result[0];
         this.products = result[1];
         this.shops = result[2];
-        this.categoriesReceipt = this.categoriesReceipt = (result[3] as any[]).map(category => ({
+        this.categoriesReceipt = (result[3] as any[]).map(category => ({
           name: category.name,
           uuid: category.uuid
         }));
-        this.categoriesItem = this.categoriesReceipt = (result[4] as any[]).map(category => ({
+        this.categoriesItem = (result[4] as any[]).map(category => ({
           name: category.name,
           uuid: category.uuid
         }));
