@@ -12,7 +12,7 @@ import {CategoryReportItem} from './category-report-item';
           <a *ngIf="!expanded">(+)</a>
         </ng-container>
       </div>
-      <div class="subcategories" *ngIf="expanded">
+      <div class="subcategories" *ngIf="isExpandable() && expanded">
         <span class="category-summary">({{category.name}} {{category.categoryCost.description}}zł)</span>
         <ng-container *ngFor="let subCategory of category.subCategories">
           <ws-report-category-item *ngIf="showEmpty || subCategory.totalCost.amount > 0"
