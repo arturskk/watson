@@ -31,6 +31,11 @@ public class InMemoryEventStore implements EventStore {
     }
 
     @Override
+    public long getLastSequenceId() {
+        return eventIdSequence.get();
+    }
+
+    @Override
     public Stream<Event> getEventsByStream(final List<String> streams) {
         return this.store
                 .stream()
@@ -40,6 +45,11 @@ public class InMemoryEventStore implements EventStore {
     @Override
     public Stream<Event> getEvents() {
         throw new UnsupportedOperationException("InMemoryEventStore#getEvents not implemented");
+    }
+
+    @Override
+    public Stream<Event> getEventsAfter(final long sequenceId, final int limit) {
+        throw new UnsupportedOperationException("InMemoryEventStore#getEventsAfter not implemented");
     }
 
 }

@@ -42,6 +42,10 @@ public class TestEventStore implements EventStore {
         return event;
     }
 
+    @Override
+    public long getLastSequenceId() {
+        throw new UnsupportedOperationException("TestEventStore#getLastSequenceId not implemented!");
+    }
 
     @Override
     public Stream<Event> getEventsByStream(List<String> streams) {
@@ -53,6 +57,10 @@ public class TestEventStore implements EventStore {
         throw new UnsupportedOperationException("TestEventStore#getEvents not implemented");
     }
 
+    @Override
+    public Stream<Event> getEventsAfter(final long sequenceId, final int limit) {
+        throw new UnsupportedOperationException("TestEventStore#getEventsAfter not implemented");
+    }
 
     public void reset() {
         this.localEventStore.remove();

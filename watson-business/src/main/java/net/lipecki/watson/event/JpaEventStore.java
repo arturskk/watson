@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import net.lipecki.watson.WatsonException;
 import net.lipecki.watson.WatsonExceptionCode;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 import java.util.UUID;
@@ -46,6 +47,11 @@ public class JpaEventStore implements EventStore {
     }
 
     @Override
+    public long getLastSequenceId() {
+        return this.eventRepository.getLastId();
+    }
+
+    @Override
     public Stream<Event> getEventsByStream(final List<String> streams) {
         return this.eventRepository
                 .findByStreamIn(streams)
@@ -57,6 +63,13 @@ public class JpaEventStore implements EventStore {
     public Stream<Event> getEvents() {
         return this.eventRepository
                 .findAllAndStream()
+                .map(this::asEvent);
+    }
+
+    @Override
+    public Stream<Event> getEventsAfter(final long sequenceId, final int limit) {
+        return this.eventRepository
+                .findAllAndStream(sequenceId, PageRequest.of(0, limit))
                 .map(this::asEvent);
     }
 

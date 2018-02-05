@@ -1,15 +1,15 @@
-package net.lipecki.watson.report;
+package net.lipecki.watson.report.categoryexpanse;
 
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
-class CategoryReport {
+public class CategoryExpanseReport {
 
     private String from;
     private String to;
     private String totalCost;
-    private CategoryReportItem rootCategory;
+    private CategoryExpanseReportItem rootCategory;
 
 }

@@ -24,6 +24,7 @@ public class AggregateCombinerWithCacheFactory implements AggregateCombinerFacto
 
     @Override
     public <T> AggregateCombiner<T> getAggregateCombiner(final List<String> streams) {
+        //noinspection RedundantTypeArguments
         return getAggregateCombiner(streams, HashMap<String, T>::new);
     }
 

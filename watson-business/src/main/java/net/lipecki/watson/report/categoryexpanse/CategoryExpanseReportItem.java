@@ -1,4 +1,4 @@
-package net.lipecki.watson.report;
+package net.lipecki.watson.report.categoryexpanse;
 
 import lombok.Builder;
 import lombok.Data;
@@ -9,7 +9,7 @@ import java.util.List;
 
 @Data
 @Builder
-public class CategoryReportItem {
+public class CategoryExpanseReportItem {
 
     private String uuid;
     private String name;
@@ -17,14 +17,14 @@ public class CategoryReportItem {
     private ExpanseCost categoryCost;
     @Builder.Default
     @SuppressWarnings("UnusedAssignment")
-    private List<CategoryReportItem> subCategories = new ArrayList<>();
+    private List<CategoryExpanseReportItem> subCategories = new ArrayList<>();
 
     @SuppressWarnings({"unused", "WeakerAccess"})
     public ExpanseCost getTotalCost() {
-        return categoryCost.add(subCategories.stream().map(CategoryReportItem::getTotalCost).reduce(ExpanseCost.ZERO, ExpanseCost::add));
+        return categoryCost.add(subCategories.stream().map(CategoryExpanseReportItem::getTotalCost).reduce(ExpanseCost.ZERO, ExpanseCost::add));
     }
 
-    public void addParent(final CategoryReportItem parent) {
+    public void addParent(final CategoryExpanseReportItem parent) {
         parent.subCategories.add(this);
     }
 
