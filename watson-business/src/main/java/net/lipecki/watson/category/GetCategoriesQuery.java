@@ -1,9 +1,9 @@
 package net.lipecki.watson.category;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,6 +22,7 @@ public class GetCategoriesQuery {
         return categories
                 .stream()
                 .filter(category -> category.isTypeOf(categoryType) || category.isRootCategory())
+                .sorted(Comparator.comparing(Category::getName))
                 .collect(Collectors.toList());
     }
 

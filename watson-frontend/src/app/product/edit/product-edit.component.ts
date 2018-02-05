@@ -14,7 +14,7 @@ import {ProductSummary} from '../product-summary';
       [allowNewValues]="false"
       [placeholder]="'Kategoria'">
       <ng-template let-item let-markSearchText="markSearchText" let-newItem="newItem" #listItem>
-        <span [innerHTML]="markSearchText.call(undefined, item.name)"></span>
+        <span [innerHTML]="markSearchText.call(undefined, item.name) | safeHtml"></span>
       </ng-template>
     </ws-select>
     <select [(ngModel)]="product.defaultUnit">

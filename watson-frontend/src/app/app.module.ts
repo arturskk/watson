@@ -18,6 +18,7 @@ import {ReceiptAddComponent} from './receipt/add/receipt-add.component';
 import {ReceiptService} from './receipt/receipt.service';
 import {ReportCategoryItemComponent} from './report/category/report-category-item.component';
 import {ReportCategoryComponent} from './report/category/report-category.component';
+import {SafeHtmlPipe} from './util/safe-html.pipe';
 import {AppVersionComponent} from './version/app-version.component';
 import {ButtonFlatComponent} from './widgets/button-flat/button-flat.component';
 import {ButtonComponent} from './widgets/button/button.component';
@@ -52,7 +53,8 @@ import {SpinnerComponent} from './widgets/spinner/spinner.component';
     AddReceiptItemAmountComponent,
     AddReceiptItemCostComponent,
     AddReceiptItemProductComponent,
-    AppVersionComponent
+    AppVersionComponent,
+    SafeHtmlPipe
   ],
   imports: [
     BrowserModule,
