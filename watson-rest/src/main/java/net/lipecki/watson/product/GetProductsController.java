@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -25,6 +26,7 @@ public class GetProductsController {
     @GetMapping("/product")
     @Transactional
     public List<ProductSummaryDto> getAllProducts() {
+        final Optional<Product> pajacyk = this.query.getProducts().stream().filter(p -> p.getUuid().equals("c88351bb-4a23-4193-99ad-4ad61ab8dc27")).findFirst();
         return this.query
                 .getProducts()
                 .stream()

@@ -7,7 +7,7 @@ import {CrudItemState} from './crut-item-state';
 @Component({
   selector: 'ws-crud-item-component',
   template: `
-    <div class="item">
+    <div class="item" [attr.uuid]="summaryValue.uuid">
       <div class="item-renderer">
         <ng-template
           *ngIf="state === State.SUMMARY"
@@ -44,22 +44,24 @@ import {CrudItemState} from './crut-item-state';
 })
 export class CrudItemComponent<T> {
 
+  @Input() itemEditTemplate: TemplateRef<any>;
+  @Input() state: CrudItemState = CrudItemState.SUMMARY;
+  @Input() cancelable = true;
+  @Input() itemSummaryTemplate: TemplateRef<any>;
+  @Output() itemCanceled: EventEmitter<CrudItemCanceled<T>> = new EventEmitter<CrudItemCanceled<T>>();
+  @Output() itemSave: EventEmitter<CrudItemSave<T>> = new EventEmitter<CrudItemSave<T>>();
+  @ContentChild('itemEdit') itemEditChildTemplate: TemplateRef<any>;
+  @ContentChild('itemSummary') itemSummaryChildTemplate: TemplateRef<any>;
+  uuid: string;
   summaryValue: Partial<T> = {};
   editValue: Partial<T> = {};
   actionMessage: string = null;
-  @Input() cancelable = true;
-  @Input() itemSummaryTemplate: TemplateRef<any>;
-  @ContentChild('itemSummary') itemSummaryChildTemplate: TemplateRef<any>;
-  @Input() itemEditTemplate: TemplateRef<any>;
-  @ContentChild('itemEdit') itemEditChildTemplate: TemplateRef<any>;
-  @Output() itemCanceled: EventEmitter<CrudItemCanceled<T>> = new EventEmitter<CrudItemCanceled<T>>();
-  @Output() itemSave: EventEmitter<CrudItemSave<T>> = new EventEmitter<CrudItemSave<T>>();
-  @Input() state: CrudItemState = CrudItemState.SUMMARY;
   // noinspection JSUnusedGlobalSymbols - used in template
   State = CrudItemState;
 
   @Input() set item(item: any) {
     this.summaryValue = item;
+    this.uuid = item['uuid'] || 'no-uuid';
     this.resetEditValue(this.summaryValue);
   }
 

@@ -20,6 +20,7 @@ public class EventsTableMigrationTool {
 //        this.handlers.add(new ChangeEventTypeNameHandler());
 //        this.handlers.add(new ChangePayloadClassHandler());
 //        this.handlers.add(new UpdateAddReceiptProductUuidFromProduct());
+//        this.handlers.add(new ChangeCategoryTypeToReceiptItemHandler());
     }
 
     public static void main(String[] args) {
