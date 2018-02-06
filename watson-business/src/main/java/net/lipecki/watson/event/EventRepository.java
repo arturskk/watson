@@ -19,6 +19,6 @@ public interface EventRepository extends JpaRepository<EventEntity, Long> {
     Stream<EventEntity> findAllAndStream(@Param("sequenceId") final long sequenceId, final Pageable pageable);
 
     @Query("select max(e.id) from events e")
-    long getLastId();
+    Long getLastId();
 
 }

@@ -48,7 +48,8 @@ public class JpaEventStore implements EventStore {
 
     @Override
     public long getLastSequenceId() {
-        return this.eventRepository.getLastId();
+        final Long lastId = this.eventRepository.getLastId();
+        return lastId != null ? lastId : 0;
     }
 
     @Override

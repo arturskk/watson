@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.lipecki.watson.WatsonException;
 import net.lipecki.watson.WatsonExceptionCode;
 import net.lipecki.watson.event.Event;
-import net.lipecki.watson.event.EventPayload;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.event.EventListener;
@@ -46,7 +45,7 @@ public class FileLoggingEventListener {
     }
 
     @EventListener
-    public synchronized <T extends EventPayload> void handleEventStored(final Event event) {
+    public synchronized void handleEventStored(final Event event) {
         this.singleThreadTaskExecutor.execute(
                 () -> {
                     try (final BufferedWriter output = new BufferedWriter(new FileWriter(this.loggingFile, true))) {
