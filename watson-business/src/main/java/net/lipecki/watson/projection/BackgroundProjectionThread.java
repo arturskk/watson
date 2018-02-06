@@ -17,13 +17,14 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 @Slf4j
 @Scope("prototype")
 public abstract class BackgroundProjectionThread implements ProjectionThread {
 
-    private static final String THREAD_PREFIX = "JpaProjectionThread#%s-";
+    private static final String THREAD_PREFIX = "ProjectionThread#%s-";
 
     private final EventStore eventStore;
     private final TaskScheduler taskScheduler;
@@ -33,6 +34,7 @@ public abstract class BackgroundProjectionThread implements ProjectionThread {
 
     private String id = "JpaProjectionThread";
     private boolean stable = false;
+    private AtomicReference<ProjectionState> state = new AtomicReference<>(ProjectionState.STOPPED);
 
     public BackgroundProjectionThread(
             final EventStore eventStore,
@@ -62,6 +64,7 @@ public abstract class BackgroundProjectionThread implements ProjectionThread {
                 Instant.now().plusSeconds(10),
                 Duration.ofSeconds(30)
         );
+        this.state.set(ProjectionState.RUNNING);
     }
 
     @Override
@@ -72,6 +75,7 @@ public abstract class BackgroundProjectionThread implements ProjectionThread {
                 .statusDate(new Date())
                 .currentSequenceId(getCurrentProcessedSequenceId())
                 .currentMaxSequenceId(this.eventStore.getLastSequenceId())
+                .state(this.state.get())
                 .build();
     }
 
@@ -84,6 +88,20 @@ public abstract class BackgroundProjectionThread implements ProjectionThread {
         }
     }
 
+    @Override
+    public void resetProjection(final Runnable resetCallback) {
+        transactionTemplate.execute(
+                new TransactionCallbackWithoutResult() {
+                    protected void doInTransactionWithoutResult(final TransactionStatus status) {
+                        BackgroundProjectionThread.this.state.set(ProjectionState.STOPPED);
+                        resetCallback.run();
+                        setCurrentProcessedSequenceId(0L);
+                        BackgroundProjectionThread.this.state.set(ProjectionState.RUNNING);
+                    }
+                }
+        );
+    }
+
     public String getId() {
         return id;
     }
@@ -93,6 +111,10 @@ public abstract class BackgroundProjectionThread implements ProjectionThread {
     public abstract void setCurrentProcessedSequenceId(long sequenceId);
 
     private void syncEvents() {
+        if (this.state.get() == ProjectionState.STOPPED) {
+            return;
+        }
+
         log.trace("[{}] Scheduler sync events task", this.id);
         final long lastSequenceId = getCurrentProcessedSequenceId();
         final Stream<Event> newEvents = this.eventStore.getEventsAfter(lastSequenceId, 200);
@@ -104,7 +126,6 @@ public abstract class BackgroundProjectionThread implements ProjectionThread {
                 final ProjectionHandler<? extends EventPayload> eventHandler = this.handlerMapping.get(eventType);
                 if (eventHandler != null && eventHandler.canHandle(event)) {
                     try {
-                        log.trace("[{}] New event to consume for projection thread [event={}]", this.id, event);
                         eventHandler.acceptWithCheck(event);
                     } catch (final Exception ex) {
                         log.warn("[{}] Event processing skipped due to handler exception [event={}]", this.id, event, ex);
@@ -112,7 +133,6 @@ public abstract class BackgroundProjectionThread implements ProjectionThread {
                 }
                 setCurrentProcessedSequenceId(eventSequenceId);
                 this.stable = eventSequenceId == this.eventStore.getLastSequenceId();
-                log.debug("[{}] Last processed event [sequenceId={}]", this.id, eventSequenceId);
             }
         });
         log.debug("[{}] Current sync status [status={}]", this.id, getStatus());

@@ -9,9 +9,10 @@ import java.util.Date;
 @Builder
 public class ProjectionStatus {
 
-    final boolean stable;
-    final Date statusDate;
-    final Long currentSequenceId;
-    final Long currentMaxSequenceId;
+    private final boolean stable;
+    private final Date statusDate;
+    private final Long currentSequenceId;
+    private final Long currentMaxSequenceId;
+    private final ProjectionState state;
 
 }

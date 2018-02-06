@@ -9,5 +9,7 @@ public interface ProjectionThread {
     void setId(String id);
     void start();
     void pushEvent(final Event event);
+    void resetProjection(final Runnable resetCallback);
     ProjectionStatus getStatus();
+
 }
