@@ -89,21 +89,22 @@ public class GetProductPriceQuery {
         while (pathPart.isPresent()) {
             path.add(
                     0,
-                    pathPart.map(
-                            part -> ProductPriceReportItem
-                                    .CategoryDto
-                                    .builder()
-                                    .name(part.getName())
-                                    .uuid(part.getUuid())
-                                    .build()
-                    ).orElseThrow(
-                            WatsonException.supplier("Path part should not be null")
-                    )
+                    pathPart.map(this::asCategory)
+                            .orElseThrow(WatsonException.supplier("Path part should not be null"))
             );
             pathPart = pathPart.flatMap(Category::getParent);
         }
 
         return path;
+    }
+
+    private ProductPriceReportItem.CategoryDto asCategory(final Category part) {
+        return ProductPriceReportItem
+                .CategoryDto
+                .builder()
+                .name(part.getName())
+                .uuid(part.getUuid())
+                .build();
     }
 
     private ProductPriceReportItem.ProductDto asProductDto(final Product product) {
