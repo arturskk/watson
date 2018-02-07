@@ -1,41 +1,40 @@
+//noinspection CssUnknownTarget
+@import 'common';
+
 :host {
   display: block;
   padding: 2px;
   border: 1px solid rgb(220, 220, 220);
-
   .dropdown {
     position: absolute;
-    background-color: aliceblue;
+    background-color: $color-grey-100;
+    box-shadow: 0px 2px 5px $color-grey-300;
   }
-
   .dropdown-item {
     cursor: pointer;
+    padding: 3px 10px;
   }
-
-  .dropdown-item:hover {
-    background-color: lavender;
+  .dropdown-item:not(.filter-to-show-more):hover, .active {
+    color: white;
+    background-color: $color-light-blue-900;
   }
-
-  .active {
-    background-color: deepskyblue;
-  }
-
-  .match {
-    font-weight: bold;
-  }
-
   .search-box-wrapper {
     display: flex;
   }
-
   input.hidden {
     width: 5px;
   }
-
   input, input:focus {
     margin: 0;
     padding: 0;
     border: none;
     outline: none;
+  }
+  .filter-to-show-more {
+    font-style: italic;
+    color: $color-grey-400;
+  }
+  ::ng-deep .select-item-match-part {
+    font-weight: bold;
   }
 }

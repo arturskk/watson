@@ -29,7 +29,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
                    (onChange)="accountChange.next($event)">
           <ng-template let-item let-markSearchText="markSearchText" let-newItem="newItem" #listItem>
             <span *ngIf="newItem">Dodaj: </span>
-            <span [innerHTML]="markSearchText.call(undefined, item.name)"></span>
+            <span [innerHTML]="markSearchText.call(undefined, item.name) | safeHtml"></span>
           </ng-template>
         </ws-select>
       </div>
@@ -44,7 +44,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
                    (onChange)="shopChange.next($event)">
           <ng-template let-item let-markSearchText="markSearchText" let-newItem="newItem" #listItem>
             <span *ngIf="newItem">Dodaj: </span>
-            <span [innerHTML]="markSearchText.call(undefined, item.name)"></span>
+            <span [innerHTML]="markSearchText.call(undefined, item.name) | safeHtml"></span>
           </ng-template>
         </ws-select>
       </div>
@@ -59,7 +59,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
                    (onChange)="categoryChange.next($event)">
           <ng-template let-item let-markSearchText="markSearchText" let-newItem="newItem" #listItem>
             <span *ngIf="newItem">Dodaj: </span>
-            <span [innerHTML]="markSearchText.call(undefined, item.name)"></span>
+            <span [innerHTML]="markSearchText.call(undefined, item.name) | safeHtml"></span>
           </ng-template>
         </ws-select>
       </div>

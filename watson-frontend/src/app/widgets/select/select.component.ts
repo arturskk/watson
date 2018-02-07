@@ -43,8 +43,12 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
         <div *ngFor="let item of filtered; let index = index">
           <div [class.active]="index === currentIndex" (mousedown)="itemClicked(item)" class="dropdown-item">
             <ng-template [ngTemplateOutlet]="itemTemplate"
-                         [ngTemplateOutletContext]="{$implicit: item, markSearchText: markSearchText.bind(this), newItem: item === newValuePlaceholder}"></ng-template>
+                         [ngTemplateOutletContext]="{$implicit: item, markSearchText: markSearchText.bind(this), newItem: item === newValuePlaceholder}">
+            </ng-template>
           </div>
+        </div>
+        <div *ngIf="rawData.length > itemsLimit" class="dropdown-item filter-to-show-more">
+          Filtruj aby zobaczyć kolejne...
         </div>
       </div>
     </div>
@@ -71,6 +75,7 @@ export class SelectComponent implements ControlValueAccessor {
   @Input() placeholder = '';
   @Input() filter: (item: any, searchText: string) => boolean;
   @Input() displayField: string;
+  @Input() itemsLimit = 25;
   @ContentChild('listItem') itemTemplate: TemplateRef<any>;
   @ViewChild('searchBox', {read: ElementRef}) searchBox: ElementRef;
 
@@ -81,7 +86,7 @@ export class SelectComponent implements ControlValueAccessor {
   @Input()
   set data(data) {
     this.rawData = data;
-    this.filtered = this.rawData;
+    this.filtered = this.rawData.slice(0, this.itemsLimit);
   }
 
   onSearchBoxWrapperClicked() {
@@ -150,7 +155,7 @@ export class SelectComponent implements ControlValueAccessor {
       this.dropdown = true;
     }
     this.currentSearchText = this.searchBox.nativeElement.value;
-    this.filtered = this.rawData.filter(item => this.filter(item, this.currentSearchText));
+    this.filtered = this.rawData.filter(item => this.filter(item, this.currentSearchText)).slice(0, this.itemsLimit);
     if (this.allowNewValues) {
       if (this.currentSearchText) {
         this.filtered.push(this.newValuePlaceholder);
@@ -173,7 +178,7 @@ export class SelectComponent implements ControlValueAccessor {
       const match = input.substr(matchStart, this.currentSearchText.length);
       const afterMatch = input.substr(matchStart + this.currentSearchText.length);
 
-      return `${beforeMatch}<span class="match">${match}</span>${afterMatch}`;
+      return `${beforeMatch}<span class="select-item-match-part">${match}</span>${afterMatch}`;
     } else {
       return input;
     }
@@ -203,7 +208,7 @@ export class SelectComponent implements ControlValueAccessor {
     this.newValuePlaceholder = {...SelectComponent.newValuePlaceholderTemplate};
     this.dropdown = false;
     this.currentSearchText = null;
-    this.filtered = this.rawData;
+    this.filtered = this.rawData.slice(0, this.itemsLimit);;
     this.currentIndex = -1;
     this.searchBox.nativeElement.value = '';
   }

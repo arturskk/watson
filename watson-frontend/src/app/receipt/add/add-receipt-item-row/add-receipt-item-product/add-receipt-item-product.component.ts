@@ -10,13 +10,13 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
         <ng-template let-item let-markSearchText="markSearchText" let-newItem="newItem" #listItem>
           <div>
             <span *ngIf="newItem">Dodaj: </span>
-            <span [innerHTML]="markSearchText.call(undefined, item.name)"></span>
+            <span [innerHTML]="markSearchText.call(undefined, item.name) | safeHtml"></span>
           </div>
           <div *ngIf="item.createdWithinReceipt" class="dynamic-select-item">
             Nowo utworzony produkt
           </div>
-          <div *ngIf="item.categoryPath" class="select-item-description">
-            {{item.categoryPath}}
+          <div *ngIf="item.category && item.category.path" class="select-item-description">
+            {{item.category.path}}
           </div>
         </ng-template>
       </ws-select>
@@ -28,15 +28,13 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
                  (onChange)="productCategoryChange.next($event)"
                  [(ngModel)]="product.category">
         <ng-template let-item let-markSearchText="markSearchText" let-newItem="newItem" #listItem>
+          {{item|json}}
           <div>
             <span *ngIf="newItem">Dodaj: </span>
-            <span [innerHTML]="markSearchText.call(undefined, item.name)"></span>
+            <span [innerHTML]="markSearchText.call(undefined, item.name) | safeHtml"></span>
           </div>
           <div *ngIf="item.createdWithinReceipt" class="dynamic-select-item">
             Nowo utworzona kategoria produktu
-          </div>
-          <div *ngIf="item.categoryPath" class="select-item-description">
-            {{item.categoryPath}}
           </div>
         </ng-template>
       </ws-select>

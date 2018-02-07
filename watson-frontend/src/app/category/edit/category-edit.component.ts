@@ -15,7 +15,7 @@ import {CategorySummary} from '../category-summary';
       [placeholder]="'Kategoria nadrzędna'"
       class="category-parent-category">
       <ng-template let-item let-markSearchText="markSearchText" let-newItem="newItem" #listItem>
-        <span [innerHTML]="markSearchText.call(undefined, item.name)"></span>
+        <span [innerHTML]="markSearchText.call(undefined, item.name) | safeHtml"></span>
       </ng-template>
     </ws-select>
   `,
