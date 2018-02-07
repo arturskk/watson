@@ -1,7 +1,7 @@
 package net.lipecki.watson.product;
 
 import lombok.extern.slf4j.Slf4j;
-import net.lipecki.watson.receipt.AmountUnit;
+import net.lipecki.watson.amount.AmountUnit;
 import net.lipecki.watson.rest.Api;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;

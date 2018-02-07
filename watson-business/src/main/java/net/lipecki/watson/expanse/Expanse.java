@@ -3,6 +3,7 @@ package net.lipecki.watson.expanse;
 import lombok.Builder;
 import lombok.Data;
 import net.lipecki.watson.category.Category;
+import net.lipecki.watson.cost.Cost;
 
 import java.time.LocalDate;
 
@@ -15,7 +16,7 @@ public class Expanse {
     private String type;
     private String refUuid;
     private Category category;
-    private ExpanseCost cost;
+    private Cost cost;
 
     public String getCategoryUuid() {
         return this.category.getUuid();

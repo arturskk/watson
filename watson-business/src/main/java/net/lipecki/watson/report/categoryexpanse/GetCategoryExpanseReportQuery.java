@@ -3,8 +3,8 @@ package net.lipecki.watson.report.categoryexpanse;
 import lombok.extern.slf4j.Slf4j;
 import net.lipecki.watson.category.Category;
 import net.lipecki.watson.category.GetCategoryQuery;
+import net.lipecki.watson.cost.Cost;
 import net.lipecki.watson.expanse.Expanse;
-import net.lipecki.watson.expanse.ExpanseCost;
 import net.lipecki.watson.expanse.GetExpansesQuery;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +30,7 @@ public class GetCategoryExpanseReportQuery {
     }
 
     public CategoryExpanseReport getCategoryReport(final LocalDate from, final LocalDate to) {
-        final Map<String, ExpanseCost> categoryExpanses = getCategoryToExpanseMapping(expansesQuery.getExpanses(from, to));
+        final Map<String, Cost> categoryExpanses = getCategoryToExpanseMapping(expansesQuery.getExpanses(from, to));
         final CategoryExpanseReportItem reportRoot = getReportTree(categoryExpanses);
         return CategoryExpanseReport
                 .builder()
@@ -40,7 +40,7 @@ public class GetCategoryExpanseReportQuery {
                 .build();
     }
 
-    private CategoryExpanseReportItem getReportTree(final Map<String, ExpanseCost> categoryExpanses) {
+    private CategoryExpanseReportItem getReportTree(final Map<String, Cost> categoryExpanses) {
         final Map<String, CategoryExpanseReportItem> entriesIndex = new HashMap<>();
         final Category rootCategory = this.categoryQuery.getRootCategory();
         rootCategory.accept(
@@ -56,7 +56,7 @@ public class GetCategoryExpanseReportQuery {
         return entriesIndex.get(rootCategory.getUuid());
     }
 
-    private Map<String, ExpanseCost> getCategoryToExpanseMapping(final List<Expanse> expanses) {
+    private Map<String, Cost> getCategoryToExpanseMapping(final List<Expanse> expanses) {
         return expanses
                 .stream()
                 .collect(Collectors.groupingBy(Expanse::getCategory))
@@ -70,17 +70,17 @@ public class GetCategoryExpanseReportQuery {
         return from != null ? fullDateFormat.format(from) : null;
     }
 
-    private ExpanseCost getSummaryCost(final List<Expanse> expanses) {
-        return expanses.stream().map(Expanse::getCost).reduce(ExpanseCost.ZERO, ExpanseCost::add);
+    private Cost getSummaryCost(final List<Expanse> expanses) {
+        return expanses.stream().map(Expanse::getCost).reduce(Cost.ZERO, Cost::add);
     }
 
-    private CategoryExpanseReportItem asCategoryEntry(final Category category, final ExpanseCost expanseCost) {
+    private CategoryExpanseReportItem asCategoryEntry(final Category category, final Cost cost) {
         return CategoryExpanseReportItem
                 .builder()
                 .uuid(category.getUuid())
                 .name(category.getName())
                 .type(category.getType())
-                .categoryCost(expanseCost != null ? expanseCost : ExpanseCost.ZERO)
+                .categoryCost(cost != null ? cost : Cost.ZERO)
                 .build();
     }
 

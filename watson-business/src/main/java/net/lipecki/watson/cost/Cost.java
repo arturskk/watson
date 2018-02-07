@@ -1,25 +1,29 @@
-package net.lipecki.watson.expanse;
+package net.lipecki.watson.cost;
 
 import lombok.Getter;
 import net.lipecki.watson.WatsonException;
 import org.apache.commons.lang.StringUtils;
 
 @Getter
-public class ExpanseCost {
+public class Cost {
 
-    public static final ExpanseCost ZERO = new ExpanseCost(0L);
+    public static final Cost ZERO = new Cost(0L);
 
-    public static ExpanseCost of(final String rawCost) {
+    public static Cost of(final long amount) {
+        return new Cost(amount);
+    }
+
+    public static Cost of(final String rawCost) {
         if (StringUtils.isBlank(rawCost)) {
             return ZERO;
         }
         final String cost = rawCost.replace(",", ".");
         if (cost.matches("\\d+\\.\\d\\d")) {
-            return new ExpanseCost(parseCostWithSuffix(cost, ""));
+            return new Cost(parseCostWithSuffix(cost, ""));
         } else if (cost.matches("\\d+\\.\\d")) {
-            return new ExpanseCost(parseCostWithSuffix(cost, "0"));
+            return new Cost(parseCostWithSuffix(cost, "0"));
         } else if (cost.matches("\\d+")) {
-            return new ExpanseCost(parseCostWithSuffix(cost, "00"));
+            return new Cost(parseCostWithSuffix(cost, "00"));
         } else {
             throw WatsonException.of("Can't parse cost as any expected format").with("cost", cost);
         }
@@ -43,13 +47,13 @@ public class ExpanseCost {
     private final long amount;
     private final String description;
 
-    private ExpanseCost(final long amount) {
+    private Cost(final long amount) {
         this.amount = amount;
         this.description = asDescription(amount);
     }
 
-    public ExpanseCost add(final ExpanseCost other) {
-        return new ExpanseCost(this.amount + other.amount);
+    public Cost add(final Cost other) {
+        return new Cost(this.amount + other.amount);
     }
 
 }

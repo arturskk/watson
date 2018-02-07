@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import net.lipecki.watson.category.Category;
-import net.lipecki.watson.receipt.AmountUnit;
+import net.lipecki.watson.amount.AmountUnit;
 
 import java.util.Optional;
 

@@ -31,5 +31,4 @@ public class InMemoryProjectionThread extends BackgroundProjectionThread {
         this.lastSequenceId = sequenceId;
     }
 
-
 }

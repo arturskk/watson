@@ -35,7 +35,7 @@ public class AddReceiptCommand {
     }
 
     private ReceiptItemAdded asReceiptItemAdded(final AddReceiptItemData data) {
-        // TODO: move ExpanseCost.of from handler?
+        // TODO: move Cost.of from handler?
         return ReceiptItemAdded
                 .builder()
                 .productUuid(data.getProductUuid())

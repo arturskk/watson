@@ -48,13 +48,13 @@ public abstract class BackgroundProjectionThread implements ProjectionThread {
 
     @Override
     public void addHandler(final ProjectionHandler<? extends EventPayload> handler) {
-        this.handlerMapping.put(handler.getPayloadClass().getTypeName(), handler);
+        handlerMapping.put(handler.getPayloadClass().getTypeName(), handler);
     }
 
     @Override
     public void setId(final String id) {
         this.id = id;
-        this.singleThreadTaskExecutor.setThreadNamePrefix(String.format(THREAD_PREFIX, id));
+        singleThreadTaskExecutor.setThreadNamePrefix(String.format(THREAD_PREFIX, id));
     }
 
     @Override
@@ -64,25 +64,25 @@ public abstract class BackgroundProjectionThread implements ProjectionThread {
                 Instant.now().plusSeconds(10),
                 Duration.ofSeconds(30)
         );
-        this.state.set(ProjectionState.RUNNING);
+        state.set(ProjectionState.RUNNING);
     }
 
     @Override
     public ProjectionStatus getStatus() {
         return ProjectionStatus
                 .builder()
-                .stable(this.stable)
+                .stable(stable)
                 .statusDate(new Date())
                 .currentSequenceId(getCurrentProcessedSequenceId())
-                .currentMaxSequenceId(this.eventStore.getLastSequenceId())
-                .state(this.state.get())
+                .currentMaxSequenceId(eventStore.getLastSequenceId())
+                .state(state.get())
                 .build();
     }
 
     @Override
     public void pushEvent(final Event event) {
-        this.stable = false;
-        if (this.handlerMapping.containsKey(event.getType())) {
+        stable = false;
+        if (handlerMapping.containsKey(event.getType())) {
             log.debug("New event in system, schedule event sync");
             scheduleOperation(this::syncEvents);
         }
@@ -93,10 +93,11 @@ public abstract class BackgroundProjectionThread implements ProjectionThread {
         transactionTemplate.execute(
                 new TransactionCallbackWithoutResult() {
                     protected void doInTransactionWithoutResult(final TransactionStatus status) {
-                        BackgroundProjectionThread.this.state.set(ProjectionState.STOPPED);
+                        state.set(ProjectionState.STOPPED);
                         resetCallback.run();
                         setCurrentProcessedSequenceId(0L);
-                        BackgroundProjectionThread.this.state.set(ProjectionState.RUNNING);
+                        stable = false;
+                        state.set(ProjectionState.RUNNING);
                     }
                 }
         );
@@ -110,32 +111,38 @@ public abstract class BackgroundProjectionThread implements ProjectionThread {
 
     public abstract void setCurrentProcessedSequenceId(long sequenceId);
 
-    private void syncEvents() {
-        if (this.state.get() == ProjectionState.STOPPED) {
+    private synchronized void syncEvents() {
+        if (state.get() == ProjectionState.STOPPED) {
             return;
         }
 
-        log.trace("[{}] Scheduler sync events task", this.id);
+        long startTime = System.currentTimeMillis();
+        log.trace("[{}] Scheduler sync events task", id);
         final long lastSequenceId = getCurrentProcessedSequenceId();
-        final Stream<Event> newEvents = this.eventStore.getEventsAfter(lastSequenceId, 200);
+        final AtomicReference<Long> lastProcessedEvendSequenceId = new AtomicReference<>();
+        final Stream<Event> newEvents = eventStore.getEventsAfter(lastSequenceId, 500);
         newEvents.forEach(event -> {
             final long eventSequenceId = event.getSequenceId();
             final boolean eventNewestThanSynchronized = eventSequenceId > lastSequenceId;
             if (eventNewestThanSynchronized) {
                 final String eventType = event.getType();
-                final ProjectionHandler<? extends EventPayload> eventHandler = this.handlerMapping.get(eventType);
+                final ProjectionHandler<? extends EventPayload> eventHandler = handlerMapping.get(eventType);
                 if (eventHandler != null && eventHandler.canHandle(event)) {
                     try {
                         eventHandler.acceptWithCheck(event);
                     } catch (final Exception ex) {
-                        log.warn("[{}] Event processing skipped due to handler exception [event={}]", this.id, event, ex);
+                        log.warn("[{}] Event processing skipped due to handler exception [event={}]", id, event, ex);
                     }
                 }
-                setCurrentProcessedSequenceId(eventSequenceId);
-                this.stable = eventSequenceId == this.eventStore.getLastSequenceId();
+                lastProcessedEvendSequenceId.set(eventSequenceId);
+                stable = eventSequenceId == eventStore.getLastSequenceId();
             }
         });
-        log.debug("[{}] Current sync status [status={}]", this.id, getStatus());
+        if (lastProcessedEvendSequenceId.get() != null) {
+            long endTime = System.currentTimeMillis();
+            setCurrentProcessedSequenceId(lastProcessedEvendSequenceId.get());
+            log.debug("[{}] Current sync status [time={}ms, status={}]", id, (endTime - startTime), getStatus());
+        }
     }
 
     private ThreadPoolTaskExecutor initializeSingleThreadedTaskExecutor(final String id) {
@@ -149,7 +156,7 @@ public abstract class BackgroundProjectionThread implements ProjectionThread {
     }
 
     private void scheduleOperation(final Runnable runnable) {
-        this.singleThreadTaskExecutor.execute(() -> transactionTemplate.execute(
+        singleThreadTaskExecutor.execute(() -> transactionTemplate.execute(
                 new TransactionCallbackWithoutResult() {
                     protected void doInTransactionWithoutResult(final TransactionStatus status) {
                         runnable.run();

@@ -37,7 +37,7 @@ public class JpaEventStore implements EventStore {
                     .type(payload.getClass().getTypeName())
                     .timestamp(System.currentTimeMillis())
                     .build();
-            this.eventRepository.save(entity);
+            eventRepository.save(entity);
             return asEvent(entity);
         } catch (final Exception ex) {
             throw WatsonException.of(WatsonExceptionCode.UNKNOWN, "Can't store event", ex)
@@ -48,13 +48,13 @@ public class JpaEventStore implements EventStore {
 
     @Override
     public long getLastSequenceId() {
-        final Long lastId = this.eventRepository.getLastId();
+        final Long lastId = eventRepository.getLastId();
         return lastId != null ? lastId : 0;
     }
 
     @Override
     public Stream<Event> getEventsByStream(final List<String> streams) {
-        return this.eventRepository
+        return eventRepository
                 .findByStreamIn(streams)
                 .stream()
                 .map(this::asEvent);
@@ -62,14 +62,14 @@ public class JpaEventStore implements EventStore {
 
     @Override
     public Stream<Event> getEvents() {
-        return this.eventRepository
+        return eventRepository
                 .findAllAndStream()
                 .map(this::asEvent);
     }
 
     @Override
     public Stream<Event> getEventsAfter(final long sequenceId, final int limit) {
-        return this.eventRepository
+        return eventRepository
                 .findAllAndStream(sequenceId, PageRequest.of(0, limit))
                 .map(this::asEvent);
     }

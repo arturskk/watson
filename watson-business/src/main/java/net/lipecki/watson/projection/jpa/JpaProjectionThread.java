@@ -30,14 +30,14 @@ public class JpaProjectionThread extends BackgroundProjectionThread {
     @Transactional
     @Override
     public long getCurrentProcessedSequenceId() {
-        final Optional<JpaProjectionThreadStatus> projectionThreadStatus = this.repository.findOneById(getId());
+        final Optional<JpaProjectionThreadStatus> projectionThreadStatus = repository.findOneById(getId());
         return projectionThreadStatus.map(JpaProjectionThreadStatus::getLastSequenceId).orElse(0L);
     }
 
     @Transactional
     @Override
     public void setCurrentProcessedSequenceId(final long sequenceId) {
-        this.repository.save(
+        repository.save(
                 JpaProjectionThreadStatus
                         .builder()
                         .id(getId())

@@ -3,6 +3,7 @@ package net.lipecki.watson.expanse;
 import net.lipecki.watson.WatsonException;
 import net.lipecki.watson.combiner.AggregateCombinerHandler;
 import net.lipecki.watson.event.Event;
+import net.lipecki.watson.cost.Cost;
 import net.lipecki.watson.product.GetProductQuery;
 import net.lipecki.watson.product.Product;
 import net.lipecki.watson.receipt.ReceiptAdded;
@@ -44,7 +45,7 @@ public class ExpanseReceiptAddedEventHandler implements AggregateCombinerHandler
             expanse.date(LocalDate.parse(payload.getDate()));
             expanse.name(product.getName());
             expanse.category(product.getCategory());
-            expanse.cost(ExpanseCost.of(item.getCost()));
+            expanse.cost(Cost.of(item.getCost()));
 
             collection.put(itemKey, expanse.build());
         }

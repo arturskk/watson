@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import net.lipecki.watson.account.Account;
 import net.lipecki.watson.category.Category;
-import net.lipecki.watson.expanse.ExpanseCost;
+import net.lipecki.watson.cost.Cost;
 import net.lipecki.watson.shop.Shop;
 
 import java.time.LocalDate;
@@ -28,12 +28,12 @@ public class Receipt {
 
     // shop instance
 
-    public ExpanseCost getCost() {
+    public Cost getCost() {
         return this.items
                 .stream()
                 .map(ReceiptItem::getCost)
-                .reduce(ExpanseCost::add)
-                .orElse(ExpanseCost.ZERO);
+                .reduce(Cost::add)
+                .orElse(Cost.ZERO);
     }
 
 }

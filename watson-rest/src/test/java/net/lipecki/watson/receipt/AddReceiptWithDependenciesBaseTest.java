@@ -3,6 +3,7 @@ package net.lipecki.watson.receipt;
 import net.lipecki.watson.account.AddAccountCommand;
 import net.lipecki.watson.category.AddCategoryCommand;
 import net.lipecki.watson.event.Event;
+import net.lipecki.watson.amount.AmountUnit;
 import net.lipecki.watson.product.AddProductCommand;
 import net.lipecki.watson.shop.AddShopCommand;
 import org.apache.commons.lang.StringUtils;
