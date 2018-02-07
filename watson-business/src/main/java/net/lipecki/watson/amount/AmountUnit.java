@@ -1,4 +1,4 @@
-package net.lipecki.watson.receipt;
+package net.lipecki.watson.amount;
 
 import java.util.Arrays;
 import java.util.Collections;

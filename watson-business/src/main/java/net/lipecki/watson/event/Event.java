@@ -31,7 +31,7 @@ public class Event {
     private String streamId;
 
     /**
-     * Event timestamp.
+     * Event date.
      */
     private long timestamp;
 

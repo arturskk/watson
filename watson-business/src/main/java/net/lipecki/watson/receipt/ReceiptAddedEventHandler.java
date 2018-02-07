@@ -5,7 +5,8 @@ import net.lipecki.watson.account.GetAccountQuery;
 import net.lipecki.watson.category.GetCategoryQuery;
 import net.lipecki.watson.combiner.AggregateCombinerHandler;
 import net.lipecki.watson.event.Event;
-import net.lipecki.watson.expanse.ExpanseCost;
+import net.lipecki.watson.amount.AmountUnit;
+import net.lipecki.watson.cost.Cost;
 import net.lipecki.watson.product.GetProductQuery;
 import net.lipecki.watson.shop.GetShopQuery;
 import org.springframework.stereotype.Service;
@@ -59,7 +60,7 @@ public class ReceiptAddedEventHandler implements AggregateCombinerHandler<Receip
     private ReceiptItem asReceiptItem(final ReceiptItemAdded data) {
         final ReceiptItem.ReceiptItemBuilder item = ReceiptItem.builder();
 
-        item.cost(ExpanseCost.of(data.getCost()));
+        item.cost(Cost.of(data.getCost()));
         item.amount(
                 ReceiptItemAmount
                         .builder()

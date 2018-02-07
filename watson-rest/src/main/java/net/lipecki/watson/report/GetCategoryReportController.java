@@ -1,6 +1,8 @@
 package net.lipecki.watson.report;
 
 import lombok.extern.slf4j.Slf4j;
+import net.lipecki.watson.report.categoryexpanse.CategoryExpanseReport;
+import net.lipecki.watson.report.categoryexpanse.GetCategoryExpanseReportQuery;
 import net.lipecki.watson.rest.Api;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,16 +18,16 @@ import java.time.LocalDate;
 @RequestMapping(Api.V1)
 public class GetCategoryReportController {
 
-    private final GetCategoryReportQuery query;
+    private final GetCategoryExpanseReportQuery query;
 
-    public GetCategoryReportController(final GetCategoryReportQuery query) {
+    public GetCategoryReportController(final GetCategoryExpanseReportQuery query) {
         this.query = query;
     }
 
     @GetMapping("/report/category")
     @Transactional
-    public CategoryReport getCategoryReportDto(@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final LocalDate from,
-                                               @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final LocalDate to) {
+    public CategoryExpanseReport getCategoryReportDto(@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final LocalDate from,
+                                                      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final LocalDate to) {
         log.debug("Request for categories report [from={}, to={}]", from, to);
         return this.query.getCategoryReport(from, to);
     }

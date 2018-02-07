@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.lipecki.watson.category.GetCategoryQuery;
 import net.lipecki.watson.combiner.AggregateCombinerHandler;
 import net.lipecki.watson.event.Event;
-import net.lipecki.watson.receipt.AmountUnit;
+import net.lipecki.watson.amount.AmountUnit;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;

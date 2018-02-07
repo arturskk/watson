@@ -1,11 +1,11 @@
-import {ExpanseCost} from './expanse-cost';
+import {Cost} from '../../cost/cost';
 
 export interface CategoryReportItem {
 
-  categoryCost: ExpanseCost;
+  categoryCost: Cost;
   name: string;
   subCategories: CategoryReportItem[];
-  totalCost: ExpanseCost;
+  totalCost: Cost;
   type: string;
   uuid: string;
 

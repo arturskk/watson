@@ -1,10 +1,10 @@
-package net.lipecki.watson.report;
+package net.lipecki.watson.report.categoryexpanse;
 
 import lombok.extern.slf4j.Slf4j;
 import net.lipecki.watson.category.Category;
 import net.lipecki.watson.category.GetCategoryQuery;
+import net.lipecki.watson.cost.Cost;
 import net.lipecki.watson.expanse.Expanse;
-import net.lipecki.watson.expanse.ExpanseCost;
 import net.lipecki.watson.expanse.GetExpansesQuery;
 import org.springframework.stereotype.Service;
 
@@ -18,21 +18,21 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-public class GetCategoryReportQuery {
+public class GetCategoryExpanseReportQuery {
 
     private static final DateTimeFormatter fullDateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private final GetExpansesQuery expansesQuery;
     private final GetCategoryQuery categoryQuery;
 
-    public GetCategoryReportQuery(final GetExpansesQuery expansesQuery, final GetCategoryQuery categoryQuery) {
+    public GetCategoryExpanseReportQuery(final GetExpansesQuery expansesQuery, final GetCategoryQuery categoryQuery) {
         this.expansesQuery = expansesQuery;
         this.categoryQuery = categoryQuery;
     }
 
-    public CategoryReport getCategoryReport(final LocalDate from, final LocalDate to) {
-        final Map<String, ExpanseCost> categoryExpanses = getCategoryToExpanseMapping(expansesQuery.getExpanses(from, to));
-        final CategoryReportItem reportRoot = getReportTree(categoryExpanses);
-        return CategoryReport
+    public CategoryExpanseReport getCategoryReport(final LocalDate from, final LocalDate to) {
+        final Map<String, Cost> categoryExpanses = getCategoryToExpanseMapping(expansesQuery.getExpanses(from, to));
+        final CategoryExpanseReportItem reportRoot = getReportTree(categoryExpanses);
+        return CategoryExpanseReport
                 .builder()
                 .from(getFormattedDate(from))
                 .to(getFormattedDate(to))
@@ -40,12 +40,12 @@ public class GetCategoryReportQuery {
                 .build();
     }
 
-    private CategoryReportItem getReportTree(final Map<String, ExpanseCost> categoryExpanses) {
-        final Map<String, CategoryReportItem> entriesIndex = new HashMap<>();
+    private CategoryExpanseReportItem getReportTree(final Map<String, Cost> categoryExpanses) {
+        final Map<String, CategoryExpanseReportItem> entriesIndex = new HashMap<>();
         final Category rootCategory = this.categoryQuery.getRootCategory();
         rootCategory.accept(
                 category -> {
-                    final CategoryReportItem entry = asCategoryEntry(category, categoryExpanses.get(category.getUuid()));
+                    final CategoryExpanseReportItem entry = asCategoryEntry(category, categoryExpanses.get(category.getUuid()));
                     entriesIndex.put(category.getUuid(), entry);
                     category.getParent()
                             .map(Category::getUuid)
@@ -56,7 +56,7 @@ public class GetCategoryReportQuery {
         return entriesIndex.get(rootCategory.getUuid());
     }
 
-    private Map<String, ExpanseCost> getCategoryToExpanseMapping(final List<Expanse> expanses) {
+    private Map<String, Cost> getCategoryToExpanseMapping(final List<Expanse> expanses) {
         return expanses
                 .stream()
                 .collect(Collectors.groupingBy(Expanse::getCategory))
@@ -70,17 +70,17 @@ public class GetCategoryReportQuery {
         return from != null ? fullDateFormat.format(from) : null;
     }
 
-    private ExpanseCost getSummaryCost(final List<Expanse> expanses) {
-        return expanses.stream().map(Expanse::getCost).reduce(ExpanseCost.ZERO, ExpanseCost::add);
+    private Cost getSummaryCost(final List<Expanse> expanses) {
+        return expanses.stream().map(Expanse::getCost).reduce(Cost.ZERO, Cost::add);
     }
 
-    private CategoryReportItem asCategoryEntry(final Category category, final ExpanseCost expanseCost) {
-        return CategoryReportItem
+    private CategoryExpanseReportItem asCategoryEntry(final Category category, final Cost cost) {
+        return CategoryExpanseReportItem
                 .builder()
                 .uuid(category.getUuid())
                 .name(category.getName())
                 .type(category.getType())
-                .categoryCost(expanseCost != null ? expanseCost : ExpanseCost.ZERO)
+                .categoryCost(cost != null ? cost : Cost.ZERO)
                 .build();
     }
 

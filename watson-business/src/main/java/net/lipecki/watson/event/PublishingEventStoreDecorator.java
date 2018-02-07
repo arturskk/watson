@@ -31,6 +31,11 @@ public class PublishingEventStoreDecorator implements EventStore {
     }
 
     @Override
+    public long getLastSequenceId() {
+        return eventStore.getLastSequenceId();
+    }
+
+    @Override
     public Stream<Event> getEventsByStream(final List<String> streams) {
         return eventStore.getEventsByStream(streams);
     }
@@ -38,6 +43,11 @@ public class PublishingEventStoreDecorator implements EventStore {
     @Override
     public Stream<Event> getEvents() {
         return eventStore.getEvents();
+    }
+
+    @Override
+    public Stream<Event> getEventsAfter(final long sequenceId, final int limit) {
+        return this.eventStore.getEventsAfter(sequenceId, limit);
     }
 
 }
