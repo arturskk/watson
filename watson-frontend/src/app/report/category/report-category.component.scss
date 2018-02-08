@@ -4,14 +4,14 @@
 :host {
   display: block;
   .report-parameters {
-    display: flex;
+    @include flex();
     align-items: center;
     input {
       margin: 0 10px;
     }
   }
   .report-options {
-    display: flex;
+    @include flex();
     align-items: center;
     margin-top: 10px;
     padding-top: 5px;
@@ -20,5 +20,8 @@
       width: auto;
       margin-right: 5px;
     }
+  }
+  button {
+    width: 150px;
   }
 }

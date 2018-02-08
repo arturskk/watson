@@ -1,5 +1,8 @@
+//noinspection CssUnknownTarget
+@import 'common';
+
 :host {
-  display: flex;
+  @include flex();
   flex: 1;
   flex-direction: row;
   .product-name {

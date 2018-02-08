@@ -1,5 +1,8 @@
+//noinspection CssUnknownTarget
+@import 'common';
+
 :host {
-  display: flex;
+  @include flex();
   .category-name {
     flex: 1;
   }

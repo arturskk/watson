@@ -11,7 +11,7 @@ const routes: Routes = [
   {path: 'category/:type/list', component: CategoryListComponent},
   {path: 'product/list', component: ProductListComponent},
   {path: 'report/category', component: ReportCategoryComponent},
-  {path: 'report/product-price', component: ProductPriceReportComponent},
+  {path: 'report/product-price/:category', component: ProductPriceReportComponent},
   {path: '', redirectTo: '/receipt/add', pathMatch: 'full'}
 ];
 

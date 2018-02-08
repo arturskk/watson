@@ -12,11 +12,11 @@
   height: $navbar-height;
   nav {
     height: 100%;
-    display: flex;
+    @include flex();
     align-items: center;
   }
   nav > div {
-    padding: 0px 10px;
+    padding: 0 10px;
   }
   .brand-name {
     color: $color-light-blue-900;

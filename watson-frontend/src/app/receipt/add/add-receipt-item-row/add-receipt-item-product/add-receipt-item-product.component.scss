@@ -4,7 +4,7 @@
 :host {
   display: block;
   .new-product-category-row {
-    display: flex;
+    @include flex();
     margin: 6px 0 3px 0;
     align-items: center;
     ws-select {

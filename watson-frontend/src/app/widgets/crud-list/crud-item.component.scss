@@ -4,14 +4,14 @@
 :host {
   display: block;
   .item {
-    display: flex;
+    @include flex();
   }
   .item-renderer {
-    display: flex;
+    @include flex();
     flex: 1;
   }
   .item-actions {
-    display: flex;
+    @include flex();
     min-width: 150px;
     justify-content: flex-end;
     align-items: flex-start;

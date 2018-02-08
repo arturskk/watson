@@ -2,7 +2,6 @@ package net.lipecki.watson.productprice;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.Singular;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +12,8 @@ public class ProductPriceReport {
 
     private String categoryUuid;
     private boolean includeSubcategories;
-    @Singular
-    private List<ProductPriceReportItem> items;
+    @SuppressWarnings("UnusedAssignment")
+    @Builder.Default
+    private List<ProductPriceReportItem> items = new ArrayList<>();
 
 }

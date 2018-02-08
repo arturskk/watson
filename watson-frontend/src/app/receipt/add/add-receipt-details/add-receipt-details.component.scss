@@ -1,7 +1,10 @@
+//noinspection CssUnknownTarget
+@import 'common';
+
 :host {
   display: block;
   .item {
-    display: flex;
+    @include flex();
     &:not(:last-child) {
       margin-bottom: 5px;
     }

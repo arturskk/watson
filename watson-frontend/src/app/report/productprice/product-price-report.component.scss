@@ -4,15 +4,15 @@
 :host {
   display: block;
   ws-panel {
-    display: flex;
-    ws-product-price-report-category-tree {
-      width: 250px;
-      border-right: 1px solid $color-grey-200;
-      padding-right: 10px;
-    }
-    ws-product-price-report-panel {
-      padding-left: 10px;
-      flex: 1;
-    }
+    @include flex();
+  }
+  ws-product-price-report-category-tree {
+    width: 200px;
+    border-right: 1px solid $color-grey-200;
+    padding-right: 10px;
+  }
+  ws-product-price-report-panel {
+    padding-left: 10px;
+    flex: 1;
   }
 }

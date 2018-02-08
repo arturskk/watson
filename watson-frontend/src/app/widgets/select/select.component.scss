@@ -19,7 +19,7 @@
     background-color: $color-light-blue-900;
   }
   .search-box-wrapper {
-    display: flex;
+    @include flex();
   }
   input.hidden {
     width: 5px;
