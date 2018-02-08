@@ -3,9 +3,7 @@ import {Component} from '@angular/core';
 @Component({
   selector: 'ws-panel',
   template: `
-    <div>
-      <ng-content></ng-content>
-    </div>
+    <ng-content></ng-content>
   `,
   styleUrls: [
     'panel.component.scss'

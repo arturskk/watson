@@ -12,8 +12,8 @@ import {Component} from '@angular/core';
     </footer>
   `,
   styleUrls: [
-    'app.component.scss'
+    'watson-app.component.scss'
   ]
 })
-export class AppComponent {
+export class WatsonAppComponent {
 }
