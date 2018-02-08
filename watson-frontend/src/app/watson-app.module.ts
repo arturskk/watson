@@ -18,6 +18,9 @@ import {ReceiptAddComponent} from './receipt/add/receipt-add.component';
 import {ReceiptService} from './receipt/receipt.service';
 import {ReportCategoryItemComponent} from './report/category/report-category-item.component';
 import {ReportCategoryComponent} from './report/category/report-category.component';
+import {ProductPriceReportCategoryTreeComponent} from './report/productprice/category-tree/product-price-report-category-tree.component';
+import {ProductPriceReportComponent} from './report/productprice/product-price-report.component';
+import {ProductPriceReportPanelComponent} from './report/productprice/report-panel/product-price-report-panel.component';
 import {SafeHtmlPipe} from './util/safe-html.pipe';
 import {AppVersionComponent} from './version/app-version.component';
 import {ButtonFlatComponent} from './widgets/button-flat/button-flat.component';
@@ -28,6 +31,11 @@ import {JoinArrayPipe} from './widgets/join-array.pipe';
 import {PanelComponent} from './widgets/panel/panel.component';
 import {SelectComponent} from './widgets/select/select.component';
 import {SpinnerComponent} from './widgets/spinner/spinner.component';
+import { ProductPriceCategoryTreeItemComponent } from './report/productprice/category-tree/product-price-category-tree-item/product-price-category-tree-item.component';
+import { ProductPriceReportPanelDataTableComponent } from './report/productprice/report-panel/product-price-report-panel-data-table/product-price-report-panel-data-table.component';
+import { ProductPriceReportPanelFilterComponent } from './report/productprice/report-panel/product-price-report-panel-filter/product-price-report-panel-filter.component';
+import { ProductPriceReportPanelOptionsComponent } from './report/productprice/report-panel/product-price-report-panel-options/product-price-report-panel-options.component';
+import { ProductPriceReportPanelSummaryComponent } from './report/productprice/report-panel/product-price-report-panel-summary/product-price-report-panel-summary.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +62,15 @@ import {SpinnerComponent} from './widgets/spinner/spinner.component';
     AddReceiptItemCostComponent,
     AddReceiptItemProductComponent,
     AppVersionComponent,
-    SafeHtmlPipe
+    SafeHtmlPipe,
+    ProductPriceReportComponent,
+    ProductPriceReportCategoryTreeComponent,
+    ProductPriceReportPanelComponent,
+    ProductPriceCategoryTreeItemComponent,
+    ProductPriceReportPanelDataTableComponent,
+    ProductPriceReportPanelFilterComponent,
+    ProductPriceReportPanelOptionsComponent,
+    ProductPriceReportPanelSummaryComponent
   ],
   imports: [
     BrowserModule,
