@@ -2,7 +2,7 @@
 @import 'common';
 
 :host {
-  display: flex;
+  @include flex();
   color: $color-grey-500;
   font-style: italic;
   .receipt-summary-cell:not(:last-child) {

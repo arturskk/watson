@@ -1,3 +1,5 @@
+import {ObjectsUtil} from './objects-util';
+
 export class DiffsUtil {
 
   static skipIfWithoutChange(obj: any) {
@@ -14,17 +16,13 @@ export class DiffsUtil {
   }
 
   static returnIfChanged(newObject: any, oldObject: any, property: string): any {
-    const newValue = this.getByProperty(newObject, property);
-    const oldValue = this.getByProperty(oldObject, property);
+    const newValue = ObjectsUtil.getByProperty(newObject, property);
+    const oldValue = ObjectsUtil.getByProperty(oldObject, property);
     if (newValue !== oldValue) {
       return newValue;
     } else {
       return undefined;
     }
-  }
-
-  static getByProperty(obj: any, property: string): any {
-    return property.split('.').reduce((val, key) => val && val[key], obj);
   }
 
   static diff(a: any, b: any, desc: {[key: string]: any}): any {

@@ -11,6 +11,7 @@ import net.lipecki.watson.shop.Shop;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -51,7 +52,12 @@ public class GetProductPriceQuery {
             report.items(getProductPriceReportItems(category));
         }
 
-        return report.build();
+        final ProductPriceReport result = report.build();
+        final Comparator<ProductPriceReportItem> byName = Comparator.comparing(item1 -> item1.getProduct().getName());
+        final Comparator<ProductPriceReportItem> byDateDesc = Comparator.comparing(ProductPriceReportItem::getDate).reversed();
+        result.getItems().sort(byName.thenComparing(byDateDesc));
+
+        return result;
     }
 
     private List<ProductPriceReportItem> getProductPriceReportItems(final Category category) {

@@ -7,7 +7,7 @@
   @include flex-grid();
 
   .receipt-body-header {
-    display: flex;
+    @include flex();
     justify-content: flex-end;
     margin-bottom: 10px;
   }

@@ -1,0 +1,28 @@
+//noinspection CssUnknownTarget
+@import 'common';
+
+:host {
+  @include flex-grid();
+  .column {
+    :not(:first-child) {
+      padding-left: 5px;
+    }
+    :not(:last-child) {
+      padding-right: 5px;
+    }
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .header {
+    font-weight: $font-weight-bold;
+    border-bottom: 1px solid $color-grey-200;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+  }
+  .item {
+    margin: 5px 0;
+    &:hover {
+      background-color: $color-grey-100;
+    }
+  }
+}

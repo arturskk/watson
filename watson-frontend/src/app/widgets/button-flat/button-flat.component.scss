@@ -2,7 +2,7 @@
 @import 'common';
 
 :host {
-  display: flex;
+  @include flex();
   justify-content: center;
   align-items: center;
   overflow: hidden;
