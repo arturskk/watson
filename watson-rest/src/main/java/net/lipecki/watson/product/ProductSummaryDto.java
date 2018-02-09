@@ -3,6 +3,8 @@ package net.lipecki.watson.product;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Builder
 public class ProductSummaryDto {
@@ -18,7 +20,7 @@ public class ProductSummaryDto {
 
         private String uuid;
         private String name;
-        private String path;
+        private List<String> path;
 
     }
 

@@ -13,7 +13,7 @@ public class ReceiptSummaryDto {
     private String cost;
     private String date;
     private String categoryName;
-    private String categoryPath;
+    private List<String> categoryPath;
     private String accountName;
     private String shopName;
     private List<ReceiptSummaryItem> items;
@@ -24,7 +24,7 @@ public class ReceiptSummaryDto {
 
         private String productName;
         private String categoryName;
-        private String categoryPath;
+        private List<String> categoryPath;
         private String amount;
         private String unit;
         private String cost;

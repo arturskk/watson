@@ -27,7 +27,7 @@ export class ProductPriceCategoryTreeItemComponent implements OnChanges {
 
   @Input() item: CategoryTreeDto;
   @Input() sortedChildren: CategoryTreeDto[];
-  @Input() expandedItems: CategoryTreeDto[];
+  @Input() expandedItems: CategoryTreeDto[];c
   @Output() selected = new EventEmitter();
   expanded: boolean;
   expandable: boolean;

@@ -5,6 +5,6 @@ export interface CategorySummary {
   uuid: string;
   name: string;
   parentUuid: string;
-  pathString: string;
+  path: string[];
 
 }

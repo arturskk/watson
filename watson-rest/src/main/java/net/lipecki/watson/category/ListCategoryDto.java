@@ -3,6 +3,8 @@ package net.lipecki.watson.category;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Builder
 public class ListCategoryDto {
@@ -14,14 +16,16 @@ public class ListCategoryDto {
                 .type(category.getType())
                 .uuid(category.getUuid())
                 .name(category.getName())
-                .pathString(category.getCategoryPath())
+                .path(category.getCategoryPath())
+                .depth(category.getDepth())
                 .build();
     }
 
+    private int depth;
     private String type;
     private String uuid;
     private String parentUuid;
     private String name;
-    private String pathString;
+    private List<String> path;
 
 }

@@ -25,7 +25,7 @@ import {CrudItemState} from '../../widgets/crud-list/crut-item-state';
       <ws-crud-list-component [data]="products" (itemSave)="editProductSave($event)">
         <ng-template let-product #itemSummary>
           {{product.name}}
-          <span class="category">&nbsp;({{product.category.path}})</span>
+          <span class="category">&nbsp;({{product.category.path | joinArray:' > '}})</span>
         </ng-template>
         <ng-template let-product #itemEdit>
           <ws-product-edit [product]="product" [categories]="categories"></ws-product-edit>
