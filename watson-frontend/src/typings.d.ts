@@ -1,6 +1,6 @@
 /* SystemJS module definition */
 declare var module: NodeModule;
-declare var window;
+declare var window: Window;
 
 interface NodeModule {
   id: string;

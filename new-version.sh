@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 RV=$1
 SV=$2
 
