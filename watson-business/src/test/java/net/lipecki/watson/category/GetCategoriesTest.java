@@ -67,7 +67,7 @@ public class GetCategoriesTest {
         // then
         assertThat(categories)
                 .extracting(Category::getCategoryPath)
-                .containsExactly(Arrays.asList(Category.ROOT_NAME, expectedCategoryName));
+                .contains(Arrays.asList(Category.ROOT_NAME, expectedCategoryName));
     }
 
 }
