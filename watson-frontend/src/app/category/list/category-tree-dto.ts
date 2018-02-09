@@ -16,15 +16,17 @@ export class CategoryTreeDto {
   path: string[];
   pathString: string;
   children: CategoryTreeDto[];
+  parent: CategoryTreeDto;
 
-  constructor(data: CategoryTreeDtoData) {
+  constructor(data: CategoryTreeDtoData, parent?: CategoryTreeDto) {
     this.depth = data.depth;
     this.type = data.type;
     this.uuid = data.uuid;
     this.name = data.name;
     this.path = data.path;
     this.pathString = this.path.join(' > ');
-    this.children = data.children.map(child => new CategoryTreeDto(child));
+    this.parent = parent;
+    this.children = data.children.map(child => new CategoryTreeDto(child, this));
   }
 
   accept(consumer: (CategoryTreeDto) => void) {

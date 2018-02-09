@@ -10,7 +10,7 @@ import {ProductPriceReport} from '../../product-price-report';
     </div>
     <div class="data">
       <div *ngFor="let item of report.items" class="item row">
-        <div *ngFor="let column of columns" [class]="'column column-' + column.span">{{byProperty(item, column.field)}}</div>
+        <div *ngFor="let column of columns" [class]="'column column-' + column.span">{{byProperty(item, column.field)}}{{column.valueSuffix}}</div>
       </div>
     </div>
   `,
@@ -25,7 +25,7 @@ export class ProductPriceReportPanelDataTableComponent {
     {key: 'Sklep', span: 4, field: 'shop.name'},
     {key: 'Data', span: 2, field: 'date'},
     {key: 'Jednostka', span: 1, field: 'unit'},
-    {key: 'Cema', span: 1, field: 'pricePerUnit'}
+    {key: 'Cema', span: 1, field: 'pricePerUnit', valueSuffix: 'zł'}
   ];
 
 }
