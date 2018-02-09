@@ -25,7 +25,7 @@ export class ProductPriceReportPanelDataTableComponent {
     {key: 'Sklep', span: 4, field: 'shop.name'},
     {key: 'Data', span: 2, field: 'date'},
     {key: 'Jednostka', span: 1, field: 'unit'},
-    {key: 'Cema', span: 1, field: 'pricePerUnit', valueSuffix: 'zł'}
+    {key: 'Cena', span: 1, field: 'pricePerUnit', valueSuffix: 'zł'}
   ];
 
 }
