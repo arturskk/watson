@@ -135,12 +135,12 @@ public abstract class BackgroundProjectionThread implements ProjectionThread {
                     }
                 }
                 lastProcessedEvendSequenceId.set(eventSequenceId);
-                stable = eventSequenceId == eventStore.getLastSequenceId();
             }
         });
         if (lastProcessedEvendSequenceId.get() != null) {
             long endTime = System.currentTimeMillis();
             setCurrentProcessedSequenceId(lastProcessedEvendSequenceId.get());
+            stable = lastProcessedEvendSequenceId.get() == eventStore.getLastSequenceId();
             log.debug("[{}] Current sync status [time={}ms, status={}]", id, (endTime - startTime), getStatus());
         }
     }
