@@ -1,3 +1,10 @@
+//noinspection CssUnknownTarget
+@import 'common';
+
 :host {
   display: block;
+  ws-product-price-report-panel-options {
+    border-bottom: 1px solid $color-grey-200;
+    margin-bottom: 10px;
+  }
 }

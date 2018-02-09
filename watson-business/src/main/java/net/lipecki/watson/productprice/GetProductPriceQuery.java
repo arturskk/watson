@@ -46,11 +46,13 @@ public class GetProductPriceQuery {
                 .categoryUuid(categoryUuid)
                 .includeSubcategories(includeSubcategories);
 
+        final List<ProductPriceReportItem> items = new ArrayList<>();
         if (includeSubcategories) {
-            category.accept(subcategory -> report.items(getProductPriceReportItems(subcategory)));
+            category.accept(subcategory -> items.addAll(getProductPriceReportItems(subcategory)));
         } else {
-            report.items(getProductPriceReportItems(category));
+            items.addAll(getProductPriceReportItems(category));
         }
+        report.items(items);
 
         final ProductPriceReport result = report.build();
         final Comparator<ProductPriceReportItem> byName = Comparator.comparing(item1 -> item1.getProduct().getName());
