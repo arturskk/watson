@@ -16,7 +16,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
             Nowo utworzony produkt
           </div>
           <div *ngIf="item.category && item.category.path" class="select-item-description">
-            {{item.category.path}}
+            {{item.category.path | joinArray: ' > '}}
           </div>
         </ng-template>
       </ws-select>
@@ -34,6 +34,9 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
           </div>
           <div *ngIf="item.createdWithinReceipt" class="dynamic-select-item">
             Nowo utworzona kategoria produktu
+          </div>
+          <div *ngIf="item.path" class="select-item-description">
+            {{item.path | joinArray: ' > '}}
           </div>
         </ng-template>
       </ws-select>

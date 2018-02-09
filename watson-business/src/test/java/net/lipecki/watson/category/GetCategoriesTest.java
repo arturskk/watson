@@ -6,6 +6,7 @@ import net.lipecki.watson.event.InMemoryEventStore;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -66,9 +67,7 @@ public class GetCategoriesTest {
         // then
         assertThat(categories)
                 .extracting(Category::getCategoryPath)
-                .contains(
-                        String.format("%s%s%s", Category.ROOT_NAME, Category.PATH_SEPARATOR, expectedCategoryName)
-                );
+                .containsExactly(Arrays.asList(Category.ROOT_NAME, expectedCategoryName));
     }
 
 }

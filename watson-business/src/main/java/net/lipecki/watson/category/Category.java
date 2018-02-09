@@ -6,6 +6,8 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -45,8 +47,6 @@ public class Category {
     public static final String ROOT_UUID = "root";
     public static final String ROOT_NAME = "Root";
     public static final String ROOT_TYPE = "root";
-    // TODO: remove, change path to list instead of string
-    public static final String PATH_SEPARATOR = " > ";
 
     private String uuid;
     private String type;
@@ -76,17 +76,22 @@ public class Category {
         return categoryType.equals(this.type);
     }
 
-    public String getCategoryPath() {
-        if (parent == null) {
-            return name;
-        } else {
-            return parent.getCategoryPath() + PATH_SEPARATOR + name;
+    public List<String> getCategoryPath() {
+        final List<String> path = new LinkedList<>();
+        if (parent != null) {
+            path.addAll(parent.getCategoryPath());
         }
+        path.add(name);
+        return path;
     }
 
     public void accept(final Consumer<Category> visitor) {
         visitor.accept(this);
         children.forEach(child -> child.accept(visitor));
+    }
+
+    public int getDepth() {
+        return parent != null ? parent.getDepth() + 1 : 0;
     }
 
 }

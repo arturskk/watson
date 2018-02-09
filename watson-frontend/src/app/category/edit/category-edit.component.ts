@@ -16,6 +16,9 @@ import {CategorySummary} from '../category-summary';
       class="category-parent-category">
       <ng-template let-item let-markSearchText="markSearchText" let-newItem="newItem" #listItem>
         <span [innerHTML]="markSearchText.call(undefined, item.name) | safeHtml"></span>
+        <div *ngIf="item.path" class="select-item-description">
+          {{item.path | joinArray: ' > '}}
+        </div>
       </ng-template>
     </ws-select>
   `,

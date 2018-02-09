@@ -54,10 +54,6 @@ export class ProductPriceReportComponent implements OnInit {
   }
 
   onIncludeSubcategoriesChanged(includeSubcategories: boolean) {
-    console.log({
-      method: 'onIncludeSubcategoriesChanged',
-      includeSubcategories
-    });
     this.includeSubcategories = includeSubcategories;
     this.fetchReport();
   }
