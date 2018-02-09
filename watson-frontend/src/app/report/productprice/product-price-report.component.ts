@@ -62,6 +62,7 @@ export class ProductPriceReportComponent implements OnInit {
     if (this.getReportSubscription) {
       this.getReportSubscription.unsubscribe();
     }
+    window.scrollTo(0, 0);
     this.report = undefined;
     this.getReportSubscription = this.httpClient
       .get<ProductPriceReport>(
