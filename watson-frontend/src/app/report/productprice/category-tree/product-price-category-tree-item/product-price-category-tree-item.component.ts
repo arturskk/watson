@@ -13,8 +13,8 @@ import {CategoryTreeDto} from '../../../../category/list/category-tree-dto';
       </div>
     </div>
     <div *ngIf="expandable && expandedItems.indexOf(item) >= 0">
-      <ng-container *ngFor="let item of item.children">
-        <ws-product-price-category-tree-item [item]="item"
+      <ng-container *ngFor="let child of sortedChildren">
+        <ws-product-price-category-tree-item [item]="child"
                                              [expandedItems]="expandedItems"
                                              (selected)="selected.next($event)">
         </ws-product-price-category-tree-item>
@@ -26,6 +26,7 @@ import {CategoryTreeDto} from '../../../../category/list/category-tree-dto';
 export class ProductPriceCategoryTreeItemComponent implements OnChanges {
 
   @Input() item: CategoryTreeDto;
+  @Input() sortedChildren: CategoryTreeDto[];
   @Input() expandedItems: CategoryTreeDto[];
   @Output() selected = new EventEmitter();
   expanded: boolean;
@@ -35,6 +36,11 @@ export class ProductPriceCategoryTreeItemComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.item || changes.expandedItems) {
+      this.sortedChildren = [...this.item.children];
+      const expandedChild = this.sortedChildren.findIndex(i => this.expandedItems.indexOf(i) >= 0);
+      if (expandedChild >= 0) {
+        this.sortedChildren.splice(0, 0, this.sortedChildren.splice(expandedChild, 1)[0]);
+      }
       this.expandable = this.item.children && this.item.children.length > 0;
       this.expanded = this.expandedItems.indexOf(this.item) >= 0;
       this.isFirstPlanDepth = this.expandedItems.length === 0 || this.expandedItems[this.expandedItems.length - 1].depth + 1 === this.item.depth;

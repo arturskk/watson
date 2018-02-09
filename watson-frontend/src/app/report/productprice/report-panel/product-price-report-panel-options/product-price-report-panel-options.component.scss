@@ -1,0 +1,16 @@
+//noinspection CssUnknownTarget
+@import 'common';
+
+:host {
+  display: block;
+  padding: 5px 0;
+  label {
+    @include flex();
+    justify-content: flex-end;
+    align-items: center;
+    input {
+      width: auto;
+      margin-right: 5px;
+    }
+  }
+}

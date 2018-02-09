@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ProductPriceReport} from '../product-price-report';
 
 @Component({
@@ -6,7 +6,8 @@ import {ProductPriceReport} from '../product-price-report';
   template: `
     <ws-product-price-report-panel-filter>
     </ws-product-price-report-panel-filter>
-    <ws-product-price-report-panel-options>
+    <ws-product-price-report-panel-options [includeSubcategories]="includeSubcategories" 
+                                           (includeSubcategoriesChange)="includeSubcategoriesChange.next($event)">
     </ws-product-price-report-panel-options>
     <ws-product-price-report-panel-data-table [report]="report">
     </ws-product-price-report-panel-data-table>
@@ -20,5 +21,7 @@ import {ProductPriceReport} from '../product-price-report';
 export class ProductPriceReportPanelComponent {
 
   @Input() report: ProductPriceReport;
+  @Input() includeSubcategories: boolean;
+  @Output() includeSubcategoriesChange = new EventEmitter();
 
 }
