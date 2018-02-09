@@ -28,7 +28,6 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
                  (onChange)="productCategoryChange.next($event)"
                  [(ngModel)]="product.category">
         <ng-template let-item let-markSearchText="markSearchText" let-newItem="newItem" #listItem>
-          {{item|json}}
           <div>
             <span *ngIf="newItem">Dodaj: </span>
             <span [innerHTML]="markSearchText.call(undefined, item.name) | safeHtml"></span>
