@@ -1,0 +1,24 @@
+//noinspection CssUnknownTarget
+@import 'common';
+
+:host {
+  display: block;
+  margin-left: 5px;
+  .item-summary {
+    @include flex();
+    cursor: pointer;
+    padding: 5px 0;
+    &:hover {
+      background-color: $color-grey-100;
+    }
+    .name {
+      flex: 1;
+    }
+    .expanded {
+      font-weight: $font-weight-bold;
+    }
+    :not(.active) {
+      color: $color-grey-400;
+    }
+  }
+}

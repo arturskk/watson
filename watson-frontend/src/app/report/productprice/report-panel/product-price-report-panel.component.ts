@@ -19,6 +19,6 @@ import {ProductPriceReport} from '../product-price-report';
 })
 export class ProductPriceReportPanelComponent {
 
-  @Input() report: ProductPriceReport;;
+  @Input() report: ProductPriceReport;
 
 }

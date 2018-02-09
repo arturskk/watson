@@ -3,8 +3,10 @@ package net.lipecki.watson.category;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.text.Collator;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -22,7 +24,7 @@ public class GetCategoriesQuery {
         return categories
                 .stream()
                 .filter(category -> category.isTypeOf(categoryType) || category.isRootCategory())
-                .sorted(Comparator.comparing(Category::getName))
+                .sorted(Comparator.comparing(Category::getName, Collator.getInstance(Locale.forLanguageTag("pl"))))
                 .collect(Collectors.toList());
     }
 

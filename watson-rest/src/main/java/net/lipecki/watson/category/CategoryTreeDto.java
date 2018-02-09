@@ -3,9 +3,11 @@ package net.lipecki.watson.category;
 import lombok.Builder;
 import lombok.Data;
 
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Data
@@ -35,7 +37,7 @@ public class CategoryTreeDto {
                         category.getChildren()
                                 .stream()
                                 .filter(child -> child.getType().equals(categoryType))
-                                .sorted(Comparator.comparing(Category::getName))
+                                .sorted(Comparator.comparing(Category::getName, Collator.getInstance(Locale.forLanguageTag("pl"))))
                                 .map(child -> from(child, categoryType, depth + 1, expandPath(path, category)))
                                 .collect(Collectors.toList())
                 )
