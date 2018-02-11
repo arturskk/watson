@@ -16,8 +16,6 @@ import {ReceiptAddComponent} from './receipt/add/receipt-add.component';
 import {ReceiptService} from './receipt/receipt.service';
 import {ReportCategoryItemComponent} from './report/category/report-category-item.component';
 import {ReportCategoryComponent} from './report/category/report-category.component';
-import {ProductPriceCategoryTreeItemComponent} from './report/productprice/category-tree/product-price-category-tree-item/product-price-category-tree-item.component';
-import {ProductPriceReportCategoryTreeComponent} from './report/productprice/category-tree/product-price-report-category-tree.component';
 import {ProductPriceReportComponent} from './report/productprice/product-price-report.component';
 import {ProductPriceReportPanelDataTableComponent} from './report/productprice/report-panel/product-price-report-panel-data-table/product-price-report-panel-data-table.component';
 import {ProductPriceReportPanelFilterComponent} from './report/productprice/report-panel/product-price-report-panel-filter/product-price-report-panel-filter.component';
@@ -30,12 +28,14 @@ import {WatsonAppRoutingModule} from './watson-app-routing.module';
 import {WatsonAppComponent} from './watson-app.component';
 import {ButtonFlatComponent} from './widgets/button-flat/button-flat.component';
 import {ButtonComponent} from './widgets/button/button.component';
+import {CategoryTreeComponent} from './widgets/category-tree/category-tree.component';
 import {CrudItemComponent} from './widgets/crud-list/crud-item.component';
 import {CrudListComponent} from './widgets/crud-list/crud-list.component';
 import {JoinArrayPipe} from './widgets/join-array.pipe';
 import {PanelComponent} from './widgets/panel/panel.component';
 import {SelectComponent} from './widgets/select/select.component';
 import {SpinnerComponent} from './widgets/spinner/spinner.component';
+import {CategoryTreeItemComponent} from './widgets/category-tree/category-tree-item/category-tree-item.component';
 
 @NgModule({
   declarations: [
@@ -64,9 +64,9 @@ import {SpinnerComponent} from './widgets/spinner/spinner.component';
     AppVersionComponent,
     SafeHtmlPipe,
     ProductPriceReportComponent,
-    ProductPriceReportCategoryTreeComponent,
+    CategoryTreeComponent,
     ProductPriceReportPanelComponent,
-    ProductPriceCategoryTreeItemComponent,
+    CategoryTreeItemComponent,
     ProductPriceReportPanelDataTableComponent,
     ProductPriceReportPanelFilterComponent,
     ProductPriceReportPanelOptionsComponent,
