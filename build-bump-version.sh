@@ -10,7 +10,7 @@ RELEASE_VERSION=`./mvnw help:evaluate -Dexpression=project.version 2>/dev/null |
 
 git add .
 git commit -m "Release: $RELEASE_VERSION"
-git tag "v$RELEASE_VERSION"
+git tag -f "v$RELEASE_VERSION"
 
 ./mvnw build-helper:parse-version versions:set -DnewVersion="\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion}-SNAPSHOT"
 ./mvnw versions:commit
