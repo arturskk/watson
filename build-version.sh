@@ -6,13 +6,13 @@ set -e
 ./mvnw versions:commit
 RELEASE_VERSION=`./mvnw help:evaluate -Dexpression=project.version 2>/dev/null | grep -v '\[' | sed -n 2p`
 
-./mvnw clean package
+./mvnw clean install
 
 git add .
 git commit -m "Release: $RELEASE_VERSION"
 git tag "v$RELEASE_VERSION"
 
-./mvnw build-helper:parse-version versions:set -DnewVersion="${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.nextIncrementalVersion}-SNAPSHOT"
+./mvnw build-helper:parse-version versions:set -DnewVersion="\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion}-SNAPSHOT"
 ./mvnw versions:commit
 NEXT_SNAPSHOT_VERSION=`./mvnw help:evaluate -Dexpression=project.version 2>/dev/null | grep -v '\[' | sed -n 2p`
 
