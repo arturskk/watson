@@ -19,5 +19,5 @@ NEXT_SNAPSHOT_VERSION=`./mvnw help:evaluate -Dexpression=project.version 2>/dev/
 git add .
 git commit -m "Preparing next snapshot: $NEXT_SNAPSHOT_VERSION"
 
-git push
-git push --tags
+git push --set-upstream origin master
+git push --tags origin
