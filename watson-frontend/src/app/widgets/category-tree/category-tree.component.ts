@@ -1,25 +1,41 @@
 import {HttpClient} from '@angular/common/http';
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {CategoryTreeDto, CategoryTreeDtoData} from '../../../category/list/category-tree-dto';
+import {CategoryTreeDto, CategoryTreeDtoData} from '../../category/category-tree-dto';
 
 @Component({
-  selector: 'ws-product-price-report-category-tree',
+  selector: 'ws-category-tree',
   template: `
     <ng-container *ngIf="categoryTree; else spinner">
-      <ws-product-price-category-tree-item [item]="categoryTree"
-                                           [expandedItems]="expandedItems"
-                                           (selected)="expandCategory($event)">
-      </ws-product-price-category-tree-item>
+      <div class="search-box">
+        <ws-select
+          (onChange)="expandCategory($event)"
+          [data]="categoryList"
+          [skipValueWriting]="true"
+          [displayField]="'name'"
+          [allowNewValues]="false"
+          [placeholder]="'Szukaj'">
+          <ng-template let-item let-markSearchText="markSearchText" let-newItem="newItem" #listItem>
+            <span [innerHTML]="markSearchText.call(undefined, item.name) | safeHtml"></span>
+            <div *ngIf="item.path" class="select-item-description">
+              {{item.path | joinArray: ' > '}}
+            </div>
+          </ng-template>
+        </ws-select>
+      </div>
+      <ws-category-tree-item [item]="categoryTree"
+                          [expandedItems]="expandedItems"
+                          (selected)="expandCategory($event)">
+      </ws-category-tree-item>
     </ng-container>
     <ng-template #spinner>
       <ws-spinner></ws-spinner>
     </ng-template>
   `,
   styleUrls: [
-    'product-price-report-category-tree.component.scss'
+    'category-tree.component.scss'
   ]
 })
-export class ProductPriceReportCategoryTreeComponent implements OnInit, OnChanges {
+export class CategoryTreeComponent implements OnInit, OnChanges {
 
   @Input() categoryUuid: string;
   @Output() categorySelected = new EventEmitter<CategoryTreeDto>();
@@ -52,7 +68,7 @@ export class ProductPriceReportCategoryTreeComponent implements OnInit, OnChange
   }
 
   expandCategory(selectedCategory: CategoryTreeDto) {
-    if (selectedCategory.uuid === this.categoryUuid) {
+    if (selectedCategory && selectedCategory.uuid === this.categoryUuid) {
       this.categorySelected.next(selectedCategory.parent);
     } else {
       this.categorySelected.next(selectedCategory);

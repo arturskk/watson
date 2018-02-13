@@ -1,0 +1,9 @@
+//noinspection CssUnknownTarget
+@import 'common';
+
+:host {
+  display: block;
+  .search-box {
+    margin-bottom: 10px;
+  }
+}

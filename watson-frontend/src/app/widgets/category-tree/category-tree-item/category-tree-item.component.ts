@@ -1,12 +1,13 @@
-import {Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
-import {SimpleChanges} from '@angular/core/src/metadata/lifecycle_hooks';
-import {CategoryTreeDto} from '../../../../category/list/category-tree-dto';
+import {Component, EventEmitter, HostBinding, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
+import {CategoryTreeDto} from '../../../category/category-tree-dto';
 
 @Component({
-  selector: 'ws-product-price-category-tree-item',
+  selector: 'ws-category-tree-item',
   template: `
     <div (click)="selected.next(item)" class="item-summary">
-      <div class="name" [class.expanded]="expanded" [class.active]="isFirstPlanDepth || isCurrentCategory">{{item.name}}</div>
+      <div class="name" [class.expanded]="expanded" [class.active]="isFirstPlanDepth || isCurrentCategory">
+        {{item.name}}
+      </div>
       <div class="expand-icon" *ngIf="expandable && item.parent" [class.active]="isFirstPlanDepth">
         <i class="far fa-minus-square" *ngIf="expanded"></i>
         <i class="far fa-plus-square" *ngIf="!expanded"></i>
@@ -14,21 +15,24 @@ import {CategoryTreeDto} from '../../../../category/list/category-tree-dto';
     </div>
     <div *ngIf="expandable && expandedItems.indexOf(item) >= 0">
       <ng-container *ngFor="let child of sortedChildren">
-        <ws-product-price-category-tree-item [item]="child"
-                                             [expandedItems]="expandedItems"
-                                             (selected)="selected.next($event)">
-        </ws-product-price-category-tree-item>
+        <ws-category-tree-item [item]="child"
+                            [expandedItems]="expandedItems"
+                            (selected)="selected.next($event)">
+        </ws-category-tree-item>
       </ng-container>
     </div>
   `,
-  styleUrls: ['./product-price-category-tree-item.component.scss']
+  styleUrls: ['./category-tree-item.component.scss']
 })
-export class ProductPriceCategoryTreeItemComponent implements OnChanges {
+export class CategoryTreeItemComponent implements OnChanges {
 
   @Input() item: CategoryTreeDto;
   @Input() sortedChildren: CategoryTreeDto[];
-  @Input() expandedItems: CategoryTreeDto[];c
+  @Input() expandedItems: CategoryTreeDto[];
   @Output() selected = new EventEmitter();
+  @HostBinding('attr.depth') get attrDepth() {
+    return this.item.depth;
+  }
   expanded: boolean;
   expandable: boolean;
   isFirstPlanDepth: boolean;

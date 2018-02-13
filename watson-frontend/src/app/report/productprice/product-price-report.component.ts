@@ -2,16 +2,16 @@ import {HttpClient} from '@angular/common/http';
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
-import {CategoryTreeDto} from '../../category/list/category-tree-dto';
+import {CategoryTreeDto} from '../../category/category-tree-dto';
 import {ProductPriceReport} from './product-price-report';
 
 @Component({
   selector: 'ws-product-price-report',
   template: `
     <ws-panel>
-      <ws-product-price-report-category-tree [categoryUuid]="categoryUuid"
+      <ws-category-tree [categoryUuid]="categoryUuid"
                                              (categorySelected)="onCategorySelected($event)">
-      </ws-product-price-report-category-tree>
+      </ws-category-tree>
       <ws-product-price-report-panel *ngIf="report; else spinner"
                                      [report]="report"
                                      [includeSubcategories]="includeSubcategories"

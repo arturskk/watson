@@ -47,7 +47,8 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
             </ng-template>
           </div>
         </div>
-        <div *ngIf="rawData.length > itemsLimit" class="dropdown-item filter-to-show-more">
+        <div *ngIf="rawData.length > itemsLimit && filtered.length >= itemsLimit"
+             class="dropdown-item filter-to-show-more">
           Filtruj aby zobaczyć kolejne...
         </div>
       </div>
@@ -65,17 +66,18 @@ export class SelectComponent implements ControlValueAccessor {
   currentIndex = -1;
   newValuePlaceholder: any = {...SelectComponent.newValuePlaceholderTemplate};
   rawData = [];
-  currentSearchText = null;
+  currentSearchText = undefined;
 
   @Output() onChange = new EventEmitter();
   @Output() onTouch = new EventEmitter();
-  @Input() value = null;
+  @Input() value = undefined;
   @Input() allowNewValues = true;
   @Input() disabled = false;
   @Input() placeholder = '';
   @Input() filter: (item: any, searchText: string) => boolean;
   @Input() displayField: string;
   @Input() itemsLimit = 25;
+  @Input() skipValueWriting = false;
   @ContentChild('listItem') itemTemplate: TemplateRef<any>;
   @ViewChild('searchBox', {read: ElementRef}) searchBox: ElementRef;
 
@@ -103,8 +105,7 @@ export class SelectComponent implements ControlValueAccessor {
   }
 
   itemClicked(item) {
-    this.value = item;
-    this.emitValueSelection();
+    this.changeValue(item);
     this.clearUi();
   }
 
@@ -112,8 +113,7 @@ export class SelectComponent implements ControlValueAccessor {
     if (!this.dropdown) {
       this.dropdown = true;
     } else if (this.currentIndex >= 0) {
-      this.value = this.filtered[this.currentIndex];
-      this.emitValueSelection();
+      this.changeValue(this.filtered[this.currentIndex]);
       this.clearUi();
     } else {
       this.clearUi();
@@ -142,7 +142,8 @@ export class SelectComponent implements ControlValueAccessor {
 
   onSearchBoxBackspace() {
     if (!this.currentSearchText && this.value) {
-      this.value = null;
+      this.changeValue(undefined);
+      this.clearUi();
     }
   }
 
@@ -161,7 +162,7 @@ export class SelectComponent implements ControlValueAccessor {
         this.filtered.push(this.newValuePlaceholder);
         this.newValuePlaceholder[this.displayField] = this.currentSearchText;
       } else {
-        this.newValuePlaceholder[this.displayField] = null;
+        this.newValuePlaceholder[this.displayField] = undefined;
       }
     }
   }
@@ -207,17 +208,17 @@ export class SelectComponent implements ControlValueAccessor {
   private clearUi() {
     this.newValuePlaceholder = {...SelectComponent.newValuePlaceholderTemplate};
     this.dropdown = false;
-    this.currentSearchText = null;
-    this.filtered = this.rawData.slice(0, this.itemsLimit);;
+    this.currentSearchText = undefined;
+    this.filtered = this.rawData.slice(0, this.itemsLimit);
     this.currentIndex = -1;
     this.searchBox.nativeElement.value = '';
   }
 
-  private emitValueSelection() {
-    const currentValue = this.value;
-    this.onChange.emit({
-      ...currentValue
-    });
+  private changeValue(value) {
+    if (!this.skipValueWriting) {
+      this.value = value;
+    }
+    this.onChange.emit(value);
   }
 
 }
