@@ -19,6 +19,19 @@ import java.util.function.Consumer;
 @Builder
 public class Category {
 
+    public static final String CATEGORY_STREAM = "_category";
+    public static final String ROOT_UUID = "root";
+    public static final String ROOT_NAME = "Root";
+    public static final String ROOT_TYPE = "root";
+
+    private String uuid;
+    private String type;
+    private String name;
+    private Category parent;
+    @SuppressWarnings("UnusedAssignment")
+    @Builder.Default
+    private Set<Category> children = new HashSet<>();
+
     public static Consumer<Category> linkToParent(final Category category) {
         return parent -> linkCategoryWithParent(category, parent);
     }
@@ -42,19 +55,6 @@ public class Category {
             }
         }
     }
-
-    public static final String CATEGORY_STREAM = "_category";
-    public static final String ROOT_UUID = "root";
-    public static final String ROOT_NAME = "Root";
-    public static final String ROOT_TYPE = "root";
-
-    private String uuid;
-    private String type;
-    private String name;
-    private Category parent;
-    @SuppressWarnings("UnusedAssignment")
-    @Builder.Default
-    private Set<Category> children = new HashSet<>();
 
     public void addChild(final Category category) {
         linkCategoryWithParent(category, this);

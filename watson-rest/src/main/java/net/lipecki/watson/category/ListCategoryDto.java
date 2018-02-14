@@ -9,6 +9,13 @@ import java.util.List;
 @Builder
 public class ListCategoryDto {
 
+    private int depth;
+    private String type;
+    private String uuid;
+    private String parentUuid;
+    private String name;
+    private List<String> path;
+
     public static ListCategoryDto from(final Category category) {
         return ListCategoryDto
                 .builder()
@@ -20,12 +27,5 @@ public class ListCategoryDto {
                 .depth(category.getDepth())
                 .build();
     }
-
-    private int depth;
-    private String type;
-    private String uuid;
-    private String parentUuid;
-    private String name;
-    private List<String> path;
 
 }
