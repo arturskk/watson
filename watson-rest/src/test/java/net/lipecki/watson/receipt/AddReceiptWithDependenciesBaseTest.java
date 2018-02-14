@@ -36,11 +36,11 @@ public abstract class AddReceiptWithDependenciesBaseTest {
     static final AddReceiptProductDto ANY_PRODUCT = AddReceiptProductDto.builder().uuid(PRODUCT_UUID).build();
     static final AddReceiptAmountDto ANY_AMOUNT = AddReceiptAmountDto.builder().count("1").unit(AmountUnit.UNIT.getName()).build();
 
-    private AddReceiptCommand addReceiptCommand;
-    AddShopCommand addShopCommand;
-    AddAccountCommand addAccountCommand;
-    AddCategoryCommand addCategoryCommand;
-    AddProductCommand addProductCommand;
+    protected AddReceiptCommand addReceiptCommand;
+    protected AddShopCommand addShopCommand;
+    protected AddAccountCommand addAccountCommand;
+    protected AddCategoryCommand addCategoryCommand;
+    protected AddProductCommand addProductCommand;
 
     private AddReceiptWithDependenciesCommand uut;
     private ArgumentCaptor<AddReceiptData> addReceiptCaptor;
@@ -76,7 +76,7 @@ public abstract class AddReceiptWithDependenciesBaseTest {
      * @param consumer - used to extend attributes of minimal receipt dto
      * @return created event for add receipt dto
      */
-    Event addReceipt(final Consumer<AddReceiptDto.AddReceiptDtoBuilder> consumer) {
+    protected Event addReceipt(final Consumer<AddReceiptDto.AddReceiptDtoBuilder> consumer) {
         final AddReceiptDto.AddReceiptDtoBuilder dtoBuilder = AddReceiptDto.builder();
 
         dtoBuilder.description(StringUtils.EMPTY);
@@ -90,7 +90,7 @@ public abstract class AddReceiptWithDependenciesBaseTest {
         return uut.addReceipt(dtoBuilder.build());
     }
 
-    AddReceiptData receipt() {
+    protected AddReceiptData receipt() {
         return addReceiptCaptor.getValue();
     }
 

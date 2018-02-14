@@ -13,6 +13,9 @@ public enum AmountUnit {
     PACKAGE("op", Arrays.asList("op", "OP")),
     UNKNOWN("", Collections.emptyList());
 
+    private final String name;
+    private final List<String> aliases;
+
     public static Optional<AmountUnit> getByAlias(final String alias) {
         return Arrays
                 .stream(values())
@@ -32,9 +35,6 @@ public enum AmountUnit {
     private boolean matching(final String alias) {
         return this.aliases.contains(alias);
     }
-
-    private final String name;
-    private final List<String> aliases;
 
 }
 
