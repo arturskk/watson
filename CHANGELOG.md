@@ -1,4 +1,6 @@
-- @@CURRENT@@
+- RELEASE_VERSION
+  - automatyczne podbijanie wersji w changelog
+- 0.4.29
   - Lista sklepów z edycją
 - 0.2.9
   - Przygotowanie changelogu
