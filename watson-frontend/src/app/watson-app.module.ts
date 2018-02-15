@@ -22,12 +22,14 @@ import {ProductPriceReportPanelFilterComponent} from './report/productprice/repo
 import {ProductPriceReportPanelOptionsComponent} from './report/productprice/report-panel/product-price-report-panel-options/product-price-report-panel-options.component';
 import {ProductPriceReportPanelSummaryComponent} from './report/productprice/report-panel/product-price-report-panel-summary/product-price-report-panel-summary.component';
 import {ProductPriceReportPanelComponent} from './report/productprice/report-panel/product-price-report-panel.component';
+import {ShopListComponent} from './shop/list/shop-list.component';
 import {SafeHtmlPipe} from './util/safe-html.pipe';
 import {AppVersionComponent} from './version/app-version.component';
 import {WatsonAppRoutingModule} from './watson-app-routing.module';
 import {WatsonAppComponent} from './watson-app.component';
 import {ButtonFlatComponent} from './widgets/button-flat/button-flat.component';
 import {ButtonComponent} from './widgets/button/button.component';
+import {CategoryTreeItemComponent} from './widgets/category-tree/category-tree-item/category-tree-item.component';
 import {CategoryTreeComponent} from './widgets/category-tree/category-tree.component';
 import {CrudItemComponent} from './widgets/crud-list/crud-item.component';
 import {CrudListComponent} from './widgets/crud-list/crud-list.component';
@@ -35,7 +37,6 @@ import {JoinArrayPipe} from './widgets/join-array.pipe';
 import {PanelComponent} from './widgets/panel/panel.component';
 import {SelectComponent} from './widgets/select/select.component';
 import {SpinnerComponent} from './widgets/spinner/spinner.component';
-import {CategoryTreeItemComponent} from './widgets/category-tree/category-tree-item/category-tree-item.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,8 @@ import {CategoryTreeItemComponent} from './widgets/category-tree/category-tree-i
     ProductPriceReportPanelDataTableComponent,
     ProductPriceReportPanelFilterComponent,
     ProductPriceReportPanelOptionsComponent,
-    ProductPriceReportPanelSummaryComponent
+    ProductPriceReportPanelSummaryComponent,
+    ShopListComponent
   ],
   imports: [
     BrowserModule,

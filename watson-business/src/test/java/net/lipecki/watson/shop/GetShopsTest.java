@@ -18,7 +18,13 @@ public class GetShopsTest {
     @Before
     public void setUp() {
         this.eventStore = new InMemoryEventStore();
-        this.uut = new GetShopsQuery(new ShopStore(TestAggregateCombinerWithCacheFactory.of(eventStore), new ShopAddedEventHandler()));
+        this.uut = new GetShopsQuery(
+                new ShopStore(
+                        TestAggregateCombinerWithCacheFactory.of(eventStore),
+                        new ShopAddedEventHandler(),
+                        new ShopModifiedEventHandler()
+                )
+        );
     }
 
     @Test
