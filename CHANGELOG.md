@@ -1,4 +1,4 @@
-- 0.4.28
+- @@CURRENT@@
   - Lista sklepów z edycją
 - 0.2.9
   - Przygotowanie changelogu
