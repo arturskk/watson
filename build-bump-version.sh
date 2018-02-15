@@ -7,6 +7,7 @@ set -e
 RELEASE_VERSION=$(./mvnw help:evaluate -Dexpression=project.version 2>/dev/null | grep -v '\[' | sed -n 2p)
 
 ./mvnw clean install
+sed -i s/@@CURRENT@@/$RELEASE_VERSION/g CHANGELOG.md
 
 git add .
 git commit -m "Release: $RELEASE_VERSION"

@@ -9,6 +9,7 @@ import {Component} from '@angular/core';
       <div><a routerLink="/report/category">Raport wydatków</a></div>
       <div><a routerLink="/report/product-price/root">Raport cen produktów</a></div>
       <div><a routerLink="/product/list">Produkty</a></div>
+      <div><a routerLink="/shop/list">Sklepy</a></div>
       <div><a routerLink="/category/receipt_item/list">Kategorie produktów</a></div>
       <div><a routerLink="/category/receipt/list">Kategorie rachunków</a></div>
     </nav>
