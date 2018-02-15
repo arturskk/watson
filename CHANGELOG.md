@@ -1,4 +1,4 @@
-- RELEASE_VERSION
+- 0.4.30
   - automatyczne podbijanie wersji w changelog
 - 0.4.29
   - Lista sklepów z edycją
