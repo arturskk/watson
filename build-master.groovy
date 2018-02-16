@@ -15,7 +15,7 @@ pipeline {
                 }
                 stage('Build rest') {
                     steps {
-                        sh ' ./mvnw -T 2 clean install -pl watson-rest -am'
+                        sh ' ./mvnw clean install -pl watson-rest -am'
                     }
                     post {
                         always {
