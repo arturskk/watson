@@ -17,11 +17,6 @@ pipeline {
                     steps {
                         sh ' ./mvnw clean install -pl watson-rest -am'
                     }
-                    post {
-                        always {
-                            junit '**/target/surefire-reports/**/*.xml'
-                        }
-                    }
                 }
             }
         }
