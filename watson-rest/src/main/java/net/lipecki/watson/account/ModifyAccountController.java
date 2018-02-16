@@ -1,4 +1,4 @@
-package net.lipecki.watson.shop;
+package net.lipecki.watson.account;
 
 import lombok.extern.slf4j.Slf4j;
 import net.lipecki.watson.event.Event;
@@ -14,22 +14,22 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequestMapping(Api.V1)
-public class ModifyShopController {
+public class ModifyAccountController {
 
-    private final ModifyShopCommand modifyShopCommand;
+    private final ModifyAccountCommand modifyAccountCommand;
 
-    public ModifyShopController(final ModifyShopCommand modifyShopCommand) {
-        this.modifyShopCommand = modifyShopCommand;
+    public ModifyAccountController(final ModifyAccountCommand modifyAccountCommand) {
+        this.modifyAccountCommand = modifyAccountCommand;
     }
 
-    @PutMapping("/shop/{uuid}")
+    @PutMapping("/account/{uuid}")
     @Transactional
     public Event modifyProduct(
             @PathVariable final String uuid,
-            @Validated @RequestBody final ModifyShopDto dto) {
-        log.info("Request to modify shop [uuid={}, dto={}]", uuid, dto);
-        return modifyShopCommand.modifyShop(
-                ModifyShop
+            @Validated @RequestBody final ModifyAccountDto dto) {
+        log.info("Request to modify account [uuid={}, dto={}]", uuid, dto);
+        return modifyAccountCommand.modifyAccount(
+                ModifyAccount
                         .builder()
                         .uuid(uuid)
                         .name(dto.getName())
