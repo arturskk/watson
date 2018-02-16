@@ -1,27 +1,6 @@
 pipeline {
     agent any
     stages {
-        stage('Clone repo') {
-            steps {
-                checkout(
-                        [
-                                $class: 'GitSCM',
-                                branches: [[name: '*/master']],
-                                browser: [$class: 'GithubWeb', repoUrl: ''],
-                                doGenerateSubmoduleConfigurations: false,
-                                extensions: [
-                                        [$class: 'UserExclusion', excludedUsers: 'jenkins@lab.home'],
-                                        [$class: 'UserExclusion', excludedUsers: 'jenkins'],
-                                        [$class: 'LocalBranch', localBranch: 'master'],
-                                        [$class: 'CleanCheckout'],
-                                        [$class: 'MessageExclusion', excludedMessage: 'Preparing next snapshot'],
-                                        [$class: 'MessageExclusion', excludedMessage: 'Release']
-                                ],
-                                submoduleCfg: [],
-                                userRemoteConfigs: [[url: 'git@github.com:glipecki/watson.git']]]
-                )
-            }
-        }
         stage('Build release version') {
             steps {
                 sh './mvnw versions:set versions:commit -DremoveSnapshot'
