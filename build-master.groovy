@@ -4,7 +4,19 @@ pipeline {
         stage('Build release version') {
             steps {
                 sh './mvnw versions:set versions:commit -DremoveSnapshot'
-                sh ' ./mvnw -T 2 clean install'
+                parallel {
+                    stage('Build frontend') {
+                        steps {
+                            sh ' ./mvnw clean install -pl watson-frontend'
+                        }
+                    }
+                    stage('Build rest') {
+                        steps {
+                            sh ' ./mvnw -T 2 clean install -pl watson-rest -am'
+                        }
+                    }
+                }
+                sh ' ./mvnw clean install -pl watson-web'
                 sh 'echo $(./mvnw help:evaluate -Dexpression=project.version 2>/dev/null | grep -v "\\[" | sed -n 2p) > version.txt'
                 sh 'sed -i"" s/RELEASE_VERSION/$(cat version.txt)/g CHANGELOG.md'
                 archiveArtifacts '**/watson-web*.jar'
