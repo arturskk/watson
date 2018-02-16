@@ -29,7 +29,6 @@ public class EventsTableMigrationTool {
             new EventsTableMigrationTool(args).run(true);
         } catch (final Exception ex) {
             log.error("Tool failed with exception [ex={}]", ex.getMessage(), ex);
-            Runtime.getRuntime().exit(1);
         }
     }
 

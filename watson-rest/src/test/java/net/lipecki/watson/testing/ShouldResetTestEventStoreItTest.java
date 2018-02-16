@@ -14,11 +14,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class ShouldResetTestEventStoreItTest extends BaseItTest {
 
-    private static class TestEventPayload implements EventPayload {
-    }
-
     @Autowired
     private TestEventStore testEventStore;
+
+    private static class TestEventPayload implements EventPayload {
+    }
 
     @Test
     public void shouldResetEventStore1() {
