@@ -14,6 +14,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class GetEventByStreamItTest extends BaseJpaTest {
 
+    private static final String EVENT_STREAM = "stream";
+    private static final String EVENT_OTHER_STREAM = "other-stream";
+    @Autowired
+    private EventStore uut;
+
     @Builder
     @Data
     private static class TestEventPayload implements EventPayload {
@@ -21,11 +26,6 @@ public class GetEventByStreamItTest extends BaseJpaTest {
         private String data;
 
     }
-
-    private static final String EVENT_STREAM = "stream";
-    private static final String EVENT_OTHER_STREAM = "other-stream";
-    @Autowired
-    private EventStore uut;
 
     @Test
     public void shouldGetEventByStream() {

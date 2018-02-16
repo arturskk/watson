@@ -20,21 +20,21 @@ import static org.mockito.Mockito.when;
 
 public abstract class AddReceiptWithDependenciesBaseTest {
 
-    private static final String DEFAULT_UUID = "default-uuid";
-    private static final String RECEIPT_UUID = "receipt-0000-0000-0000-000000000001";
-    static final String PRODUCT_NAME = "sample-product";
-    static final String PRODUCT_UUID = "product-0000-0000-0000-000000000001";
-    static final String CATEGORY_NAME = "sample-category";
-    static final String CATEGORY_UUID = "category-0000-0000-0000-000000000001";
-    static final String ACCOUNT_NAME = "account-category";
-    static final String ACCOUNT_UUID = "account-0000-0000-0000-000000000001";
-    static final String SHOP_NAME = "shop-category";
-    static final String SHOP_UUID = "shop-0000-0000-0000-000000000001";
+    protected static final String DEFAULT_UUID = "default-uuid";
+    protected static final String RECEIPT_UUID = "receipt-0000-0000-0000-000000000001";
+    protected static final String PRODUCT_NAME = "sample-product";
+    protected static final String PRODUCT_UUID = "product-0000-0000-0000-000000000001";
+    protected static final String CATEGORY_NAME = "sample-category";
+    protected static final String CATEGORY_UUID = "category-0000-0000-0000-000000000001";
+    protected static final String ACCOUNT_NAME = "account-category";
+    protected static final String ACCOUNT_UUID = "account-0000-0000-0000-000000000001";
+    protected static final String SHOP_NAME = "shop-category";
+    protected static final String SHOP_UUID = "shop-0000-0000-0000-000000000001";
 
-    static final String ANY_COST = "1.00";
-    static final List<String> ANY_TAGS = Collections.emptyList();
-    static final AddReceiptProductDto ANY_PRODUCT = AddReceiptProductDto.builder().uuid(PRODUCT_UUID).build();
-    static final AddReceiptAmountDto ANY_AMOUNT = AddReceiptAmountDto.builder().count("1").unit(AmountUnit.UNIT.getName()).build();
+    protected static final String ANY_COST = "1.00";
+    protected static final List<String> ANY_TAGS = Collections.emptyList();
+    protected static final AddReceiptProductDto ANY_PRODUCT = AddReceiptProductDto.builder().uuid(PRODUCT_UUID).build();
+    protected static final AddReceiptAmountDto ANY_AMOUNT = AddReceiptAmountDto.builder().count("1").unit(AmountUnit.UNIT.getName()).build();
 
     protected AddReceiptCommand addReceiptCommand;
     protected AddShopCommand addShopCommand;

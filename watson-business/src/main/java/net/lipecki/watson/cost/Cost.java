@@ -9,6 +9,9 @@ public class Cost {
 
     public static final Cost ZERO = new Cost(0L);
 
+    private final long amount;
+    private final String description;
+
     public static Cost of(final long amount) {
         return new Cost(amount);
     }
@@ -43,9 +46,6 @@ public class Cost {
     private static long parseCostWithSuffix(final String cost, final String suffix) {
         return Long.parseLong(cost.replace(".", "") + suffix);
     }
-
-    private final long amount;
-    private final String description;
 
     private Cost(final long amount) {
         this.amount = amount;
