@@ -49,8 +49,8 @@ pipeline {
         stage('Prepare next snapshot') {
             steps {
                 sh './mvnw build-helper:parse-version versions:set versions:commit -DnewVersion="\\${parsedVersion.majorVersion}.\\${parsedVersion.minorVersion}.\\${parsedVersion.nextIncrementalVersion}-SNAPSHOT"'
-                sh 'git add .'
                 sh 'echo $(./mvnw help:evaluate -Dexpression=project.version 2>/dev/null | grep -v "\\[" | sed -n 2p) > version.txt'
+                sh 'git add .'
                 sh 'git commit -m "Preparing next snapshot: $(cat version.txt)"'
             }
         }
