@@ -1,33 +1,31 @@
 pipeline {
     agent any
     stages {
-        stag('Set release version') {
+        stage('Set release version') {
             steps {
                 sh './mvnw versions:set versions:commit -DremoveSnapshot'
             }
         }
         stage('Build release modules') {
-            steps {
-                parallel {
-                    stage('Build frontend') {
-                        steps {
-                            sh ' ./mvnw clean install -pl watson-frontend'
+            parallel {
+                stage('Build frontend') {
+                    steps {
+                        sh ' ./mvnw clean install -pl watson-frontend'
+                        junit '**/target/surefire-reports/**/*.xml'
+                    }
+                    post {
+                        always {
                             junit '**/target/surefire-reports/**/*.xml'
                         }
-                        post {
-                            always {
-                                junit '**/target/surefire-reports/**/*.xml'
-                            }
-                        }
                     }
-                    stage('Build rest') {
-                        steps {
-                            sh ' ./mvnw -T 2 clean install -pl watson-rest -am'
-                        }
-                        post {
-                            always {
-                                junit '**/target/surefire-reports/**/*.xml'
-                            }
+                }
+                stage('Build rest') {
+                    steps {
+                        sh ' ./mvnw -T 2 clean install -pl watson-rest -am'
+                    }
+                    post {
+                        always {
+                            junit '**/target/surefire-reports/**/*.xml'
                         }
                     }
                 }
