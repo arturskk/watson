@@ -1,26 +1,49 @@
 pipeline {
     agent any
     stages {
-        stage('Build release version') {
+        stag('Set release version') {
             steps {
                 sh './mvnw versions:set versions:commit -DremoveSnapshot'
+            }
+        }
+        stage('Build release modules') {
+            steps {
                 parallel {
                     stage('Build frontend') {
                         steps {
                             sh ' ./mvnw clean install -pl watson-frontend'
+                            junit '**/target/surefire-reports/**/*.xml'
+                        }
+                        post {
+                            always {
+                                junit '**/target/surefire-reports/**/*.xml'
+                            }
                         }
                     }
                     stage('Build rest') {
                         steps {
                             sh ' ./mvnw -T 2 clean install -pl watson-rest -am'
                         }
+                        post {
+                            always {
+                                junit '**/target/surefire-reports/**/*.xml'
+                            }
+                        }
                     }
                 }
+            }
+        }
+        stage('Build release webapp') {
+            steps {
                 sh ' ./mvnw clean install -pl watson-web'
                 sh 'echo $(./mvnw help:evaluate -Dexpression=project.version 2>/dev/null | grep -v "\\[" | sed -n 2p) > version.txt'
                 sh 'sed -i"" s/RELEASE_VERSION/$(cat version.txt)/g CHANGELOG.md'
                 archiveArtifacts '**/watson-web*.jar'
-                junit '**/target/surefire-reports/**/*.xml'
+            }
+            post {
+                always {
+                    junit '**/target/surefire-reports/**/*.xml'
+                }
             }
         }
         stage('Commit release version') {
