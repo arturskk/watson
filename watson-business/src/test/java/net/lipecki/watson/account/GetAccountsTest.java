@@ -19,7 +19,13 @@ public class GetAccountsTest {
     @Before
     public void setUp() {
         this.eventStore = new InMemoryEventStore();
-        this.uut = new GetAccountsQuery(new AccountStore(TestAggregateCombinerWithCacheFactory.of(eventStore), new AccountAddedEventHandler()));
+        this.uut = new GetAccountsQuery(
+                new AccountStore(
+                        TestAggregateCombinerWithCacheFactory.of(eventStore),
+                        new AccountAddedEventHandler(),
+                        new AccountModifiedEventHandler()
+                )
+        );
     }
 
     @Test

@@ -2,6 +2,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {BrowserModule} from '@angular/platform-browser';
+import {AccountListComponent} from './account/list/account-list.component';
 import {CategoryEditComponent} from './category/edit/category-edit.component';
 import {CategoryListComponent} from './category/list/category-list.component';
 import {NavbarComponent} from './navbar/navbar.component';
@@ -72,7 +73,8 @@ import {SpinnerComponent} from './widgets/spinner/spinner.component';
     ProductPriceReportPanelFilterComponent,
     ProductPriceReportPanelOptionsComponent,
     ProductPriceReportPanelSummaryComponent,
-    ShopListComponent
+    ShopListComponent,
+    AccountListComponent
   ],
   imports: [
     BrowserModule,
