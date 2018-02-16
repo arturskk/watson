@@ -13,11 +13,6 @@ pipeline {
                         sh ' ./mvnw clean install -pl watson-frontend'
                         junit '**/target/surefire-reports/**/*.xml'
                     }
-                    post {
-                        always {
-                            junit '**/target/surefire-reports/**/*.xml'
-                        }
-                    }
                 }
                 stage('Build rest') {
                     steps {
