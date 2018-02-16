@@ -6,23 +6,24 @@ pipeline {
                 sh './mvnw versions:set versions:commit -DremoveSnapshot'
             }
         }
-        stage('Build release modules') {
-            parallel {
-                stage('Build frontend') {
-                    steps {
-                        sh ' ./mvnw clean install -pl watson-frontend'
-                    }
-                }
-                stage('Build rest') {
-                    steps {
-                        sh ' ./mvnw clean install -pl watson-rest -am'
-                    }
-                }
-            }
-        }
+//        stage('Build release modules') {
+//            parallel {
+//                stage('Build frontend') {
+//                    steps {
+//                        sh ' ./mvnw clean install -pl watson-frontend'
+//                    }
+//                }
+//                stage('Build rest') {
+//                    steps {
+//                        sh ' ./mvnw clean install -pl watson-rest -am'
+//                    }
+//                }
+//            }
+//        }
         stage('Build release webapp') {
             steps {
-                sh ' ./mvnw clean install -pl watson-web'
+                sh ' ./mvnw clean install'
+//                sh ' ./mvnw clean install -pl watson-web'
                 sh 'echo $(./mvnw help:evaluate -Dexpression=project.version 2>/dev/null | grep -v "\\[" | sed -n 2p) > version.txt'
                 sh 'sed -i"" s/RELEASE_VERSION/$(cat version.txt)/g CHANGELOG.md'
                 archiveArtifacts '**/watson-web*.jar'
