@@ -3,7 +3,6 @@ package net.lipecki.watson.amount;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 public enum AmountUnit {
 
@@ -16,11 +15,12 @@ public enum AmountUnit {
     private final String name;
     private final List<String> aliases;
 
-    public static Optional<AmountUnit> getByAlias(final String alias) {
+    public static AmountUnit getByAlias(final String alias) {
         return Arrays
                 .stream(values())
                 .filter(unit -> unit.matching(alias))
-                .findFirst();
+                .findFirst()
+                .orElse(AmountUnit.UNKNOWN);
     }
 
     AmountUnit(final String name, final List<String> aliases) {

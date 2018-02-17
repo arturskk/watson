@@ -2,9 +2,9 @@ import {HttpClient} from '@angular/common/http';
 import {Component, OnInit} from '@angular/core';
 import {ProductSummary} from '../../product/product-summary';
 import {DiffsUtil} from '../../util/diffs-util';
-import {CrudItemSave} from '../../widgets/crud-list/crud-item-save';
 import {CrudItemState} from '../../widgets/crud-list/crut-item-state';
 import {ShopSummary} from '../shop-summary';
+import {CrudHelper, CrudResource} from '../../util/crud-helper';
 
 @Component({
   selector: 'ws-shop-list',
@@ -14,7 +14,7 @@ import {ShopSummary} from '../shop-summary';
       <ws-panel>
         <h2>Dodaj sklep</h2>
         <div>
-          <ws-crud-item-component [state]="State.EDIT" [cancelable]="false" (itemSave)="newShopSaved($event)">
+          <ws-crud-item-component [state]="State.EDIT" [cancelable]="false" (itemSave)="resource.added($event)">
             <ng-template let-shop #itemEdit>
               <input [(ngModel)]="shop.name"/>
             </ng-template>
@@ -23,7 +23,7 @@ import {ShopSummary} from '../shop-summary';
       </ws-panel>
       <ws-panel>
         <h2>Lista sklepów</h2>
-        <ws-crud-list-component [data]="shops" (itemSave)="editShopSaved($event)">
+        <ws-crud-list-component [data]="shops" (itemSave)="resource.edited($event)">
           <ng-template let-shop #itemSummary>
             {{shop.name}}
           </ng-template>
@@ -36,56 +36,29 @@ import {ShopSummary} from '../shop-summary';
   `,
   styleUrls: [
     'shop-list.component.scss'
+  ],
+  providers: [
+    CrudHelper
   ]
 })
 export class ShopListComponent implements OnInit {
 
   shops: ShopSummary[];
   State = CrudItemState;
+  resource: CrudResource<ShopSummary>;
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, crudHelper: CrudHelper<ShopSummary>) {
+    this.resource = crudHelper.asResource({
+      api: '/api/v1/shop',
+      mapper: crudItemSave => DiffsUtil.diff(crudItemSave.changed, crudItemSave.item, {
+        name
+      }),
+      onSuccess: this.fetchShops.bind(this)
+    });
   }
 
   ngOnInit(): void {
     this.fetchShops();
-  }
-
-  newShopSaved(crudItemSave: CrudItemSave<ShopSummary>) {
-    this.httpClient
-      .post(`/api/v1/shop`, {
-        name: crudItemSave.changed.name
-      })
-      .subscribe(
-        () => {
-          crudItemSave.commit({
-            value: {},
-            state: CrudItemState.EDIT
-          });
-          this.fetchShops();
-        },
-        response => crudItemSave.rollback({
-          message: response.error.errors.map(error => `${error.field} ${error.defaultMessage}`)
-        })
-      );
-  }
-
-  editShopSaved(crudItemSave: CrudItemSave<ProductSummary>) {
-    this.httpClient
-      .put(
-        `/api/v1/shop/${crudItemSave.item.uuid}`,
-        DiffsUtil.diff(crudItemSave.changed, crudItemSave.item, {
-          name: 'name'
-        })
-      )
-      .subscribe(
-        () => {
-          crudItemSave.commit();
-          this.fetchShops();
-        },
-        response => crudItemSave.rollback({
-          message: response.error.message
-        })
-      );
   }
 
   private fetchShops() {

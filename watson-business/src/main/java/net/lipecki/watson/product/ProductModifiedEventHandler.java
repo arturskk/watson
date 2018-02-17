@@ -36,7 +36,7 @@ public class ProductModifiedEventHandler implements AggregateCombinerHandler<Pro
                 .ifPresent(product::setCategory);
         payload
                 .getDefaultUnitOptional()
-                .flatMap(AmountUnit::getByAlias)
+                .map(AmountUnit::getByAlias)
                 .ifPresent(product::setDefaultUnit);
     }
 

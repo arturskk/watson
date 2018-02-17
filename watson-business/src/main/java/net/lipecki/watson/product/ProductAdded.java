@@ -12,9 +12,12 @@ public class ProductAdded implements EventPayload {
 
     private String name;
     private String categoryUuid;
+    private String defaultUnit;
 
     public Optional<String> getCategoryUuidOptional() {
         return Optional.ofNullable(categoryUuid);
     }
+
+    public Optional<String> getDefaultUnitOptional() { return Optional.ofNullable(defaultUnit); }
 
 }
