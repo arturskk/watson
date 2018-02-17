@@ -1,13 +1,12 @@
-package net.lipecki.watson.shop;
+package net.lipecki.watson.reatialchain;
 
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
-public class ModifyShop {
+public class AddRetailChainData {
 
-    private String uuid;
     private String name;
 
 }
