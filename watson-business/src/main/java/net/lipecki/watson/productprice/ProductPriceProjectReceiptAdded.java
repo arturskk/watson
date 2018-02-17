@@ -61,7 +61,7 @@ public class ProductPriceProjectReceiptAdded implements ProjectionHandler<Receip
 
     private String getAsPricePerUnit(final String rawCost, final AddReceiptItemAmount amount) {
         final Cost cost = Cost.of(rawCost);
-        final AmountUnit unit = AmountUnit.getByAlias(amount.getUnit()).get();
+        final AmountUnit unit = AmountUnit.getByAlias(amount.getUnit());
         switch (unit) {
             case KG:
             case L:

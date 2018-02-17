@@ -32,7 +32,7 @@ export class DiffsUtil {
       const mapping = desc[key];
       if (typeof mapping === 'object' && mapping) {
         result[key] = DiffsUtil.diff(a[key], b[key], desc[key]);
-      } else if (typeof mapping === 'string') {
+      } else if (typeof mapping === 'string' && mapping !== '') {
         result[key] = diffBuilder(mapping);
       } else {
         result[key] = diffBuilder(key);

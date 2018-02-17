@@ -1,10 +1,10 @@
-import {HttpClient} from '@angular/common/http';
 import {Component, OnInit} from '@angular/core';
 import {ProductSummary} from '../../product/product-summary';
 import {DiffsUtil} from '../../util/diffs-util';
-import {CrudItemSave} from '../../widgets/crud-list/crud-item-save';
 import {CrudItemState} from '../../widgets/crud-list/crut-item-state';
 import {AccountSummary} from '../account-summary';
+import {CrudHelper, CrudResource} from '../../util/crud-helper';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'ws-account-list',
@@ -14,7 +14,7 @@ import {AccountSummary} from '../account-summary';
       <ws-panel>
         <h2>Dodaj konto</h2>
         <div>
-          <ws-crud-item-component [state]="State.EDIT" [cancelable]="false" (itemSave)="newAccountSaved($event)">
+          <ws-crud-item-component [state]="State.EDIT" [cancelable]="false" (itemSave)="resource.added($event)">
             <ng-template let-account #itemEdit>
               <input [(ngModel)]="account.name"/>
             </ng-template>
@@ -23,7 +23,7 @@ import {AccountSummary} from '../account-summary';
       </ws-panel>
       <ws-panel>
         <h2>Lista kont</h2>
-        <ws-crud-list-component [data]="accounts" (itemSave)="editAccountSaved($event)">
+        <ws-crud-list-component [data]="accounts" (itemSave)="resource.edited($event)">
           <ng-template let-account #itemSummary>
             {{account.name}}
           </ng-template>
@@ -36,59 +36,32 @@ import {AccountSummary} from '../account-summary';
   `,
   styleUrls: [
     'account-list.component.scss'
+  ],
+  providers: [
+    CrudHelper
   ]
 })
 export class AccountListComponent implements OnInit {
 
   accounts: AccountSummary[];
   State = CrudItemState;
+  resource: CrudResource<AccountSummary>;
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, crudHelper: CrudHelper<AccountSummary>) {
+    this.resource = crudHelper.asResource({
+      api: '/api/v1/account',
+      mapper: crudItemSave => DiffsUtil.diff(crudItemSave.changed, crudItemSave.item, {
+        name
+      }),
+      onSuccess: this.fetchAccounts.bind(this)
+    });
   }
 
   ngOnInit(): void {
-    this.fetchShops();
+    this.fetchAccounts();
   }
 
-  newAccountSaved(crudItemSave: CrudItemSave<AccountSummary>) {
-    this.httpClient
-      .post(`/api/v1/account`, {
-        name: crudItemSave.changed.name
-      })
-      .subscribe(
-        () => {
-          crudItemSave.commit({
-            value: {},
-            state: CrudItemState.EDIT
-          });
-          this.fetchShops();
-        },
-        response => crudItemSave.rollback({
-          message: response.error.errors.map(error => `${error.field} ${error.defaultMessage}`)
-        })
-      );
-  }
-
-  editAccountSaved(crudItemSave: CrudItemSave<ProductSummary>) {
-    this.httpClient
-      .put(
-        `/api/v1/account/${crudItemSave.item.uuid}`,
-        DiffsUtil.diff(crudItemSave.changed, crudItemSave.item, {
-          name: 'name'
-        })
-      )
-      .subscribe(
-        () => {
-          crudItemSave.commit();
-          this.fetchShops();
-        },
-        response => crudItemSave.rollback({
-          message: response.error.message
-        })
-      );
-  }
-
-  private fetchShops() {
+  private fetchAccounts() {
     return this.httpClient
       .get<ProductSummary[]>('/api/v1/account')
       .subscribe(data => this.accounts = data);

@@ -29,6 +29,7 @@ public class AddProductController {
                 AddProductData.builder()
                         .name(dto.getName())
                         .categoryUuid(dto.getCategoryUuid())
+                        .defaultUnit(dto.getDefaultUnit())
                         .build()
         );
     }

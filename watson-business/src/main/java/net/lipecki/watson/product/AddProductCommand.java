@@ -24,6 +24,7 @@ public class AddProductCommand {
                 .builder()
                 .name(data.getName())
                 .categoryUuid(data.getCategoryUuid())
+                .defaultUnit(data.getDefaultUnit())
                 .build();
     }
 

@@ -1,6 +1,7 @@
 package net.lipecki.watson.product;
 
 import lombok.extern.slf4j.Slf4j;
+import net.lipecki.watson.amount.AmountUnit;
 import net.lipecki.watson.category.Category;
 import net.lipecki.watson.category.GetCategoryQuery;
 import net.lipecki.watson.combiner.AggregateCombinerHandler;
@@ -36,6 +37,7 @@ public class ProductAddedEventHandler implements AggregateCombinerHandler<Produc
                 Product.builder()
                         .uuid(event.getStreamId())
                         .name(payload.getName())
+                        .defaultUnit(AmountUnit.getByAlias(payload.getDefaultUnit()))
                         .category(category)
                         .build()
         );

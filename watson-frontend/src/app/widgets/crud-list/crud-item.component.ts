@@ -7,7 +7,7 @@ import {CrudItemState} from './crut-item-state';
 @Component({
   selector: 'ws-crud-item-component',
   template: `
-    <div class="item" [attr.uuid]="summaryValue.uuid">
+    <div class="item" [attr.uuid]="summaryValue['uuid'] || 'n/a'">
       <div class="item-renderer">
         <ng-template
           *ngIf="state === State.SUMMARY"

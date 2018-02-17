@@ -65,7 +65,7 @@ public class ReceiptAddedEventHandler implements AggregateCombinerHandler<Receip
                 ReceiptItemAmount
                         .builder()
                         .count(data.getAmount().getCount())
-                        .unit(AmountUnit.getByAlias(data.getAmount().getUnit()).orElse(AmountUnit.UNKNOWN))
+                        .unit(AmountUnit.getByAlias(data.getAmount().getUnit()))
                         .build()
         );
         productsQuery.getProduct(data.getProductUuid()).ifPresent(item::product);

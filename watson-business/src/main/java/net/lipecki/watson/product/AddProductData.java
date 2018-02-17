@@ -9,5 +9,6 @@ public class AddProductData {
 
     private String name;
     private String categoryUuid;
+    private String defaultUnit;
 
 }
