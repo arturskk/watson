@@ -33,6 +33,7 @@ public class ModifyAccountController {
                         .builder()
                         .uuid(uuid)
                         .name(dto.getName())
+                        .useDefault(dto.getUseDefault())
                         .build()
         );
     }

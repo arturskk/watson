@@ -21,6 +21,7 @@ public class AddAccountCommand {
         return AccountAdded
                 .builder()
                 .name(data.getName())
+                .useDefault(data.getUseDefault())
                 .build();
     }
 

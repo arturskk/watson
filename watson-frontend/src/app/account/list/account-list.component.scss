@@ -1,3 +1,13 @@
 :host {
   display: block;
+  .use-as-default-checkbox {
+    margin: 0 5px;
+    display: flex;
+    align-items: center;
+    & > * {
+      display: block;
+      width: auto;
+      margin: 0 3px;
+    }
+  }
 }

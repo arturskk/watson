@@ -202,6 +202,10 @@ export class ReceiptAddComponent implements OnInit {
           path: category.path
         }));
         this.receipt = ReceiptAddComponent.newReceipt(this.categoriesReceipt.find(category => category.uuid === 'root'));
+        const defaultAccount = this.accounts.find(acc => acc.useDefault === true);
+        if (defaultAccount) {
+          this.receipt.account = defaultAccount;
+        }
       }
     );
   }

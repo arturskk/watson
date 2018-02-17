@@ -20,6 +20,20 @@ public class AccountModifiedEventHandler implements AggregateCombinerHandler<Acc
         payload
                 .getNameOptional()
                 .ifPresent(account::setName);
+        payload
+                .getUseDefaultOptional()
+                .filter(useDefault -> !useDefault.equals(account.getUseDefault()))
+                .ifPresent(useDefault -> switchDefaultAccount(collection, account, useDefault));
+    }
+
+    private void switchDefaultAccount(final Map<String, Account> collection, final Account account, final Boolean useDefault) {
+        if (useDefault) {
+            collection.values()
+                    .stream()
+                    .filter(acc -> Boolean.TRUE.equals(acc.getUseDefault()))
+                    .forEach(acc -> acc.setUseDefault(false));
+        }
+        account.setUseDefault(useDefault);
     }
 
 }

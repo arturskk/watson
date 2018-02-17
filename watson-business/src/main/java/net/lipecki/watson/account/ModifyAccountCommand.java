@@ -24,6 +24,7 @@ public class ModifyAccountCommand {
                 .builder()
                 .uuid(data.getUuid())
                 .name(data.getName())
+                .useDefault(data.getUseDefault())
                 .build();
     }
 

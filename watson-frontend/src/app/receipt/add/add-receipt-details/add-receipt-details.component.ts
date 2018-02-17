@@ -25,6 +25,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
       </div>
       <div>
         <ws-select [data]="accounts"
+                   [value]="account"
                    [displayField]="'name'"
                    (onChange)="accountChange.next($event)">
           <ng-template let-item let-markSearchText="markSearchText" let-newItem="newItem" #listItem>

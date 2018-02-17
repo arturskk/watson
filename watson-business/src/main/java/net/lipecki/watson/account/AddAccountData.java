@@ -8,5 +8,6 @@ import lombok.Data;
 public class AddAccountData {
 
     private String name;
+    private Boolean useDefault;
 
 }
