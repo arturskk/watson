@@ -38,6 +38,7 @@ import {JoinArrayPipe} from './widgets/join-array.pipe';
 import {PanelComponent} from './widgets/panel/panel.component';
 import {SelectComponent} from './widgets/select/select.component';
 import {SpinnerComponent} from './widgets/spinner/spinner.component';
+import {RetailChainListComponent} from './retailchain/list/retail-chain-list.component';
 
 @NgModule({
   declarations: [
@@ -74,7 +75,8 @@ import {SpinnerComponent} from './widgets/spinner/spinner.component';
     ProductPriceReportPanelOptionsComponent,
     ProductPriceReportPanelSummaryComponent,
     ShopListComponent,
-    AccountListComponent
+    AccountListComponent,
+    RetailChainListComponent
   ],
   imports: [
     BrowserModule,

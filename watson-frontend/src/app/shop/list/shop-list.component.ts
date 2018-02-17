@@ -63,7 +63,7 @@ export class ShopListComponent implements OnInit {
 
   private fetchShops() {
     return this.httpClient
-      .get<ProductSummary[]>('/api/v1/shop')
+      .get<ShopSummary[]>('/api/v1/shop')
       .subscribe(data => this.shops = data);
   }
 

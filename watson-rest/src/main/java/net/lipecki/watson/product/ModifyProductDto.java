@@ -7,7 +7,6 @@ import lombok.Data;
 @Builder
 public class ModifyProductDto {
 
-    private String uuid;
     private String name;
     private String categoryUuid;
     private String defaultUnit;
