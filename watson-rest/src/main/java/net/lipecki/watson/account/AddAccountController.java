@@ -29,6 +29,7 @@ public class AddAccountController {
                 AddAccountData
                         .builder()
                         .name(dto.getName())
+                        .useDefault(dto.getUseDefault())
                         .build()
         );
     }

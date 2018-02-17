@@ -11,5 +11,6 @@ public class AddAccountDto {
 
     @NotNull
     private String name;
+    private Boolean useDefault;
 
 }

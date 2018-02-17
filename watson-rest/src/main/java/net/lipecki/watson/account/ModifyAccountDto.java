@@ -9,5 +9,6 @@ public class ModifyAccountDto {
 
     private String uuid;
     private String name;
+    private Boolean useDefault;
 
 }

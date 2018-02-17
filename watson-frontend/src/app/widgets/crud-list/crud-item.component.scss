@@ -14,7 +14,7 @@
     @include flex();
     min-width: 150px;
     justify-content: flex-end;
-    align-items: flex-start;
+    align-items: center;
   }
   .action-message {
     color: $color-red-800;

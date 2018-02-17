@@ -13,5 +13,6 @@ public class Account {
 
     private String uuid;
     private String name;
+    private Boolean useDefault;
 
 }

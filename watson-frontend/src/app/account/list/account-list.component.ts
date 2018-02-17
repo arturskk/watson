@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {ProductSummary} from '../../product/product-summary';
 import {DiffsUtil} from '../../util/diffs-util';
 import {CrudItemState} from '../../widgets/crud-list/crut-item-state';
 import {AccountSummary} from '../account-summary';
@@ -17,6 +16,10 @@ import {HttpClient} from '@angular/common/http';
           <ws-crud-item-component [state]="State.EDIT" [cancelable]="false" (itemSave)="resource.added($event)">
             <ng-template let-account #itemEdit>
               <input [(ngModel)]="account.name"/>
+              <div class="use-as-default-checkbox">
+                <span>domyślne</span>
+                <input type="checkbox" [(ngModel)]="account.useDefault"/>
+              </div>
             </ng-template>
           </ws-crud-item-component>
         </div>
@@ -26,9 +29,14 @@ import {HttpClient} from '@angular/common/http';
         <ws-crud-list-component [data]="accounts" (itemSave)="resource.edited($event)">
           <ng-template let-account #itemSummary>
             {{account.name}}
+            <ng-container *ngIf="account.useDefault">(domyślne)</ng-container>
           </ng-template>
           <ng-template let-account #itemEdit>
             <input [(ngModel)]="account.name"/>
+            <div class="use-as-default-checkbox">
+              <span>domyślne</span>
+              <input type="checkbox" [(ngModel)]="account.useDefault"/>
+            </div>
           </ng-template>
         </ws-crud-list-component>
       </ws-panel>
@@ -51,7 +59,8 @@ export class AccountListComponent implements OnInit {
     this.resource = crudHelper.asResource({
       api: '/api/v1/account',
       mapper: crudItemSave => DiffsUtil.diff(crudItemSave.changed, crudItemSave.item, {
-        name
+        name: '',
+        useDefault: ''
       }),
       onSuccess: this.fetchAccounts.bind(this)
     });
@@ -63,7 +72,7 @@ export class AccountListComponent implements OnInit {
 
   private fetchAccounts() {
     return this.httpClient
-      .get<ProductSummary[]>('/api/v1/account')
+      .get<AccountSummary[]>('/api/v1/account')
       .subscribe(data => this.accounts = data);
   }
 
