@@ -40,13 +40,5 @@
 
   @media (max-width: $mobile-layout-max-width) {
     min-height: $input-height-mobile;
-
-    &>div, .search-box-wrapper {
-      height: 100%;
-    }
-
-    .search-box-wrapper input {
-      height: 100%;
-    }
   }
 }
