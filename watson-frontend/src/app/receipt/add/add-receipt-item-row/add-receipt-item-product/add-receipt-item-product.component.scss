@@ -11,9 +11,27 @@
       flex: 1;
       margin-left: 5px;
     }
+
+    @media (max-width: $mobile-layout-max-width) {
+      flex-direction: column;
+
+      ws-select {
+          margin-left: 0;
+          width: 100%;
+      }
+
+      .new-product-category-label {
+        width: 100%;
+        color: $color-grey-600;
+        font-size: 12px;
+      }
+    }
+
+
   }
   .dynamic-select-item {
     color: $color-red-800;
+
   }
   .select-item-description {
     color: $color-grey-400;
