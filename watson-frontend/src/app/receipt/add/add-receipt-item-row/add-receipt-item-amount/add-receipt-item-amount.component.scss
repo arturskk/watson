@@ -6,5 +6,28 @@
 
   select {
     height: 27px;
+
+    @media (max-width: $mobile-layout-max-width) {
+      height: $input-height-mobile;
+      margin-left: 10px;
+    }
+
   }
+
+  .item-amount {
+    border: 1px solid $color-grey-300;
+
+    input {
+      border: none;
+      height: 100%;
+    }
+  }
+
+  @media (max-width: $mobile-layout-max-width) {
+    .item-amount {
+      flex: 1;
+      height: $input-height-mobile;
+    }
+  }
+
 }

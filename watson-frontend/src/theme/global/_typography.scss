@@ -5,9 +5,17 @@ body {
   font-weight: $font-weight-normal;
   line-height: 1.5;
   color: $font-color;
+
+  @media (max-width: $mobile-layout-max-width) {
+    font-size: $font-size-mobile;
+  }
 }
 h1, h2, h3, h4, h5, h6 {
   font-size: $font-size;
   color: $font-header-color;
   font-weight: $font-weight-bold;
+
+  @media (max-width: $mobile-layout-max-width) {
+    font-size: $font-size-mobile;
+  }
 }

@@ -3,7 +3,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 @Component({
   selector: 'ws-add-receipt-item-cost',
   template: `
-    <input [value]="cost || ''" (change)="costChange.next($event.target.value)" />
+    <input type="number" [value]="cost || ''" (change)="costChange.next($event.target.value)" />
   `,
   styleUrls: [
     'add-receipt-item-cost.component.scss'

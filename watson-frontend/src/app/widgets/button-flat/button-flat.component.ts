@@ -15,9 +15,4 @@ export class ButtonFlatComponent {
 
   @Output() clicked = new EventEmitter();
 
-  @HostBinding('class')
-  get buttonClasses() {
-    return '';
-  }
-
 }
