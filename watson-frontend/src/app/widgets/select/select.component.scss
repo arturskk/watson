@@ -4,7 +4,7 @@
 :host {
   display: block;
   padding: 2px;
-  border: 1px solid rgb(220, 220, 220);
+  border: 1px solid $color-grey-300;
   .dropdown {
     position: absolute;
     background-color: $color-grey-100;
@@ -36,5 +36,9 @@
   }
   ::ng-deep .select-item-match-part {
     font-weight: bold;
+  }
+
+  @media (max-width: $mobile-layout-max-width) {
+    min-height: $input-height-mobile;
   }
 }

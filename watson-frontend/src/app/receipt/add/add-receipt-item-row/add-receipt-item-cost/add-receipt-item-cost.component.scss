@@ -1,6 +1,17 @@
+//noinspection CssUnknownTarget
+@import 'common';
+
 :host {
-  display: block;
+  @include flex();
+  border: 1px solid $color-grey-300;
+  height: 100%;
+
   input {
     width: 100%;
+    border: none;
+  }
+
+  @media (max-width: $mobile-layout-max-width) {
+    height: $input-height-mobile;
   }
 }
