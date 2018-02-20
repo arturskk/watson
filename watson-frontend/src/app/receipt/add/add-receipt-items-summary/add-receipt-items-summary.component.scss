@@ -3,7 +3,7 @@
 
 :host {
   @include flex();
-  color: $color-grey-500;
+  color: $color-grey-600;
   font-style: italic;
   .receipt-summary-cell:not(:last-child) {
     margin-right: 10px;

@@ -1,0 +1,53 @@
+//noinspection CssUnknownTarget
+@import 'common';
+
+:host {
+
+  @include flex();
+
+  .hamburger-container {
+    cursor: pointer;
+    display: inline-block;
+  }
+
+  .bar {
+    display: block;
+    height: 4px;
+    width: 25px;
+    background: $color-light-blue-900;
+  }
+
+  .hamburger-container {
+    width: auto;
+    transition: all .7s ease;
+  }
+
+  .top {
+    margin-bottom: 4px;
+  }
+
+  .middle {
+    margin: 0 auto;
+  }
+
+  .bottom {
+    margin-top: 4px;
+  }
+
+  .bar {
+    transition: all .7s ease;
+  }
+
+  .hamburger-container.active .top {
+    transform: translateY(8px) rotateZ(45deg);
+  }
+
+  .hamburger-container.active .bottom {
+    transform: translateY(-8px) rotateZ(-45deg);
+  }
+
+  .hamburger-container.active .middle {
+    width: 0;
+  }
+
+}

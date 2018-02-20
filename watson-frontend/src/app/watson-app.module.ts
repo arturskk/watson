@@ -39,6 +39,7 @@ import {PanelComponent} from './widgets/panel/panel.component';
 import {SelectComponent} from './widgets/select/select.component';
 import {SpinnerComponent} from './widgets/spinner/spinner.component';
 import {RetailChainListComponent} from './retailchain/list/retail-chain-list.component';
+import {HamburgerComponent} from "./navbar/hamburger/hamburger.component";
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import {RetailChainListComponent} from './retailchain/list/retail-chain-list.com
     ProductEditComponent,
     ReportCategoryComponent,
     ReportCategoryItemComponent,
+    HamburgerComponent,
     NavbarComponent,
     WatsonAppComponent,
     PanelComponent,

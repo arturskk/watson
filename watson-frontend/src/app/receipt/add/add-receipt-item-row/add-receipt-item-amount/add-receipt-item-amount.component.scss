@@ -4,7 +4,49 @@
 :host {
   @include flex();
 
+  @media(max-width: $mobile-layout-max-width) {
+    flex-direction: column;
+  }
+
+  .item-amount-container {
+    @include flex();
+  }
+
   select {
     height: 27px;
+
+    @media (max-width: $mobile-layout-max-width) {
+      height: $input-height-mobile;
+      margin-left: 10px;
+    }
+
   }
+
+  .item-amount {
+    border: 1px solid $color-grey-300;
+
+    @media (max-width: $mobile-layout-max-width) {
+      flex: 1;
+      height: $input-height-mobile;
+    }
+
+    input {
+      border: none;
+      height: 100%;
+
+      @media (max-width: $mobile-layout-max-width) {
+        padding: 0 10px;
+      }
+    }
+  }
+
+  .label {
+    font-size: 12px;
+    color: $color-grey-600;
+
+    @media(min-width: $mobile-layout-max-width + 1) {
+      display: none;
+    }
+  }
+
 }

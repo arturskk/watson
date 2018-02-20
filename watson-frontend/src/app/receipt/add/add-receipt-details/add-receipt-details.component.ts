@@ -7,7 +7,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
       <div class="label">
         Opis
       </div>
-      <div>
+      <div class="input-container">
         <input [value]="description || ''" (change)="descriptionChange.next($event.target.value)"/>
       </div>
     </div>
@@ -15,7 +15,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
       <div class="label">
         Data
       </div>
-      <div>
+      <div class="input-container">
         <input [value]="date || ''" (change)="dateChange.next($event.target.value)"/>
       </div>
     </div>

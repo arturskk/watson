@@ -27,9 +27,6 @@ import {ReceiptItem} from '../receipt-item';
         </ws-add-receipt-details>
       </ws-panel>
       <ws-panel>
-        <div class="receipt-body-header">
-          <ws-add-receipt-items-summary [items]="getNonEmptyReceiptItems()"></ws-add-receipt-items-summary>
-        </div>
         <div class="row header">
           <div *ngFor="let column of columns" [class]="'column column-' + column.span">
             {{column.textKey}}
@@ -56,14 +53,18 @@ import {ReceiptItem} from '../receipt-item';
               </ws-add-receipt-item-cost>
             </div>
             <div class="actions-column">
-              <ws-button-flat (clicked)="removeItem(item)">(-)</ws-button-flat>
+              <ws-button-flat class="remove-item-button-desktop" (clicked)="removeItem(item)">(-)</ws-button-flat>
+              <ws-button-flat class="remove-item-button-mobile" (clicked)="removeItem(item)">USUŃ PRODUKT</ws-button-flat>
             </div>
           </div>
         </div>
         <div>
-          <ws-button-flat (clicked)="addItems()">dodaj kolejne</ws-button-flat>
+          <ws-button-flat class="add-new-rows-button" (clicked)="addItems()">dodaj kolejne</ws-button-flat>
         </div>
-        <ws-button (clicked)="save()">Zapisz</ws-button>
+        <div class="receipt-body-footer">
+          <ws-add-receipt-items-summary [items]="getNonEmptyReceiptItems()"></ws-add-receipt-items-summary>
+        </div>
+        <ws-button class="save-button" (clicked)="save()">Zapisz</ws-button>
       </ws-panel>
     </ng-container>
     <ng-template #spinner>

@@ -3,6 +3,7 @@
 
 :host {
   display: block;
+
   .new-product-category-row {
     @include flex();
     margin: 6px 0 3px 0;
@@ -11,12 +12,40 @@
       flex: 1;
       margin-left: 5px;
     }
+
+    @media (max-width: $mobile-layout-max-width) {
+      flex-direction: column;
+      margin: 5px 0 0 0;
+
+      ws-select {
+          margin-left: 0;
+          width: 100%;
+      }
+
+      .new-product-category-label {
+        width: 100%;
+        color: $color-grey-600;
+        font-size: 12px;
+      }
+    }
+
+
   }
   .dynamic-select-item {
     color: $color-red-800;
+
   }
   .select-item-description {
     color: $color-grey-400;
     font-style: italic;
+  }
+
+  .label {
+    font-size: 12px;
+    color: $color-grey-600;
+
+    @media(min-width: $mobile-layout-max-width + 1) {
+      display: none;
+    }
   }
 }
