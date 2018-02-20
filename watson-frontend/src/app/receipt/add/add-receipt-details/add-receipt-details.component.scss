@@ -3,14 +3,41 @@
 
 :host {
   display: block;
+
   .item {
     @include flex();
+
     &:not(:last-child) {
       margin-bottom: 5px;
     }
+
+    @media(max-width: $mobile-layout-max-width) {
+      flex-direction: column;
+    }
   }
+
   .label {
     width: 100px;
     margin-right: 5px;
+
+    @media(max-width: $mobile-layout-max-width) {
+      font-size: 12px;
+      color: $color-grey-600;
+    }
+  }
+
+  .input-container {
+    border: 1px solid $color-grey-300;
+  }
+
+  input {
+    border: none;
+    padding: 0 5px;
+
+    @media(max-width: $mobile-layout-max-width) {
+      height: $input-height-mobile;
+      padding: 0 10px;
+    }
+
   }
 }

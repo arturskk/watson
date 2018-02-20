@@ -3,16 +3,19 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 @Component({
   selector: 'ws-add-receipt-item-amount',
   template: `
-    <div class="item-amount">
-      <input type="number" [value]="amount.count || ''" (change)="countChanged($event.target.value)" />
-    </div>
-    <div>
-      <select [value]="amount.unit || 'op'" (change)="unitChanged($event.target.value)">
-        <option>op</option>
-        <option>szt</option>
-        <option>kg</option>
-        <option>l</option>
-      </select>
+    <div class="label">Ilość</div>
+    <div class="item-amount-container">
+      <div class="item-amount">
+        <input type="number" [value]="amount.count || ''" (change)="countChanged($event.target.value)" />
+      </div>
+      <div>
+        <select [value]="amount.unit || 'op'" (change)="unitChanged($event.target.value)">
+          <option>op</option>
+          <option>szt</option>
+          <option>kg</option>
+          <option>l</option>
+        </select>
+      </div>
     </div>
   `,
   styleUrls: [

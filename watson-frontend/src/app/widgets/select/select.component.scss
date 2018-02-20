@@ -2,7 +2,9 @@
 @import 'common';
 
 :host {
-  display: block;
+  @include flex();
+  align-items: center;
+
   padding: 2px;
   border: 1px solid $color-grey-300;
   .dropdown {
@@ -17,6 +19,9 @@
   .dropdown-item:not(.filter-to-show-more):hover, .active {
     color: white;
     background-color: $color-light-blue-900;
+  }
+  .ws-select-container {
+    flex: 1;
   }
   .search-box-wrapper {
     @include flex();
@@ -40,5 +45,6 @@
 
   @media (max-width: $mobile-layout-max-width) {
     min-height: $input-height-mobile;
+    padding: 2px 10px;
   }
 }

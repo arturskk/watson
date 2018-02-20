@@ -3,15 +3,36 @@
 
 :host {
   @include flex();
-  border: 1px solid $color-grey-300;
   height: 100%;
+
+  .item-cost-input-wrapper {
+    border: 1px solid $color-grey-300;
+
+    @media (max-width: $mobile-layout-max-width) {
+      height: $input-height-mobile;
+    }
+  }
 
   input {
     width: 100%;
+    height: 100%;
     border: none;
+
+    @media (max-width: $mobile-layout-max-width) {
+      padding: 0 10px;
+    }
   }
 
   @media (max-width: $mobile-layout-max-width) {
-    height: $input-height-mobile;
+      flex-direction: column;
+  }
+
+  .label {
+    font-size: 12px;
+    color: $color-grey-600;
+
+    @media(min-width: $mobile-layout-max-width + 1) {
+      display: none;
+    }
   }
 }

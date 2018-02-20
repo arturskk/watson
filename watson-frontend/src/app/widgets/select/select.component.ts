@@ -21,7 +21,7 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
     }
   ],
   template: `
-    <div>
+    <div class="ws-select-container">
       <div class="search-box-wrapper" (click)="onSearchBoxWrapperClicked()">
         <span class="current-value" *ngIf="value">{{getValueAsDisplayField()}}</span>
         <input
