@@ -8,15 +8,15 @@ import {Router} from "@angular/router";
       <div class="brand-name">Watson!</div>
       <div class="navbar-menu" [ngClass]="{'open': mobileMenuOpen}">
         <div class="menu-container">
-          <div><a routerLink="/receipt/add">Dodaj rachunek</a></div>
-          <div><a routerLink="/report/category">Raport wydatków</a></div>
-          <div><a routerLink="/report/product-price/root">Raport cen produktów</a></div>
-          <div><a routerLink="/product/list">Produkty</a></div>
-          <div><a routerLink="/shop/list">Sklepy</a></div>
-          <div><a routerLink="/retail-chain/list">Sieci handlowe</a></div>
-          <div><a routerLink="/account/list">Konta</a></div>
-          <div><a routerLink="/category/receipt_item/list">Kategorie produktów</a></div>
-          <div><a routerLink="/category/receipt/list">Kategorie rachunków</a></div>
+          <div><a routerLink="/receipt/add" routerLinkActive="active-link">Dodaj rachunek</a></div>
+          <div><a routerLink="/report/category" routerLinkActive="active-link">Raport wydatków</a></div>
+          <div><a routerLink="/report/product-price/root" routerLinkActive="active-link">Raport cen produktów</a></div>
+          <div><a routerLink="/product/list" routerLinkActive="active-link">Produkty</a></div>
+          <div><a routerLink="/shop/list" routerLinkActive="active-link">Sklepy</a></div>
+          <div><a routerLink="/retail-chain/list" routerLinkActive="active-link">Sieci handlowe</a></div>
+          <div><a routerLink="/account/list" routerLinkActive="active-link">Konta</a></div>
+          <div><a routerLink="/category/receipt_item/list" routerLinkActive="active-link">Kategorie produktów</a></div>
+          <div><a routerLink="/category/receipt/list" routerLinkActive="active-link">Kategorie rachunków</a></div>
         </div>
       </div>
       <watson-hamburger [active]="mobileMenuOpen" (clicked)="toggleMenu()"></watson-hamburger>
