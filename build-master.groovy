@@ -13,7 +13,7 @@ pipeline {
         }
         stage('Build release webapp') {
             steps {
-                sh ' ./mvnw clean install -DskipTests'
+                sh ' ./mvnw clean install'
                 sh 'echo $(./mvnw help:evaluate -Dexpression=project.version 2>/dev/null | grep -v "\\[" | sed -n 2p) > version.txt'
                 sh 'sed -i"" s/RELEASE_VERSION/$(cat version.txt)/g CHANGELOG.md'
                 archiveArtifacts '**/watson-web*.jar'
