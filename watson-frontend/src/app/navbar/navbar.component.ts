@@ -32,7 +32,6 @@ export class NavbarComponent {
   mobileMenuOpen = false;
 
   constructor(private router: Router) {
-    //TODO jak to inaczej zrobic???
     this.router.events
       .subscribe(e => this.mobileMenuOpen = false);
 
