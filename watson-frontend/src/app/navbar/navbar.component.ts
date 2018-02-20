@@ -20,6 +20,7 @@ import {Router} from "@angular/router";
         </div>
       </div>
       <watson-hamburger [active]="mobileMenuOpen" (clicked)="toggleMenu()"></watson-hamburger>
+      <div *ngIf="mobileMenuOpen" class="mask" (click)="onMaskClick()"></div>
     </nav>
   `,
   styleUrls: [
@@ -39,6 +40,10 @@ export class NavbarComponent {
 
   toggleMenu() {
     this.mobileMenuOpen = !this.mobileMenuOpen;
+  }
+
+  onMaskClick() {
+    this.mobileMenuOpen = false;
   }
 
 }
