@@ -6,6 +6,11 @@ pipeline {
 //        string(defaultValue: '/opt/watson', description: 'Ścieżka do katalogu z aplikacją.', name: 'BUILD_PROD_APP_PATH')
 //    }
     stages {
+        stage('Pull scm') {
+            steps {
+                sh 'git pull'
+            }
+        }
         stage('Set release version') {
             steps {
                 sh './mvnw versions:set versions:commit -DremoveSnapshot'
