@@ -4,6 +4,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
   selector: 'ws-add-receipt-item-product',
   template: `
     <div>
+      <div class="label">Produkt</div>
       <ws-select [data]="products"
                  [displayField]="'name'"
                  (onChange)="onProductChange($event)">
@@ -22,7 +23,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
       </ws-select>
     </div>
     <div *ngIf="product && product.newValue && !product.createdWithinReceipt" class="new-product-category-row">
-      <div class="new-product-category-label">Kategoria nowego produktu:</div>
+      <div class="new-product-category-label">Kategoria nowego produktu</div>
       <ws-select [data]="categories" 
                  [displayField]="'name'" 
                  (onChange)="productCategoryChange.next($event)"
