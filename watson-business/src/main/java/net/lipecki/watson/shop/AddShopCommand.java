@@ -21,6 +21,7 @@ public class AddShopCommand {
         return ShopAdded
                 .builder()
                 .name(data.getName())
+                .retailChainUuid(data.getRetailChainUuid())
                 .build();
     }
 

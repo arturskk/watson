@@ -3,6 +3,9 @@ package net.lipecki.watson.shop;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import net.lipecki.watson.reatialchain.RetailChain;
+
+import java.util.Optional;
 
 @EqualsAndHashCode(of = "uuid")
 @Data
@@ -13,5 +16,10 @@ public class Shop {
 
     private String uuid;
     private String name;
+    private RetailChain retailChain;
+
+    public Optional<RetailChain> getRetailChainOptional() {
+        return Optional.ofNullable(retailChain);
+    }
 
 }

@@ -9,5 +9,6 @@ public class ModifyShopDto {
 
     private String uuid;
     private String name;
+    private String retailChainUuid;
 
 }

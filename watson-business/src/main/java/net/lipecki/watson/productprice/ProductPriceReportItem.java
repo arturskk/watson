@@ -23,6 +23,7 @@ public class ProductPriceReportItem {
     static class ShopDto {
         private String uuid;
         private String name;
+        private String retailChainName;
     }
 
     @Data

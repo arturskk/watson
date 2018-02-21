@@ -11,5 +11,6 @@ public class AddShopDto {
 
     @NotNull
     private String name;
+    private String retailChainUuid;
 
 }

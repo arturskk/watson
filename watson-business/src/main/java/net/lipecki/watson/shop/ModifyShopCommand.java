@@ -24,6 +24,7 @@ public class ModifyShopCommand {
                 .builder()
                 .uuid(data.getUuid())
                 .name(data.getName())
+                .retailChainUuid(data.getRetailChainUuid())
                 .build();
     }
 

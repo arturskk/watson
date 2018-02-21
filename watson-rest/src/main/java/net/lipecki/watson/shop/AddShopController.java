@@ -29,6 +29,7 @@ public class AddShopController {
                 AddShopData
                         .builder()
                         .name(dto.getName())
+                        .retailChainUuid(dto.getRetailChainUuid())
                         .build()
         );
     }
