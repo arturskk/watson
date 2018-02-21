@@ -35,7 +35,7 @@ import {RetailChainSummary} from '../../retailchain/retail-chain-summary';
         <h2>Lista sklepów</h2>
         <ws-crud-list-component [data]="shops" (itemSave)="resource.edited($event)">
           <ng-template let-shop #itemSummary>
-            {{shop.name}} <ng-container *ngIf="shop.retailChain">{{shop.retailChain.name}}</ng-container>
+            <ng-container *ngIf="shop.retailChain">{{shop.retailChain.name}} - </ng-container>{{shop.name}}
           </ng-template>
           <ng-template let-shop #itemEdit>
             <input [(ngModel)]="shop.name"/>
