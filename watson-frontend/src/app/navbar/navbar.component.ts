@@ -19,7 +19,7 @@ import {Router} from "@angular/router";
           <div><a routerLink="/category/receipt/list" routerLinkActive="active-link">Kategorie rachunków</a></div>
         </div>
       </div>
-      <watson-hamburger [active]="mobileMenuOpen" (clicked)="toggleMenu()"></watson-hamburger>
+      <ws-hamburger [active]="mobileMenuOpen" (clicked)="toggleMenu()"></ws-hamburger>
       <div *ngIf="mobileMenuOpen" class="mask" (click)="onMaskClick()"></div>
     </nav>
   `,

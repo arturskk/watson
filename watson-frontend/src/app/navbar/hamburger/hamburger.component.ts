@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 @Component({
-  selector: 'watson-hamburger',
+  selector: 'ws-hamburger',
   template: `
     <div class="hamburger-container" [ngClass]="{'active': active}" (click)="hamburgerClicked($event)">
       <div class="bar top"></div>
