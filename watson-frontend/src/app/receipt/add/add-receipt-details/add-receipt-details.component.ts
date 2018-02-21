@@ -44,8 +44,13 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
                    [displayField]="'name'"
                    (onChange)="shopChange.next($event)">
           <ng-template let-item let-markSearchText="markSearchText" let-newItem="newItem" #listItem>
+            <div>
             <span *ngIf="newItem">Dodaj: </span>
             <span [innerHTML]="markSearchText.call(undefined, item.name) | safeHtml"></span>
+            </div>
+            <div *ngIf="item.retailChain" class="select-item-description">
+              <span>{{item.retailChain.name}}</span>
+            </div>
           </ng-template>
         </ws-select>
       </div>

@@ -6,6 +6,7 @@ import net.lipecki.watson.category.Category;
 import net.lipecki.watson.category.GetCategoryQuery;
 import net.lipecki.watson.product.GetProductQuery;
 import net.lipecki.watson.product.Product;
+import net.lipecki.watson.reatialchain.RetailChain;
 import net.lipecki.watson.shop.GetShopQuery;
 import net.lipecki.watson.shop.Shop;
 import org.springframework.stereotype.Service;
@@ -120,7 +121,12 @@ public class GetProductPriceQuery {
     }
 
     private ProductPriceReportItem.ShopDto asShopDto(final Shop shop) {
-        return ProductPriceReportItem.ShopDto.builder().name(shop.getName()).uuid(shop.getUuid()).build();
+        return ProductPriceReportItem.ShopDto
+                .builder()
+                .name(shop.getName())
+                .uuid(shop.getUuid())
+                .retailChainName(shop.getRetailChainOptional().map(RetailChain::getName).orElse(null))
+                .build();
     }
 
     private ProductPriceReportItem.ReceiptInfoDto asReceiptDto() {

@@ -41,7 +41,7 @@ export class ObjectsUtil {
     }
   }
 
-  static getByProperty(obj: any, property: string): any {
+  static getByProperty(obj: any, property: string, defaultValue?: any): any {
     return property.split('.').reduce((val, key) => val && val[key], obj);
   }
 

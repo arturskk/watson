@@ -12,9 +12,14 @@ public class ShopModified implements EventPayload {
 
     private String uuid;
     private String name;
+    private String retailChainUuid;
 
     public Optional<String> getNameOptional() {
         return Optional.ofNullable(name);
+    }
+
+    public Optional<String> getRetailChainUuidOptional() {
+        return Optional.ofNullable(retailChainUuid);
     }
 
 }

@@ -5,11 +5,7 @@ import net.lipecki.watson.event.Event;
 import net.lipecki.watson.rest.Api;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -33,6 +29,7 @@ public class ModifyShopController {
                         .builder()
                         .uuid(uuid)
                         .name(dto.getName())
+                        .retailChainUuid(dto.getRetailChainUuid())
                         .build()
         );
     }
