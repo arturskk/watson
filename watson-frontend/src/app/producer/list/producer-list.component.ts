@@ -4,23 +4,23 @@ import {CrudConfig} from '../../widgets/crud/crud-config';
 import {ProductSummary} from '../../product/product-summary';
 
 @Component({
-  selector: 'ws-retail-chain-list',
+  selector: 'ws-producer-list',
   template: `
-    <h1>Sieci handlowe</h1>
+    <h1>Producenci</h1>
     <ws-crud [config]="crudConfig">
-      <ng-template let-retailChain #itemSummary>
-        {{retailChain.name}}
+      <ng-template let-item #itemSummary>
+        {{item.name}}
       </ng-template>
-      <ng-template let-retailChain #itemEdit>
-        <input [(ngModel)]="retailChain.name"/>
+      <ng-template let-item #itemEdit>
+        <input [(ngModel)]="item.name"/>
       </ng-template>
     </ws-crud>
   `,
   styleUrls: [
-    'retail-chain-list.component.scss'
+    'producer-list.component.scss'
   ]
 })
-export class RetailChainListComponent {
+export class ProducerListComponent {
 
   readonly crudConfig: CrudConfig<ProductSummary> = {
     keys: {
@@ -28,7 +28,7 @@ export class RetailChainListComponent {
       itemListKey: 'Lista producentów'
     },
     api: {
-      endpoint: '/api/v1/retailchain'
+      endpoint: '/api/v1/producer'
     },
     model: {
       mapper: crudItemSave => DiffsUtil.diff(crudItemSave.changed, crudItemSave.item, {

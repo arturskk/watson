@@ -22,7 +22,7 @@ public class ModifyRetailChainController {
 
     @PutMapping("/retailchain/{uuid}")
     @Transactional
-    public Event modifyProduct(
+    public Event modifyRetailChain(
             @PathVariable final String uuid,
             @Validated @RequestBody final ModifyRetailChainDto dto) {
         log.info("Request to modify retail chain [uuid={}, dto={}]", uuid, dto);

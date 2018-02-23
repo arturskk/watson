@@ -8,6 +8,7 @@ import {ReportCategoryComponent} from './report/category/report-category.compone
 import {ProductPriceReportComponent} from './report/productprice/product-price-report.component';
 import {ShopListComponent} from './shop/list/shop-list.component';
 import {RetailChainListComponent} from './retailchain/list/retail-chain-list.component';
+import {ProducerListComponent} from './producer/list/producer-list.component';
 
 const routes: Routes = [
   {path: 'receipt/add', component: ReceiptAddComponent},
@@ -16,6 +17,7 @@ const routes: Routes = [
   {path: 'shop/list', component: ShopListComponent},
   {path: 'account/list', component: AccountListComponent},
   {path: 'retail-chain/list', component: RetailChainListComponent},
+  {path: 'producer/list', component: ProducerListComponent},
   {path: 'report/category', component: ReportCategoryComponent},
   {path: 'report/product-price/:category', component: ProductPriceReportComponent},
   {path: '', redirectTo: '/receipt/add', pathMatch: 'full'}
