@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 import {DiffsUtil} from '../../util/diffs-util';
-import {CrudHelper} from '../../util/crud-helper';
 import {CrudConfig} from '../../widgets/crud/crud-config';
 import {ProductSummary} from '../../product/product-summary';
 
@@ -19,9 +18,6 @@ import {ProductSummary} from '../../product/product-summary';
   `,
   styleUrls: [
     'producer-list.component.scss'
-  ],
-  providers: [
-    CrudHelper
   ]
 })
 export class ProducerListComponent {
