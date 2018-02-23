@@ -11,7 +11,6 @@ import {ProductListComponent} from './product/list/product-list.component';
 import {AddReceiptDetailsComponent} from './receipt/add/add-receipt-details/add-receipt-details.component';
 import {AddReceiptItemAmountComponent} from './receipt/add/add-receipt-item-row/add-receipt-item-amount/add-receipt-item-amount.component';
 import {AddReceiptItemCostComponent} from './receipt/add/add-receipt-item-row/add-receipt-item-cost/add-receipt-item-cost.component';
-import {AddReceiptItemProductComponent} from './receipt/add/add-receipt-item-row/add-receipt-item-product/add-receipt-item-product.component';
 import {AddReceiptItemsSummaryComponent} from './receipt/add/add-receipt-items-summary/add-receipt-items-summary.component';
 import {ReceiptAddComponent} from './receipt/add/receipt-add.component';
 import {ReceiptService} from './receipt/receipt.service';
@@ -39,7 +38,10 @@ import {PanelComponent} from './widgets/panel/panel.component';
 import {SelectComponent} from './widgets/select/select.component';
 import {SpinnerComponent} from './widgets/spinner/spinner.component';
 import {RetailChainListComponent} from './retailchain/list/retail-chain-list.component';
-import {HamburgerComponent} from "./navbar/hamburger/hamburger.component";
+import {HamburgerComponent} from './navbar/hamburger/hamburger.component';
+import {ProducerListComponent} from './producer/list/producer-list.component';
+import {AddReceiptItemProductComponent} from './receipt/add/add-receipt-item-row/add-receipt-item-product/add-receipt-item-product.component';
+import {CrudComponent} from './widgets/crud/crud.component';
 
 @NgModule({
   declarations: [
@@ -78,7 +80,9 @@ import {HamburgerComponent} from "./navbar/hamburger/hamburger.component";
     ProductPriceReportPanelSummaryComponent,
     ShopListComponent,
     AccountListComponent,
-    RetailChainListComponent
+    RetailChainListComponent,
+    ProducerListComponent,
+    CrudComponent
   ],
   imports: [
     BrowserModule,

@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {Router} from "@angular/router";
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'watson-navbar',
@@ -14,6 +14,7 @@ import {Router} from "@angular/router";
           <div><a routerLink="/product/list" routerLinkActive="active-link">Produkty</a></div>
           <div><a routerLink="/shop/list" routerLinkActive="active-link">Sklepy</a></div>
           <div><a routerLink="/retail-chain/list" routerLinkActive="active-link">Sieci handlowe</a></div>
+          <div><a routerLink="/producer/list" routerLinkActive="active-link">Producenci</a></div>
           <div><a routerLink="/account/list" routerLinkActive="active-link">Konta</a></div>
           <div><a routerLink="/category/receipt_item/list" routerLinkActive="active-link">Kategorie produktów</a></div>
           <div><a routerLink="/category/receipt/list" routerLinkActive="active-link">Kategorie rachunków</a></div>
