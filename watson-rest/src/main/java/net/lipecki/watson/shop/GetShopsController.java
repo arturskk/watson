@@ -7,7 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.Collator;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -15,6 +18,7 @@ import java.util.stream.Collectors;
 @RequestMapping(Api.V1)
 public class GetShopsController {
 
+    private static final Collator WITH_LANG_PL = Collator.getInstance(Locale.forLanguageTag("pl"));
     private final GetShopsQuery query;
 
     public GetShopsController(final GetShopsQuery query) {
@@ -24,9 +28,12 @@ public class GetShopsController {
     @GetMapping("/shop")
     @Transactional
     public List<ListShopDto> getShops() {
+        final Comparator<ListShopDto> byRetailName = Comparator.comparing(item -> item.getRetailChain() != null ? item.getRetailChain().getName() : "", WITH_LANG_PL);
+        final Comparator<ListShopDto> byShopName = Comparator.comparing(item -> item.getName(), WITH_LANG_PL);
         return query.getShops()
                 .stream()
                 .map(this::asListShopDto)
+                .sorted(byRetailName.thenComparing(byShopName))
                 .collect(Collectors.toList());
     }
 
