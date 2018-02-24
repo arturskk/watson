@@ -1,5 +1,6 @@
 import {HttpClient} from '@angular/common/http';
 import {Component, OnInit} from '@angular/core';
+import {ProducerSummary} from '../../producer/producer-summary';
 import {ProductSummary} from '../product-summary';
 import {CategorySummary} from '../../category/category-summary';
 import {DiffsUtil} from '../../util/diffs-util';
@@ -11,11 +12,11 @@ import {CrudConfig} from '../../widgets/crud/crud-config';
     <h1>Produkty</h1>
     <ws-crud [config]="crudConfig" *ngIf="categories; else spinner">
       <ng-template let-product #itemSummary>
-        {{product.name}}
+        {{product.name}} <ng-container *ngIf="product.producer">({{product.producer.name}})</ng-container>
         <span class="category">&nbsp;({{product.category.path | joinArray:' > '}})</span>
       </ng-template>
       <ng-template let-product #itemEdit>
-        <ws-product-edit [product]="product" [categories]="categories"></ws-product-edit>
+        <ws-product-edit [product]="product" [categories]="categories" [producers]="producers"></ws-product-edit>
       </ng-template>
     </ws-crud>
     <ng-template #spinner>
@@ -40,12 +41,14 @@ export class ProductListComponent implements OnInit {
       mapper: crudItemSave => DiffsUtil.diff(crudItemSave.changed, crudItemSave.item, {
         name: 'name',
         categoryUuid: 'category.uuid',
+        producerUuid: 'producer.uuid',
         defaultUnit: 'defaultUnit'
       })
     }
   };
 
   categories: CategorySummary[];
+  producers: ProducerSummary[];
 
   constructor(private httpClient: HttpClient) {
   }
@@ -54,6 +57,9 @@ export class ProductListComponent implements OnInit {
     this.httpClient
       .get<CategorySummary[]>('/api/v1/category/_category_receipt_item')
       .subscribe(data => this.categories = data);
+    this.httpClient
+      .get<CategorySummary[]>('/api/v1/producer')
+      .subscribe(data => this.producers = data);
   }
 
 }

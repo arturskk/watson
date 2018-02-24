@@ -6,6 +6,8 @@ import net.lipecki.watson.category.Category;
 import net.lipecki.watson.category.GetCategoryQuery;
 import net.lipecki.watson.combiner.AggregateCombinerHandler;
 import net.lipecki.watson.event.Event;
+import net.lipecki.watson.producer.GetProducerQuery;
+import net.lipecki.watson.producer.Producer;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -15,9 +17,11 @@ import java.util.Map;
 public class ProductAddedEventHandler implements AggregateCombinerHandler<Product, ProductAdded> {
 
     private final GetCategoryQuery categoryQuery;
+    private final GetProducerQuery producerQuery;
 
-    public ProductAddedEventHandler(final GetCategoryQuery categoryQuery) {
+    public ProductAddedEventHandler(final GetCategoryQuery categoryQuery, final GetProducerQuery producerQuery) {
         this.categoryQuery = categoryQuery;
+        this.producerQuery = producerQuery;
     }
 
     @Override
@@ -31,6 +35,10 @@ public class ProductAddedEventHandler implements AggregateCombinerHandler<Produc
                 .getCategoryUuidOptional()
                 .flatMap(categoryQuery::getCategory)
                 .orElseGet(categoryQuery::getRootCategory);
+        final Producer producer = payload
+                .getProducerUuidOptional()
+                .flatMap(producerQuery::getProducer)
+                .orElse(null);
 
         collection.put(
                 event.getStreamId(),
@@ -39,6 +47,7 @@ public class ProductAddedEventHandler implements AggregateCombinerHandler<Produc
                         .name(payload.getName())
                         .defaultUnit(AmountUnit.getByAlias(payload.getDefaultUnit()))
                         .category(category)
+                        .producer(producer)
                         .build()
         );
     }

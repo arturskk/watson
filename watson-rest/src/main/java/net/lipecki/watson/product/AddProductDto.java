@@ -13,5 +13,6 @@ public class AddProductDto {
     private String name;
     private String categoryUuid;
     private String defaultUnit;
+    private String producerUuid;
 
 }

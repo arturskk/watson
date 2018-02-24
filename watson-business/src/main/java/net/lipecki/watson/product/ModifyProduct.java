@@ -13,6 +13,7 @@ public class ModifyProduct {
     private String name;
     private String categoryUuid;
     private String defaultUnit;
+    private String producerUuid;
 
     public Optional<String> getCategoryUuidOptional() {
         return Optional.ofNullable(categoryUuid);

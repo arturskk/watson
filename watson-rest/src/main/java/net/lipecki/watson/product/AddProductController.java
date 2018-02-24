@@ -30,6 +30,7 @@ public class AddProductController {
                         .name(dto.getName())
                         .categoryUuid(dto.getCategoryUuid())
                         .defaultUnit(dto.getDefaultUnit())
+                        .producerUuid(dto.getProducerUuid())
                         .build()
         );
     }

@@ -14,6 +14,7 @@ public class ProductModified implements EventPayload {
     private String name;
     private String categoryUuid;
     private String defaultUnit;
+    private String producerUuid;
 
     public Optional<String> getCategoryUuidOptional() {
         return Optional.ofNullable(categoryUuid);
@@ -24,5 +25,7 @@ public class ProductModified implements EventPayload {
     }
 
     public Optional<String> getDefaultUnitOptional() { return Optional.ofNullable(defaultUnit); }
+
+    public Optional<String> getProducerUuidOptional() { return Optional.ofNullable(producerUuid); }
 
 }

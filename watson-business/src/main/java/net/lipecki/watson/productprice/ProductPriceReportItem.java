@@ -31,6 +31,7 @@ public class ProductPriceReportItem {
     static class ProductDto {
         private String uuid;
         private String name;
+        private String producerName;
     }
 
     @Data

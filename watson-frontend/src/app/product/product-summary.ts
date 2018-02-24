@@ -7,6 +7,10 @@ export interface ProductSummary {
     name: string;
     path: string;
   };
+  producer: {
+    uuid: string;
+    name: string;
+  }
   defaultUnit: string;
 
 }

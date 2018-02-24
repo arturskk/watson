@@ -39,13 +39,23 @@ public class GetProductsController {
                 .name(product.getName())
                 .defaultUnit(product.getDefaultUnitOptional().map(AmountUnit::getName).orElse(null))
                 .category(
-                        ProductSummaryDto
-                                .ProductSummaryCategory
+                        ProductSummaryDto.Category
                                 .builder()
                                 .uuid(product.getCategory().getUuid())
                                 .name(product.getCategory().getName())
                                 .path(product.getCategory().getCategoryPath())
                                 .build()
+                )
+                .producer(
+                        product.getProducerOptional()
+                                .map(
+                                        producer -> ProductSummaryDto.Producer
+                                                .builder()
+                                                .name(producer.getName())
+                                                .uuid(producer.getUuid())
+                                                .build()
+                                )
+                                .orElse(null)
                 )
                 .build();
     }
