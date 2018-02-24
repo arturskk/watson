@@ -12,6 +12,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
           <div>
             <span *ngIf="newItem">Dodaj: </span>
             <span [innerHTML]="markSearchText.call(undefined, item.name) | safeHtml"></span>
+            <span *ngIf="item.producer" class="product-producer">({{item.producer.name}})</span>
           </div>
           <div *ngIf="item.createdWithinReceipt" class="dynamic-select-item">
             Nowo utworzony produkt
