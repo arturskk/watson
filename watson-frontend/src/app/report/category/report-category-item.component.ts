@@ -6,14 +6,14 @@ import {CategoryReportItem} from './category-report-item';
   template: `
     <div>
       <div (click)="isExpandable() && expanded = !expanded" class="description">
-        <span>{{category.name}} ({{category.totalCost.description}}zł)</span>
+        <span>{{category.name}} ({{asCost(category.totalCost.description)}})</span>
         <ng-container *ngIf="isExpandable()">
           <a *ngIf="expanded">(-)</a>
           <a *ngIf="!expanded">(+)</a>
         </ng-container>
       </div>
       <div class="subcategories" *ngIf="isExpandable() && expanded">
-        <span class="category-summary">({{category.name}} {{category.categoryCost.description}}zł)</span>
+        <span class="category-summary">({{category.name}} {{asCost(category.categoryCost.description)}})</span>
         <ng-container *ngFor="let subCategory of category.subCategories">
           <ws-report-category-item *ngIf="showEmpty || subCategory.totalCost.amount > 0"
                                    [showEmpty]="showEmpty"
@@ -39,6 +39,10 @@ export class ReportCategoryItemComponent {
     } else {
       return this.category.totalCost.amount > this.category.categoryCost.amount;
     }
+  }
+
+  asCost(value: string) {
+    return new Number(value).toLocaleString('pl-PL', {style: 'currency', currency: 'PLN'});
   }
 
 }
