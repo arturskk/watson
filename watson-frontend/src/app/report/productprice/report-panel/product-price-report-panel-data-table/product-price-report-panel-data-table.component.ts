@@ -1,3 +1,4 @@
+import {CurrencyPipe} from '@angular/common';
 import {Component, Input} from '@angular/core';
 import {ObjectsUtil} from '../../../../util/objects-util';
 import {ProductPriceReport} from '../../product-price-report';
@@ -29,7 +30,7 @@ export class ProductPriceReportPanelDataTableComponent {
     {key: 'Sklep', span: 2, renderer: item => this.byProperty(item, 'shop.name')},
     {key: 'Data', span: 2, renderer: item => this.byProperty(item, 'date')},
     {key: 'Jedn.', span: 1, renderer: item => this.byProperty(item, 'unit')},
-    {key: 'Cena', span: 1, renderer: item => this.byProperty(item, 'pricePerUnit') + 'zł'}
+    {key: 'Cena', span: 1, renderer: item => new Number(this.byProperty(item, 'pricePerUnit')).toLocaleString('pl-PL', {style: 'currency', currency: 'PLN'})}
   ];
 
 }
