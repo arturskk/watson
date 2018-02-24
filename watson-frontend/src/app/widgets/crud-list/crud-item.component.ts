@@ -1,7 +1,7 @@
 import {Component, ContentChild, EventEmitter, Input, Output, TemplateRef} from '@angular/core';
 import {ObjectsUtil} from '../../util/objects-util';
 import {CrudItemCanceled} from './crud-item-canceled';
-import {CrudItemSave} from './crud-item-save';
+import {CrudItemSave, CrudItemSaveCommitConfig, CrudItemSaveRollbackConfig} from './crud-item-save';
 import {CrudItemState} from './crut-item-state';
 
 @Component({
@@ -83,7 +83,7 @@ export class CrudItemComponent<T> {
     this.itemSave.next({
       item: this.summaryValue,
       changed: this.editValue,
-      commit: (config = {}) => {
+      commit: (config: CrudItemSaveCommitConfig<T> = {}) => {
         ObjectsUtil.ifProvided(
           config.value,
           value => this.item = value,
@@ -95,8 +95,7 @@ export class CrudItemComponent<T> {
           () => this.state = CrudItemState.SUMMARY
         );
       },
-      rollback: (config = {}) => {
-        console.log(config);
+      rollback: (config: CrudItemSaveRollbackConfig<T> = {}) => {
         ObjectsUtil.ifProvided(
           config.state,
           this.setState.bind(this),
