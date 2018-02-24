@@ -35,6 +35,7 @@ public class ModifyProductController {
                         .name(dto.getName())
                         .defaultUnit(dto.getDefaultUnit())
                         .categoryUuid(dto.getCategoryUuid())
+                        .producerUuid(dto.getProducerUuid())
                         .build()
         );
     }

@@ -12,15 +12,25 @@ public class ProductSummaryDto {
     private String uuid;
     private String name;
     private String defaultUnit;
-    private ProductSummaryCategory category;
+    private Category category;
+    private Producer producer;
 
     @Data
     @Builder
-    static class ProductSummaryCategory {
+    static class Category {
 
         private String uuid;
         private String name;
         private List<String> path;
+
+    }
+
+    @Data
+    @Builder
+    static class Producer {
+
+        private String uuid;
+        private String name;
 
     }
 

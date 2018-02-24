@@ -23,7 +23,8 @@ export class ProductPriceReportPanelDataTableComponent {
   readonly byProperty = ObjectsUtil.getByProperty;
   @Input() report: ProductPriceReport;
   columns = [
-    {key: 'Produkt', span: 5, renderer: item => this.byProperty(item, 'product.name')},
+    {key: 'Produkt', span: 3, renderer: item => this.byProperty(item, 'product.name')},
+    {key: 'Producent', span: 2, renderer: item => this.byProperty(item, 'product.producerName' || '')},
     {key: 'Sieć', span: 2, renderer: item => (this.byProperty(item, 'shop.retailChainName') || '')},
     {key: 'Sklep', span: 2, renderer: item => this.byProperty(item, 'shop.name')},
     {key: 'Data', span: 2, renderer: item => this.byProperty(item, 'date')},

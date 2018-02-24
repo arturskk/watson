@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.lipecki.watson.WatsonException;
 import net.lipecki.watson.category.Category;
 import net.lipecki.watson.category.GetCategoryQuery;
+import net.lipecki.watson.producer.Producer;
 import net.lipecki.watson.product.GetProductQuery;
 import net.lipecki.watson.product.Product;
 import net.lipecki.watson.reatialchain.RetailChain;
@@ -117,7 +118,13 @@ public class GetProductPriceQuery {
     }
 
     private ProductPriceReportItem.ProductDto asProductDto(final Product product) {
-        return ProductPriceReportItem.ProductDto.builder().name(product.getName()).uuid(product.getUuid()).build();
+        return ProductPriceReportItem
+                .ProductDto
+                .builder()
+                .name(product.getName())
+                .uuid(product.getUuid())
+                .producerName(product.getProducerOptional().map(Producer::getName).orElse(null))
+                .build();
     }
 
     private ProductPriceReportItem.ShopDto asShopDto(final Shop shop) {

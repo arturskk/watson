@@ -96,6 +96,7 @@ export class CrudItemComponent<T> {
         );
       },
       rollback: (config = {}) => {
+        console.log(config);
         ObjectsUtil.ifProvided(
           config.state,
           this.setState.bind(this),

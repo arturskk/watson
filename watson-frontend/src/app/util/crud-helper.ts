@@ -13,7 +13,7 @@ export interface CrudResource<T> {
 @Injectable()
 export class CrudHelper<T> {
 
-  static readonly defualtUuidExtrator = (crudItemSave: CrudItemSave<any>) => crudItemSave.item['uuid'];
+  static readonly defaultUuidExtractor = (crudItemSave: CrudItemSave<any>) => crudItemSave.item['uuid'];
 
   constructor(private httpClient: HttpClient) {
   }
@@ -29,7 +29,7 @@ export class CrudHelper<T> {
         diff: config.mapper(ev)
       }).subscribe(() => config.onSuccess ? config.onSuccess() : undefined),
       edited: ev => this.itemEdited(ev, {
-        api: `${config.api}/${(config.uuidExtractor || CrudHelper.defualtUuidExtrator)(ev)}`,
+        api: `${config.api}/${(config.uuidExtractor || CrudHelper.defaultUuidExtractor)(ev)}`,
         diff: config.mapper(ev)
       }).subscribe(() => config.onSuccess ? config.onSuccess() : undefined)
     };
@@ -37,6 +37,7 @@ export class CrudHelper<T> {
 
   itemAdded(crudItemSave: CrudItemSave<T>, config: { api: string; diff: any }): Observable<void> {
     const subject = new Subject<void>();
+    if (config.diff) {
     this.httpClient
       .post(config.api, config.diff)
       .subscribe(
@@ -48,25 +49,37 @@ export class CrudHelper<T> {
           subject.next();
         },
         response => crudItemSave.rollback({
-          message: response.error.errors.map(error => `${error.field} ${error.defaultMessage}`)
+          message: response.error.errors ? response.error.errors.map(error => `${error.field} ${error.defaultMessage}`) : response.error.message
         })
       );
+    } else {
+      crudItemSave.commit({
+        value: {},
+        state: CrudItemState.EDIT
+      });
+      subject.next();
+    }
     return subject.asObservable();
   }
 
   itemEdited(crudItemSave: CrudItemSave<T>, config: { api: string; diff: any }) {
     const subject = new Subject<void>();
-    this.httpClient
-      .put(config.api, config.diff)
-      .subscribe(
-        () => {
-          crudItemSave.commit();
-          subject.next();
-        },
-        response => crudItemSave.rollback({
-          message: response.error.errors.map(error => `${error.field} ${error.defaultMessage}`)
-        })
-      );
+    if (config.diff) {
+      this.httpClient
+        .put(config.api, config.diff)
+        .subscribe(
+          () => {
+            crudItemSave.commit();
+            subject.next();
+          },
+          response => crudItemSave.rollback({
+            message: response.error.errors ? response.error.errors.map(error => `${error.field} ${error.defaultMessage}`) : response.error.message
+          })
+        );
+    } else {
+      crudItemSave.commit();
+      subject.next();
+    }
     return subject.asObservable();
   }
 

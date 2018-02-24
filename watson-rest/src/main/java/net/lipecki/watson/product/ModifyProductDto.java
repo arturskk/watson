@@ -10,5 +10,6 @@ public class ModifyProductDto {
     private String name;
     private String categoryUuid;
     private String defaultUnit;
+    private String producerUuid;
 
 }

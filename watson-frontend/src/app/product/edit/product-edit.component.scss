@@ -6,9 +6,12 @@
   flex: 1;
   flex-direction: row;
   .product-name {
-    flex: 1;
+    flex: 3;
   }
   .product-category {
+    flex: 1;
+  }
+  .product-producer {
     flex: 1;
   }
   .select-item-description {

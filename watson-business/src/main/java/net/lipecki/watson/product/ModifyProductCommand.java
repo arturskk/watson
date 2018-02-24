@@ -26,6 +26,7 @@ public class ModifyProductCommand {
                 .name(data.getName())
                 .defaultUnit(data.getDefaultUnit())
                 .categoryUuid(data.getCategoryUuid())
+                .producerUuid(data.getProducerUuid())
                 .build();
     }
 
