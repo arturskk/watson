@@ -25,7 +25,6 @@ import {CrudHelper, CrudResource} from '../../util/crud-helper';
         <h2>Lista kategorii</h2>
         <ws-crud-list-component [data]="categories" (itemSave)="resource.edited($event)">
           <ng-template let-category #itemSummary>
-            <span *ngFor="let divider of category.path" class="depth-divider"></span>
             {{category.name}}
             <span class="category-path" *ngIf="category.path.length > 0">&nbsp;({{category.path | joinArray:' > '}})</span>
           </ng-template>
