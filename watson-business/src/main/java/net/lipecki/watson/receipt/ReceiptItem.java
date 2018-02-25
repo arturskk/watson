@@ -16,6 +16,7 @@ public class ReceiptItem {
 
     public static final String CATEGORY_TYPE = "_category_receipt_item";
 
+    private String uuid;
     private Cost cost;
     private List<String> tags;
     private Product product;

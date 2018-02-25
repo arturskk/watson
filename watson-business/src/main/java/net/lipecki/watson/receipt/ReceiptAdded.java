@@ -17,5 +17,9 @@ public class ReceiptAdded implements EventPayload {
     private String categoryUuid;
     private List<String> tags;
     private List<ReceiptItemAdded> items;
-    
+
+    @Override
+    public long getSchemaVersion() {
+        return 2;
+    }
 }

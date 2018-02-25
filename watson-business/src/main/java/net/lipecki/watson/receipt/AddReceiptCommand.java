@@ -5,6 +5,7 @@ import net.lipecki.watson.event.Event;
 import net.lipecki.watson.event.EventStore;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -38,6 +39,7 @@ public class AddReceiptCommand {
         // TODO: move Cost.of from handler?
         return ReceiptItemAdded
                 .builder()
+                .uuid(UUID.randomUUID().toString())
                 .productUuid(data.getProductUuid())
                 .amount(data.getAmount())
                 .cost(data.getCost())

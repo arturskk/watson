@@ -51,6 +51,7 @@ public class GetReceiptsController {
         return ReceiptSummaryDto
                 .ReceiptSummaryItem
                 .builder()
+                .uuid(receiptItem.getUuid())
                 .cost(receiptItem.getCost().getDescription())
                 .amount(receiptItem.getAmount().getCount())
                 .unit(receiptItem.getAmount().getUnit().getName())

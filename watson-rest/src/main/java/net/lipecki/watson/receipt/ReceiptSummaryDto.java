@@ -22,6 +22,7 @@ public class ReceiptSummaryDto {
     @Builder
     public static class ReceiptSummaryItem {
 
+        private String uuid;
         private String productName;
         private String categoryName;
         private List<String> categoryPath;
