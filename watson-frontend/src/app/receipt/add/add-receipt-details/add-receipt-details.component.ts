@@ -42,14 +42,15 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
       <div>
         <ws-select [data]="shops"
                    [displayField]="'name'"
+                   [filter]="shopFilter"
                    (onChange)="shopChange.next($event)">
           <ng-template let-item let-markSearchText="markSearchText" let-newItem="newItem" #listItem>
-            <div>
-            <span *ngIf="newItem">Dodaj: </span>
-            <span [innerHTML]="markSearchText.call(undefined, item.name) | safeHtml"></span>
+            <div *ngIf="item.retailChain">
+              <span [innerHTML]="markSearchText.call(undefined, item.retailChain.name) | safeHtml"></span>
             </div>
-            <div *ngIf="item.retailChain" class="select-item-description">
-              <span>{{item.retailChain.name}}</span>
+            <div>
+                <span *ngIf="newItem">Dodaj: </span>
+                <span [class.select-shop-description]="item.retailChain" [innerHTML]="markSearchText.call(undefined, item.name) | safeHtml"></span>
             </div>
           </ng-template>
         </ws-select>
@@ -76,6 +77,8 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
   ]
 })
 export class AddReceiptDetailsComponent {
+
+  readonly shopFilter = (item, searchText) => `${item.name}${item.retailChain ? ' ' + item.retailChain.name : ''}`.toLocaleLowerCase().indexOf(searchText.toLocaleLowerCase()) >= 0;
 
   @Input() accounts;
   @Input() shops;
