@@ -36,6 +36,11 @@ public class AggregateCombinerCacheDecorator<T> implements AggregateCombiner<T> 
         delegate.addHandler(handler);
     }
 
+    @Override
+    public void setIgnoreUnhandledEvents(final boolean ignoreUnhandledEvents) {
+        delegate.setIgnoreUnhandledEvents(ignoreUnhandledEvents);
+    }
+
     private String getCacheKey() {
         return this.streams.stream().collect(Collectors.joining("+"));
     }

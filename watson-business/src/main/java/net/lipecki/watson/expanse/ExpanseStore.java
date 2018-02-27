@@ -18,8 +18,9 @@ class ExpanseStore {
     private final AggregateCombiner<Expanse> combiner;
 
     public ExpanseStore(final AggregateCombinerFactory aggregateCombinerFactory, final ExpanseReceiptAddedEventHandler expanseReceiptAddedEventHandler) {
-        this.combiner = aggregateCombinerFactory.getAggregateCombiner(Collections.singletonList(Receipt.RECEIPT_STREAM));
-        this.combiner.addHandler(expanseReceiptAddedEventHandler);
+        combiner = aggregateCombinerFactory.getAggregateCombiner(Collections.singletonList(Receipt.RECEIPT_STREAM));
+        combiner.setIgnoreUnhandledEvents(true);
+        combiner.addHandler(expanseReceiptAddedEventHandler);
     }
 
     public List<Expanse> getExpanses(final LocalDate from, final LocalDate to) {

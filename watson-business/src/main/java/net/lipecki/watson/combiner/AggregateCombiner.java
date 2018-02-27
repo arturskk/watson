@@ -16,4 +16,6 @@ public interface AggregateCombiner<T> {
 
     void addHandler(final AggregateCombinerHandler<T, ? extends EventPayload> handler);
 
+    void setIgnoreUnhandledEvents(boolean ignoreUnhandledEvents);
+
 }

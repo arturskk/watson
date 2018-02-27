@@ -28,6 +28,7 @@ public class InMemoryAggregateCombiner<T> implements AggregateCombiner<T> {
     private final List<String> streams;
     private final Supplier<Map<String, T>> stateInitializer;
     private final Map<String, List<AggregateCombinerHandler<T, ? extends EventPayload>>> handlerMapping = new HashMap<>();
+    private boolean ignoreUnhandledEvents = false;
 
     InMemoryAggregateCombiner(final EventStore eventStore, final List<String> streams) {
         this(eventStore, streams, HashMap::new);
@@ -47,6 +48,11 @@ public class InMemoryAggregateCombiner<T> implements AggregateCombiner<T> {
     }
 
     @Override
+    public void setIgnoreUnhandledEvents(final boolean ignoreUnhandledEvents) {
+        this.ignoreUnhandledEvents = ignoreUnhandledEvents;
+    }
+
+    @Override
     public Map<String, T> get() {
         log.debug("Combining streams [streams={}]", this.streams);
 
@@ -60,9 +66,9 @@ public class InMemoryAggregateCombiner<T> implements AggregateCombiner<T> {
 
         for (final Event event : events) {
             final String eventType = event.getType();
-            final List<AggregateCombinerHandler<T, ? extends EventPayload>> eventHandler = this.handlerMapping.get(eventType);
+            final List<AggregateCombinerHandler<T, ? extends EventPayload>> eventHandlers = this.handlerMapping.getOrDefault(eventType, new ArrayList<>());
             boolean atLeastOneHandler = false;
-            for (AggregateCombinerHandler<T, ? extends EventPayload> handler : eventHandler) {
+            for (AggregateCombinerHandler<T, ? extends EventPayload> handler : eventHandlers) {
                 if (handler.canHandle(event)) {
                     try {
                         atLeastOneHandler = true;
@@ -79,9 +85,9 @@ public class InMemoryAggregateCombiner<T> implements AggregateCombiner<T> {
                     }
                 }
             }
-            if (!atLeastOneHandler) {
+            if (!atLeastOneHandler && !ignoreUnhandledEvents) {
                 throw WatsonException
-                        .of("Missing event handler for streams combiner")
+                        .of("Missing event handler for stream combiner")
                         .with("streams", this.streams)
                         .with("missingEventType", eventType);
             }
