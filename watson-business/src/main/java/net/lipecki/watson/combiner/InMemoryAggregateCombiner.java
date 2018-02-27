@@ -6,6 +6,7 @@ import net.lipecki.watson.event.Event;
 import net.lipecki.watson.event.EventPayload;
 import net.lipecki.watson.event.EventStore;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -26,7 +27,7 @@ public class InMemoryAggregateCombiner<T> implements AggregateCombiner<T> {
     private final EventStore eventStore;
     private final List<String> streams;
     private final Supplier<Map<String, T>> stateInitializer;
-    private final Map<String, AggregateCombinerHandler<T, ? extends EventPayload>> handlerMapping = new HashMap<>();
+    private final Map<String, List<AggregateCombinerHandler<T, ? extends EventPayload>>> handlerMapping = new HashMap<>();
 
     InMemoryAggregateCombiner(final EventStore eventStore, final List<String> streams) {
         this(eventStore, streams, HashMap::new);
@@ -40,10 +41,9 @@ public class InMemoryAggregateCombiner<T> implements AggregateCombiner<T> {
 
     @Override
     public void addHandler(final AggregateCombinerHandler<T, ? extends EventPayload> handler) {
-        this.handlerMapping.put(
-                handler.getPayloadClass().getTypeName(),
-                handler
-        );
+        final String typeName = handler.getPayloadClass().getTypeName();
+        this.handlerMapping.putIfAbsent(typeName, new ArrayList<>());
+        this.handlerMapping.get(typeName).add(handler);
     }
 
     @Override
@@ -60,24 +60,30 @@ public class InMemoryAggregateCombiner<T> implements AggregateCombiner<T> {
 
         for (final Event event : events) {
             final String eventType = event.getType();
-            final AggregateCombinerHandler<T, ? extends EventPayload> eventHandler = this.handlerMapping.get(eventType);
-            if (eventHandler == null) {
+            final List<AggregateCombinerHandler<T, ? extends EventPayload>> eventHandler = this.handlerMapping.get(eventType);
+            boolean atLeastOneHandler = false;
+            for (AggregateCombinerHandler<T, ? extends EventPayload> handler : eventHandler) {
+                if (handler.canHandle(event)) {
+                    try {
+                        atLeastOneHandler = true;
+                        handler.acceptWithCheck(result, event);
+                    } catch (final Exception ex) {
+                        log.warn(
+                                "Event processing skipped due to handler exception [event={}]",
+                                event,
+                                WatsonException
+                                        .of("Exception while handling event", ex)
+                                        .with("event", event)
+                                        .with("handler", handler.getClass().getSimpleName())
+                        );
+                    }
+                }
+            }
+            if (!atLeastOneHandler) {
                 throw WatsonException
                         .of("Missing event handler for streams combiner")
                         .with("streams", this.streams)
                         .with("missingEventType", eventType);
-            } else if (!eventHandler.canHandle(event)) {
-                throw WatsonException
-                        .of("Incompatible missing handle for event type!")
-                        .with("streams", this.streams)
-                        .with("missingEventType", eventType)
-                        .with("event", event);
-            } else {
-                try {
-                    eventHandler.acceptWithCheck(result, event);
-                } catch (final Exception ex) {
-                    log.warn("Event processing skipped due to handler exception [event={}]", event, ex);
-                }
             }
         }
 

@@ -46,7 +46,12 @@ public class ReceiptAddedEventHandler implements AggregateCombinerHandler<Receip
         final Receipt.ReceiptBuilder receipt = Receipt.builder();
 
         receipt.uuid(event.getStreamId());
-        receipt.date(LocalDate.parse(payload.getDate()));
+        try {
+            receipt.date(LocalDate.parse(payload.getDate()));
+        } catch (final Exception ex) {
+            log.warn("Can't parse date for receipt, using random [receiptUuid={}, date={}]", event.getStreamId(), payload.getDate());
+            receipt.date(LocalDate.now());
+        }
         shopQuery.getShop(payload.getShopUuid()).ifPresent(receipt::shop);
         accountQuery.getAccount(payload.getAccountUuid()).ifPresent(receipt::account);
         categoryQuery.getCategory(payload.getCategoryUuid()).ifPresent(receipt::category);
@@ -70,8 +75,8 @@ public class ReceiptAddedEventHandler implements AggregateCombinerHandler<Receip
     private ReceiptItem asReceiptItem(final long schemaVersion, final ReceiptItemAdded data, final String receiptUuid, final int index) {
         final ReceiptItem.ReceiptItemBuilder item = ReceiptItem.builder();
 
-        if (schemaVersion < 2) {
-            item.uuid(ReceiptItemAdded.combineUuidBasedOnIndex(receiptUuid, index));
+        if (schemaVersion < ReceiptAdded.SchemaVersion.V2) {
+            item.uuid(ReceiptAdded.combineItemUuid(receiptUuid, index));
         } else {
             item.uuid(data.getUuid());
         }

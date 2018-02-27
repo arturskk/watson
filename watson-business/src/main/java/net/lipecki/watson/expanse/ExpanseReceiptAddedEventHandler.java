@@ -40,8 +40,8 @@ public class ExpanseReceiptAddedEventHandler implements AggregateCombinerHandler
 
             final Expanse.ExpanseBuilder expanseBuilder = Expanse.builder();
             expanseBuilder.type(Product.PRODUCT_STREAM);
-            if (payload.getSchemaVersion() < 2) {
-                expanseBuilder.refUuid(ReceiptItemAdded.combineUuidBasedOnIndex(event.getStreamId(), itemIndex));
+            if (payload.getSchemaVersion() < ReceiptAdded.SchemaVersion.V2) {
+                expanseBuilder.refUuid(ReceiptAdded.combineItemUuid(event.getStreamId(), itemIndex));
             } else {
                 expanseBuilder.refUuid(item.getUuid());
             }

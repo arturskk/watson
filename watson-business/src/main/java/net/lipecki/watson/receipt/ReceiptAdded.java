@@ -19,8 +19,27 @@ public class ReceiptAdded implements EventPayload {
     private List<ReceiptItemAdded> items;
     private Long schemaVersion;
 
+    public static final class SchemaVersion {
+        /** First event version */
+        public static final long V1 = 1;
+        /** Receipt items with mandatory uuid */
+        public static final long V2 = 2;
+    }
+
+    /**
+     * For receipts before schema 2.
+     * Use receipt uuid with item index as item uuid.
+     * @param receiptUuid
+     * @param index
+     * @since schema version 2
+     * @return
+     */
+    public static String combineItemUuid(final String receiptUuid, final long index) {
+        return receiptUuid + "#" + index;
+    }
+
     public long getSchemaVersion() {
-        return schemaVersion != null ? schemaVersion : 1;
+        return schemaVersion != null ? schemaVersion : SchemaVersion.V1;
     }
 
 }

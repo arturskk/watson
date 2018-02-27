@@ -15,16 +15,4 @@ public class ReceiptItemAdded {
     private String cost;
     private AddReceiptItemAmount amount;
 
-    /**
-     * For receipts before schema 2.
-     * Use receipt uuid with item index as item uuid.
-     * @param receiptUuid
-     * @param index
-     * @since schema version 2
-     * @return
-     */
-    public static String combineUuidBasedOnIndex(final String receiptUuid, final long index) {
-        return receiptUuid + "#" + index;
-    }
-
 }
