@@ -12,8 +12,4 @@ public class RetailChainAdded implements EventPayload {
 
     private String name;
 
-    public Optional<String> getTestName() {
-        return Optional.ofNullable(name);
-    }
-
 }
