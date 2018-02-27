@@ -22,10 +22,6 @@ public class ReceiptItem {
     private Product product;
     private ReceiptItemAmount amount;
 
-    public String getDescription() {
-        return toString();
-    }
-
     public Category getCategory() {
         return product.getCategory();
     }
