@@ -33,21 +33,25 @@ public class ExpanseReceiptAddedEventHandler implements AggregateCombinerHandler
         final List<ReceiptItemAdded> items = payload.getItems();
         for (int itemIndex = 0; itemIndex < items.size(); ++itemIndex) {
             final ReceiptItemAdded item = items.get(itemIndex);
-            final String itemKey = event.getStreamId() + "#" + itemIndex;
 
             final Product product = productQuery
                     .getProduct(item.getProductUuid())
                     .orElseThrow(() -> WatsonException.of("Missing product with item ref uuid").with("uuid", item.getProductUuid()));
 
-            final Expanse.ExpanseBuilder expanse = Expanse.builder();
-            expanse.type(Product.PRODUCT_STREAM);
-            expanse.refUuid(itemKey);
-            expanse.date(LocalDate.parse(payload.getDate()));
-            expanse.name(product.getName());
-            expanse.category(product.getCategory());
-            expanse.cost(Cost.of(item.getCost()));
+            final Expanse.ExpanseBuilder expanseBuilder = Expanse.builder();
+            expanseBuilder.type(Product.PRODUCT_STREAM);
+            if (payload.getSchemaVersion() < ReceiptAdded.SchemaVersion.V2) {
+                expanseBuilder.refUuid(ReceiptAdded.combineItemUuid(event.getStreamId(), itemIndex));
+            } else {
+                expanseBuilder.refUuid(item.getUuid());
+            }
+            expanseBuilder.date(LocalDate.parse(payload.getDate()));
+            expanseBuilder.name(product.getName());
+            expanseBuilder.category(product.getCategory());
+            expanseBuilder.cost(Cost.of(item.getCost()));
 
-            collection.put(itemKey, expanse.build());
+            final Expanse expanse = expanseBuilder.build();
+            collection.put(expanse.getRefUuid(), expanse);
         }
     }
 

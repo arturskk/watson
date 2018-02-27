@@ -9,6 +9,7 @@ import java.util.List;
 @Builder
 public class ReceiptItemAdded {
 
+    private String uuid;
     private String productUuid;
     private List<String> tags;
     private String cost;

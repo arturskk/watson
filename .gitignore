@@ -3,6 +3,7 @@ node_modules/
 .DS_Store
 *.iml
 .idea/
-*.mv.db
+*.mv.db*
 *.trace.db
 events.log
+
