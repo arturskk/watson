@@ -58,23 +58,23 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
     'select.component.scss'
   ]
 })
-export class SelectComponent implements ControlValueAccessor {
+export class SelectComponent<T> implements ControlValueAccessor {
 
   static newValuePlaceholderTemplate = {newValue: true};
   dropdown = false;
-  filtered = [];
+  filtered: T[] = [];
   currentIndex = -1;
   newValuePlaceholder: any = {...SelectComponent.newValuePlaceholderTemplate};
-  rawData = [];
+  rawData: T[] = [];
   currentSearchText = undefined;
 
-  @Output() onChange = new EventEmitter();
+  @Output() onChange = new EventEmitter<T>();
   @Output() onTouch = new EventEmitter();
-  @Input() value = undefined;
+  @Input() value: T = undefined;
   @Input() allowNewValues = true;
   @Input() disabled = false;
   @Input() placeholder = '';
-  @Input() filter: (item: any, searchText: string) => boolean;
+  @Input() filter: (item: T, searchText: string) => boolean;
   @Input() displayField: string;
   @Input() itemsLimit = 25;
   @Input() skipValueWriting = false;
@@ -101,6 +101,9 @@ export class SelectComponent implements ControlValueAccessor {
 
   onSearchBoxBlur() {
     this.onTouch.emit();
+    if (this.currentIndex >= 0) {
+      this.changeValue(this.filtered[this.currentIndex]);
+    }
     this.clearUi();
   }
 
@@ -157,10 +160,14 @@ export class SelectComponent implements ControlValueAccessor {
     }
     this.currentSearchText = this.searchBox.nativeElement.value;
     this.filtered = this.rawData.filter(item => this.filter(item, this.currentSearchText)).slice(0, this.itemsLimit);
+    this.currentIndex = -1;
     if (this.allowNewValues) {
       if (this.currentSearchText) {
         this.filtered.push(this.newValuePlaceholder);
         this.newValuePlaceholder[this.displayField] = this.currentSearchText;
+        if (this.filtered.length === 1) {
+          this.currentIndex = 0;
+        }
       } else {
         this.newValuePlaceholder[this.displayField] = undefined;
       }
@@ -188,7 +195,7 @@ export class SelectComponent implements ControlValueAccessor {
     return `${beforeMatch}<span class="select-item-match-part">${match}</span>${afterMatch}`;
   }
 
-  writeValue(value: any): void {
+  writeValue(value: T): void {
     this.value = value;
   }
 

@@ -54,7 +54,8 @@ import {ReceiptItem} from '../receipt-item';
             </div>
             <div class="actions-column">
               <ws-button-flat class="remove-item-button-desktop" (clicked)="removeItem(item)">(-)</ws-button-flat>
-              <ws-button-flat class="remove-item-button-mobile" (clicked)="removeItem(item)">USUŃ PRODUKT</ws-button-flat>
+              <ws-button-flat class="remove-item-button-mobile" (clicked)="removeItem(item)">USUŃ PRODUKT
+              </ws-button-flat>
             </div>
           </div>
         </div>
@@ -163,16 +164,18 @@ export class ReceiptAddComponent implements OnInit {
 
   onProductSelected(item, product) {
     item.product = product;
-    if (product.newValue && !product.createdWithinReceipt) {
-      product.category = this.categoriesItem.find(category => category.uuid === 'root');
-      console.log('Adding newly created product as available product [product=%o]', product);
-      this.products.push({
-        name: product.name,
-        createdWithinReceipt: true
-      });
-    }
-    if (product.defaultUnit) {
-      item.amount.unit = product.defaultUnit;
+    if (product) {
+      if (product.newValue && !product.createdWithinReceipt) {
+        product.category = this.categoriesItem.find(category => category.uuid === 'root');
+        console.log('Adding newly created product as available product [product=%o]', product);
+        this.products.push({
+          name: product.name,
+          createdWithinReceipt: true
+        });
+      }
+      if (product.defaultUnit) {
+        item.amount.unit = product.defaultUnit;
+      }
     }
   }
 
