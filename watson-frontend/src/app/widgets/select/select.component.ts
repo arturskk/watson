@@ -172,20 +172,20 @@ export class SelectComponent implements ControlValueAccessor {
   }
 
   markSearchText(input: string): string {
-    if (this.currentSearchText) {
-      const matchStart = input.toLocaleLowerCase().indexOf(this.currentSearchText.toLocaleLowerCase());
-      if (matchStart < 0) {
-        return input;
-      }
-
-      const beforeMatch = input.substr(0, matchStart);
-      const match = input.substr(matchStart, this.currentSearchText.length);
-      const afterMatch = input.substr(matchStart + this.currentSearchText.length);
-
-      return `${beforeMatch}<span class="select-item-match-part">${match}</span>${afterMatch}`;
-    } else {
+    if (!this.currentSearchText) {
       return input;
     }
+
+    const matchStart = input.toLocaleLowerCase().indexOf(this.currentSearchText.toLocaleLowerCase());
+    if (matchStart < 0) {
+      return input;
+    }
+
+    const beforeMatch = input.substr(0, matchStart);
+    const match = input.substr(matchStart, this.currentSearchText.length);
+    const afterMatch = input.substr(matchStart + this.currentSearchText.length);
+
+    return `${beforeMatch}<span class="select-item-match-part">${match}</span>${afterMatch}`;
   }
 
   writeValue(value: any): void {
