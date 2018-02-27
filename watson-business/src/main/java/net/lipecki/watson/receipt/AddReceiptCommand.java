@@ -36,7 +36,6 @@ public class AddReceiptCommand {
     }
 
     private ReceiptItemAdded asReceiptItemAdded(final AddReceiptItemData data) {
-        // TODO: move Cost.of from handler?
         return ReceiptItemAdded
                 .builder()
                 .uuid(UUID.randomUUID().toString())

@@ -2,14 +2,16 @@ package net.lipecki.watson.expanse;
 
 import net.lipecki.watson.WatsonException;
 import net.lipecki.watson.combiner.AggregateCombinerHandler;
-import net.lipecki.watson.cost.Cost;
 import net.lipecki.watson.event.Event;
+import net.lipecki.watson.cost.Cost;
 import net.lipecki.watson.product.GetProductQuery;
 import net.lipecki.watson.product.Product;
 import net.lipecki.watson.receipt.ReceiptAdded;
+import net.lipecki.watson.receipt.ReceiptItemAdded;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -28,24 +30,29 @@ public class ExpanseReceiptAddedEventHandler implements AggregateCombinerHandler
 
     @Override
     public void accept(final Map<String, Expanse> collection, final Event event, final ReceiptAdded payload) {
-        payload.getItems()
-                .stream()
-                .map(
-                        item -> {
-                            final Product product = productQuery
-                                    .getProduct(item.getProductUuid())
-                                    .orElseThrow(() -> WatsonException.of("Missing product with item ref uuid").with("uuid", item.getProductUuid()));
-                            return Expanse.builder()
-                                    .type(Product.PRODUCT_STREAM)
-                                    .refUuid(item.getUuid())
-                                    .date(LocalDate.parse(payload.getDate()))
-                                    .name(product.getName())
-                                    .category(product.getCategory())
-                                    .cost(Cost.of(item.getCost()))
-                                    .build();
-                        }
-                )
-                .forEach(item -> collection.put(item.getRefUuid(), item));
+        final List<ReceiptItemAdded> items = payload.getItems();
+        for (int itemIndex = 0; itemIndex < items.size(); ++itemIndex) {
+            final ReceiptItemAdded item = items.get(itemIndex);
+
+            final Product product = productQuery
+                    .getProduct(item.getProductUuid())
+                    .orElseThrow(() -> WatsonException.of("Missing product with item ref uuid").with("uuid", item.getProductUuid()));
+
+            final Expanse.ExpanseBuilder expanseBuilder = Expanse.builder();
+            expanseBuilder.type(Product.PRODUCT_STREAM);
+            if (payload.getSchemaVersion() < 2) {
+                expanseBuilder.refUuid(ReceiptItemAdded.combineUuidBasedOnIndex(event.getStreamId(), itemIndex));
+            } else {
+                expanseBuilder.refUuid(item.getUuid());
+            }
+            expanseBuilder.date(LocalDate.parse(payload.getDate()));
+            expanseBuilder.name(product.getName());
+            expanseBuilder.category(product.getCategory());
+            expanseBuilder.cost(Cost.of(item.getCost()));
+
+            final Expanse expanse = expanseBuilder.build();
+            collection.put(expanse.getRefUuid(), expanse);
+        }
     }
 
 }
