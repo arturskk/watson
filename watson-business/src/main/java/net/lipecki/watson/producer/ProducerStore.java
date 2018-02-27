@@ -19,7 +19,7 @@ public class ProducerStore {
             final AggregateCombinerFactory aggregateCombinerFactory,
             final ProducerAddedEventHandler addedHandler,
             final ProducerModifiedEventHandler modifiedHandler) {
-        this.combiner = aggregateCombinerFactory.getAggregateCombiner(Collections.singletonList(Producer.PRODUCER_STREAM));
+        this.combiner = aggregateCombinerFactory.getAggregateCombiner(getClass().getSimpleName(), Collections.singletonList(Producer.PRODUCER_STREAM));
         this.combiner.addHandler(addedHandler);
         this.combiner.addHandler(modifiedHandler);
     }

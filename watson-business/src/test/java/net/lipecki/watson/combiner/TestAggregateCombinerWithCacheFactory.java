@@ -19,12 +19,12 @@ public class TestAggregateCombinerWithCacheFactory implements AggregateCombinerF
     }
 
     @Override
-    public <T> AggregateCombiner<T> getAggregateCombiner(final List<String> streams) {
+    public <T> AggregateCombiner<T> getAggregateCombiner(final String cacheKey, final List<String> streams) {
         return new InMemoryAggregateCombiner<>(eventStore, streams);
     }
 
     @Override
-    public <T> AggregateCombiner<T> getAggregateCombiner(final List<String> streams, final Supplier<Map<String, T>> initializer) {
+    public <T> AggregateCombiner<T> getAggregateCombiner(final String cacheKey, final List<String> streams, final Supplier<Map<String, T>> initializer) {
         return new InMemoryAggregateCombiner<>(eventStore, streams, initializer);
     }
 

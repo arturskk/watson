@@ -18,7 +18,7 @@ class ReceiptStore {
             final AggregateCombinerFactory aggregateCombinerFactory,
             final ReceiptAddedEventHandler receiptAddedEventHandler,
             final ReceiptItemModifiedUuidEventHandler receiptItemModifiedUuidEventHandler) {
-        this.combiner = aggregateCombinerFactory.getAggregateCombiner(Collections.singletonList(Receipt.RECEIPT_STREAM));
+        this.combiner = aggregateCombinerFactory.getAggregateCombiner(getClass().getSimpleName(), Collections.singletonList(Receipt.RECEIPT_STREAM));
         combiner.addHandler(receiptAddedEventHandler);
         combiner.addHandler(receiptItemModifiedUuidEventHandler);
     }

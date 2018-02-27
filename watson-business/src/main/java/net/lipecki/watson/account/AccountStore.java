@@ -19,7 +19,7 @@ class AccountStore {
             final AggregateCombinerFactory aggregateCombinerFactory,
             final AccountAddedEventHandler accountAddedEventHandler,
             final AccountModifiedEventHandler accountModifiedEventHandler) {
-        this.combiner = aggregateCombinerFactory.getAggregateCombiner(Collections.singletonList(Account.ACCOUNT_STREAM));
+        this.combiner = aggregateCombinerFactory.getAggregateCombiner(getClass().getSimpleName(), Collections.singletonList(Account.ACCOUNT_STREAM));
         combiner.addHandler(accountAddedEventHandler);
         combiner.addHandler(accountModifiedEventHandler);
     }

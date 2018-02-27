@@ -23,18 +23,19 @@ public class AggregateCombinerWithCacheFactory implements AggregateCombinerFacto
     }
 
     @Override
-    public <T> AggregateCombiner<T> getAggregateCombiner(final List<String> streams) {
+    public <T> AggregateCombiner<T> getAggregateCombiner(final String cacheKey, final List<String> streams) {
         //noinspection RedundantTypeArguments
-        return getAggregateCombiner(streams, HashMap<String, T>::new);
+        return getAggregateCombiner(cacheKey, streams, HashMap<String, T>::new);
     }
 
     @Override
-    public <T> AggregateCombiner<T> getAggregateCombiner(final List<String> streams, final Supplier<Map<String, T>> initializer) {
+    public <T> AggregateCombiner<T> getAggregateCombiner(final String cacheKey, final List<String> streams, final Supplier<Map<String, T>> initializer) {
         return new AggregateCombinerCacheDecorator<>(
-                this.cacheManager,
+                cacheKey,
+                cacheManager,
                 streams,
                 new InMemoryAggregateCombiner<>(
-                        this.eventStore,
+                        eventStore,
                         streams,
                         initializer
                 )

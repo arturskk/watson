@@ -19,7 +19,7 @@ public class RetailChainStore {
             final AggregateCombinerFactory aggregateCombinerFactory,
             final RetailChainAddedEventHandler addedHandler,
             final RetailChainModifiedEventHandler modifiedHandler) {
-        this.combiner = aggregateCombinerFactory.getAggregateCombiner(Collections.singletonList(RetailChain.RETAIL_CHAIN_STREAM));
+        this.combiner = aggregateCombinerFactory.getAggregateCombiner(getClass().getSimpleName(), Collections.singletonList(RetailChain.RETAIL_CHAIN_STREAM));
         this.combiner.addHandler(addedHandler);
         this.combiner.addHandler(modifiedHandler);
     }

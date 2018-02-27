@@ -21,7 +21,11 @@ class CategoryStore {
             final AggregateCombinerFactory aggregateCombinerFactory,
             final CategoryAddedEventHandler categoryAddedEventHandler,
             final CategoryModifiedEventHandler categoryModifiedEventHandler) {
-        this.combiner = aggregateCombinerFactory.getAggregateCombiner(Collections.singletonList(Category.CATEGORY_STREAM), CategoryStore::rootCategoryInitializer);
+        this.combiner = aggregateCombinerFactory.getAggregateCombiner(
+                getClass().getSimpleName(),
+                Collections.singletonList(Category.CATEGORY_STREAM),
+                CategoryStore::rootCategoryInitializer
+        );
         this.combiner.addHandler(categoryAddedEventHandler);
         this.combiner.addHandler(categoryModifiedEventHandler);
     }

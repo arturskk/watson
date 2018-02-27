@@ -19,7 +19,7 @@ class ShopStore {
             final AggregateCombinerFactory aggregateCombinerFactory,
             final ShopAddedEventHandler shopAddedEventHandler,
             final ShopModifiedEventHandler shopModifiedEventHandler) {
-        this.combiner = aggregateCombinerFactory.getAggregateCombiner(Collections.singletonList(Shop.SHOP_STREAM));
+        this.combiner = aggregateCombinerFactory.getAggregateCombiner(getClass().getSimpleName(), Collections.singletonList(Shop.SHOP_STREAM));
         this.combiner.addHandler(shopAddedEventHandler);
         this.combiner.addHandler(shopModifiedEventHandler);
     }
