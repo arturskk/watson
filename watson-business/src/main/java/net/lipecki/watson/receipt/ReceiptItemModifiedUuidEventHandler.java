@@ -12,9 +12,6 @@ import java.util.Map;
 @Service
 public class ReceiptItemModifiedUuidEventHandler implements AggregateCombinerHandler<Receipt, ReceiptItemModified> {
 
-    public ReceiptItemModifiedUuidEventHandler() {
-    }
-
     @Override
     public Class<ReceiptItemModified> getPayloadClass() {
         return ReceiptItemModified.class;
