@@ -7,6 +7,8 @@ import net.lipecki.watson.account.AddAccountData;
 import net.lipecki.watson.category.AddCategoryCommand;
 import net.lipecki.watson.category.AddCategoryData;
 import net.lipecki.watson.event.Event;
+import net.lipecki.watson.producer.AddProducerCommand;
+import net.lipecki.watson.producer.AddProducerData;
 import net.lipecki.watson.product.AddProductCommand;
 import net.lipecki.watson.product.AddProductData;
 import net.lipecki.watson.shop.AddShopCommand;
@@ -29,18 +31,21 @@ public class AddReceiptWithDependenciesCommand {
     private final AddAccountCommand addAccountCommand;
     private final AddShopCommand addShopCommand;
     private final AddProductCommand addProductCommand;
+    private final AddProducerCommand addProducerCommand;
 
     public AddReceiptWithDependenciesCommand(
             final AddReceiptCommand addReceiptCommand,
             final AddCategoryCommand addCategoryCommand,
             final AddAccountCommand addAccountCommand,
             final AddShopCommand addShopCommand,
-            final AddProductCommand addProductCommand) {
+            final AddProductCommand addProductCommand,
+            final AddProducerCommand addProducerCommand) {
         this.addReceiptCommand = addReceiptCommand;
         this.addCategoryCommand = addCategoryCommand;
         this.addAccountCommand = addAccountCommand;
         this.addShopCommand = addShopCommand;
         this.addProductCommand = addProductCommand;
+        this.addProducerCommand = addProducerCommand;
     }
 
     public Event addReceipt(final AddReceiptDto dto) {
@@ -61,6 +66,7 @@ public class AddReceiptWithDependenciesCommand {
 
     private List<AddReceiptItemData> asReceiptItems(final AddReceiptDto dto) {
         final Map<String, String> addedProductCategories = new HashMap<>();
+        final Map<String, String> addedProductProducers = new HashMap<>();
         final Map<String, AddReceiptItemProduct> addedProducts = new HashMap<>();
         return dto.getItems()
                 .stream()
@@ -68,7 +74,7 @@ public class AddReceiptWithDependenciesCommand {
                         itemDto -> AddReceiptItemData.builder()
                                 .cost(itemDto.getCost())
                                 .tags(itemDto.getTags())
-                                .product(getExistingOrCreateProductUuid(addedProducts, addedProductCategories, itemDto))
+                                .product(getExistingOrCreateProductUuid(addedProducts, addedProductCategories, addedProductProducers, itemDto))
                                 .amount(
                                         AddReceiptItemAmount.builder()
                                                 .count(itemDto.getAmount().getCount())
@@ -94,16 +100,16 @@ public class AddReceiptWithDependenciesCommand {
      * @param itemDto                - add receipt item dto
      * @return product for receipt item
      */
-    private AddReceiptItemProduct getExistingOrCreateProductUuid(final Map<String, AddReceiptItemProduct> addedProducts, final Map<String, String> addedProductCategories, final AddReceiptItemDto itemDto) {
+    private AddReceiptItemProduct getExistingOrCreateProductUuid(final Map<String, AddReceiptItemProduct> addedProducts, final Map<String, String> addedProductCategories, final Map<String, String> addedProductProducers, final AddReceiptItemDto itemDto) {
         final AddReceiptProductDto product = itemDto.getProduct();
         return product
                 .getUuid()
                 .map(uuid -> AddReceiptItemProduct.builder().uuid(uuid).build())
-                .orElseGet(createProduct(addedProducts, addedProductCategories, product));
+                .orElseGet(createProduct(addedProducts, addedProductCategories, addedProductProducers, product));
 
     }
 
-    private Supplier<AddReceiptItemProduct> createProduct(final Map<String, AddReceiptItemProduct> addedProducts, final Map<String, String> addedProductCategories, final AddReceiptProductDto product) {
+    private Supplier<AddReceiptItemProduct> createProduct(final Map<String, AddReceiptItemProduct> addedProducts, final Map<String, String> addedProductCategories, final Map<String, String> addedProductProducers, final AddReceiptProductDto product) {
         return () -> addedProducts.computeIfAbsent(
                 product.getName().orElseThrow(WatsonException.supplier("Can't create receipt item product when name is missing")),
                 productName -> {
@@ -111,13 +117,18 @@ public class AddReceiptWithDependenciesCommand {
                             .getCategory()
                             .map(category -> createProductCategoryUuid(addedProductCategories, category))
                             .orElse(null);
+                    final String producerUuid = product
+                            .getProducer()
+                            .map(producer -> createProductProducerUuid(addedProductProducers, producer))
+                            .orElse(null);
                     final Event addProductEvent = addProductCommand.addProduct(
-                            asAddProduct(productName, categoryUuid)
+                            asAddProduct(productName, categoryUuid, producerUuid)
                     );
                     return AddReceiptItemProduct
                             .builder()
                             .uuid(addProductEvent.getStreamId())
                             .categoryUuid(categoryUuid)
+                            .producerUuid(producerUuid)
                             .build();
                 }
         );
@@ -134,10 +145,22 @@ public class AddReceiptWithDependenciesCommand {
                 );
     }
 
-    private AddProductData asAddProduct(final String key, final String categoryUuid) {
+    private String createProductProducerUuid(final Map<String, String> addedProductProducers, final AddReceiptProductProducerDto producer) {
+        return producer
+                .getUuid()
+                .orElseGet(
+                        () -> addedProductProducers.computeIfAbsent(
+                                producer.getName().orElseThrow(WatsonException.supplier("Can't create producer without neither uuid, nor name")),
+                                producerName -> getProductProducerUuid(producer)
+                        )
+                );
+    }
+
+    private AddProductData asAddProduct(final String key, final String categoryUuid, final String producerUuid) {
         return AddProductData.builder()
                 .name(key)
                 .categoryUuid(categoryUuid)
+                .producerUuid(producerUuid)
                 .build();
     }
 
@@ -178,6 +201,19 @@ public class AddReceiptWithDependenciesCommand {
 
     private Optional<AddShopData> asAddShop(final AddReceiptShopDto dto) {
         return dto.getName().map(name -> AddShopData.builder().name(name).build());
+    }
+
+    private String getProductProducerUuid(final AddReceiptProductProducerDto dto) {
+        return getUuidOrCreateObject(
+                dto,
+                AddReceiptProductProducerDto::getUuid,
+                this::asAddProducer,
+                addProducerCommand::addProducer
+        );
+    }
+
+    private Optional<AddProducerData> asAddProducer(final AddReceiptProductProducerDto dto) {
+        return dto.getName().map(name -> AddProducerData.builder().name(name).build());
     }
 
     private <T, M> String getUuidOrCreateObject(

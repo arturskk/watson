@@ -8,7 +8,6 @@ import net.lipecki.watson.product.ProductAdded;
 import org.junit.Test;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -19,7 +18,10 @@ public class AddReceiptDynamicProductWithCategoryTest extends AddReceiptWithDepe
     public void shouldUseCategoryForAddedProduct() {
         // given
         final AddReceiptItemDto.AddReceiptItemDtoBuilder item = item();
-        item.product(itemProduct(dto -> dto.category(AddReceiptCategoryDto.builder().uuid(CATEGORY_UUID).build())));
+        item.product(product(dto -> {
+            dto.name(PRODUCT_NAME);
+            dto.category(AddReceiptCategoryDto.builder().uuid(CATEGORY_UUID).build());
+        }));
 
         mockProductCreationWithNameAndCategoryForUuid(PRODUCT_NAME, CATEGORY_UUID, PRODUCT_UUID);
 
@@ -38,7 +40,10 @@ public class AddReceiptDynamicProductWithCategoryTest extends AddReceiptWithDepe
     public void shouldCreateCategoryForAddedProduct() {
         // given
         final AddReceiptItemDto.AddReceiptItemDtoBuilder item = item();
-        item.product(itemProduct(dto -> dto.category(AddReceiptCategoryDto.builder().name(CATEGORY_NAME).build())));
+        item.product(product(dto -> {
+            dto.name(PRODUCT_NAME);
+            dto.category(AddReceiptCategoryDto.builder().name(CATEGORY_NAME).build());
+        }));
 
         mockCategoryCreationByNameForUuid(CATEGORY_NAME, CATEGORY_UUID);
         mockProductCreationWithNameAndCategoryForUuid(PRODUCT_NAME, CATEGORY_UUID, PRODUCT_UUID);
@@ -52,20 +57,6 @@ public class AddReceiptDynamicProductWithCategoryTest extends AddReceiptWithDepe
                 .extracting(AddReceiptItemData::getProduct)
                 .extracting(AddReceiptItemProduct::getCategoryUuid)
                 .containsExactly(CATEGORY_UUID);
-    }
-
-    private AddReceiptProductDto itemProduct(final Consumer<AddReceiptProductDto.AddReceiptProductDtoBuilder> dtoConsumer) {
-        final AddReceiptProductDto.AddReceiptProductDtoBuilder itemProduct = AddReceiptProductDto.builder().name(PRODUCT_NAME);
-        dtoConsumer.accept(itemProduct);
-        return itemProduct.build();
-    }
-
-    private AddReceiptItemDto.AddReceiptItemDtoBuilder item() {
-        return AddReceiptItemDto.builder()
-                .cost(ANY_COST)
-                .tags(ANY_TAGS)
-                .product(ANY_PRODUCT)
-                .amount(ANY_AMOUNT);
     }
 
     private void mockCategoryCreationByNameForUuid(final String name, final String uuid) {

@@ -9,7 +9,6 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -27,8 +26,8 @@ public class AddSameProductCategoryOnceTest extends AddReceiptWithDependenciesBa
         // given
         final AddReceiptCategoryDto addCategoryDto = AddReceiptCategoryDto.builder().name(CATEGORY_NAME).build();
         final List<AddReceiptItemDto> receiptItems = new ArrayList<>();
-        receiptItems.add(item(item -> item.product(AddReceiptProductDto.builder().category(addCategoryDto).name(PRODUCT_NAME + "_1").build())));
-        receiptItems.add(item(item -> item.product(AddReceiptProductDto.builder().category(addCategoryDto).name(PRODUCT_NAME + "_2").build())));
+        receiptItems.add(item(item -> item.product(AddReceiptProductDto.builder().category(addCategoryDto).name(PRODUCT_NAME + "_1").build())).build());
+        receiptItems.add(item(item -> item.product(AddReceiptProductDto.builder().category(addCategoryDto).name(PRODUCT_NAME + "_2").build())).build());
 
         when(addProductCommand.addProduct(any(AddProductData.class))).thenReturn(
                 Event.<ProductAdded>builder().streamId(PRODUCT_UUID).payload(ProductAdded.builder().name(PRODUCT_NAME).categoryUuid(CATEGORY_UUID_1).build()).build()
@@ -50,12 +49,6 @@ public class AddSameProductCategoryOnceTest extends AddReceiptWithDependenciesBa
                 .extracting(AddReceiptItemData::getProduct)
                 .extracting(AddReceiptItemProduct::getCategoryUuid)
                 .containsExactly(CATEGORY_UUID_1, CATEGORY_UUID_1);
-    }
-
-    private AddReceiptItemDto item(final Consumer<AddReceiptItemDto.AddReceiptItemDtoBuilder> consumer) {
-        final AddReceiptItemDto.AddReceiptItemDtoBuilder dto = AddReceiptItemDto.builder().amount(ANY_AMOUNT);
-        consumer.accept(dto);
-        return dto.build();
     }
 
 }
