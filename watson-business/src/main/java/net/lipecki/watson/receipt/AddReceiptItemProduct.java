@@ -10,5 +10,6 @@ public class AddReceiptItemProduct {
 
     private String uuid;
     private String categoryUuid;
+    private String producerUuid;
 
 }

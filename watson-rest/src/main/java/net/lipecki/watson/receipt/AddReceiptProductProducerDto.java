@@ -7,20 +7,10 @@ import java.util.Optional;
 
 @Data
 @Builder
-public class AddReceiptProductDto {
+public class AddReceiptProductProducerDto {
 
     private String uuid;
     private String name;
-    private AddReceiptCategoryDto category;
-    private AddReceiptProductProducerDto producer;
-
-    public Optional<AddReceiptCategoryDto> getCategory() {
-        return Optional.ofNullable(category);
-    }
-
-    public Optional<AddReceiptProductProducerDto> getProducer() {
-        return Optional.ofNullable(producer);
-    }
 
     public Optional<String> getUuid() {
         return Optional.ofNullable(this.uuid);
